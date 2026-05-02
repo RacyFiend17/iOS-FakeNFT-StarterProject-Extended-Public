@@ -68,6 +68,8 @@ extension AppIcon {
     static let sort = AppIcon.asset("sortYP")
     static let star = AppIcon.asset("starYP")
     static let statistics = AppIcon.asset("statistics")
+    
+    static let splashIcon = AppIcon.asset("splashIcon")
 
     // MARK: - Assets: Images
 
