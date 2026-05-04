@@ -28,6 +28,26 @@ final class CartViewModel {
     private let nftService: NftService
     private(set) var state: CartState = .initial
     
+    // MARK: - Computed properties
+    
+    var totalCount: Int {
+        switch state {
+        case .content(let nfts):
+            return nfts.count
+        default:
+            return 0
+        }
+    }
+    
+    var totalPrice: Double {
+        switch state {
+        case .content(let nfts):
+            return nfts.reduce(0) { $0 + $1.price }
+        default:
+            return 0
+        }
+    }
+    
     // MARK: - Init
     
     init(orderService: OrderService, nftService: NftService) {
