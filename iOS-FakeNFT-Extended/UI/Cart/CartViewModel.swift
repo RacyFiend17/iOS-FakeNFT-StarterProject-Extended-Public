@@ -14,7 +14,6 @@ enum CartState {
     case loading
     case empty
     case content([Nft])
-    case failed
 }
 
 // MARK: - CartViewModel
@@ -26,7 +25,9 @@ final class CartViewModel {
     
     private let orderService: OrderService
     private let nftService: NftService
+    
     private(set) var state: CartState = .initial
+    private(set) var errorMessage: String?
     
     // MARK: - Computed properties
     
@@ -50,21 +51,26 @@ final class CartViewModel {
     
     // MARK: - Init
     
-    init(orderService: OrderService, nftService: NftService) {
+    init(orderService: OrderService, nftService: NftService, state: CartState = .initial) {
         self.orderService = orderService
         self.nftService = nftService
+        self.state = state
     }
     
     // MARK: - Public Methods
     
     func loadCart() async {
-        state = .loading
+        errorMessage = nil
+        
+        if case .initial = state {
+            state = .loading
+        }
         
         do {
             let nfts = try await loadCartNfts()
             state = nfts.isEmpty ? .empty : .content(nfts)
         } catch {
-            state = .failed
+            handleLoadingError(error)
         }
     }
     
@@ -80,5 +86,47 @@ final class CartViewModel {
         }
         
         return nfts
+    }
+    
+    // MARK: - Error handling
+    
+    private func handleLoadingError(_ error: Error) {
+        errorMessage = makeErrorMessage(from: error)
+        
+        if case .loading = state {
+            state = .empty
+        }
+    }
+    
+    private func makeErrorMessage(from error: Error) -> String {
+        guard let networkError = error as? NetworkClientError else {
+            return Constants.defaultErrorMessage
+        }
+        
+        switch networkError {
+        case .httpStatusCode:
+            return Constants.serverErrorMessage
+            
+        case .urlRequestError, .urlSessionError:
+            return Constants.connectionErrorMessage
+            
+        case .parsingError:
+            return Constants.parsingErrorMessage
+            
+        case .incorrectRequest:
+            return Constants.requestErrorMessage
+        }
+    }
+}
+
+// MARK: - Constants
+
+private extension CartViewModel {
+    enum Constants {
+        static let defaultErrorMessage = "Не удалось загрузить данные"
+        static let serverErrorMessage = "Ошибка сервера. Попробуйте позже"
+        static let connectionErrorMessage = "Проверьте подключение к интернету"
+        static let parsingErrorMessage = "Не удалось обработать данные"
+        static let requestErrorMessage = "Не удалось выполнить запрос"
     }
 }
