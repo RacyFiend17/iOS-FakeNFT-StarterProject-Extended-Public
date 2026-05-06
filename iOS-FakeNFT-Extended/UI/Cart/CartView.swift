@@ -42,9 +42,11 @@ struct CartView: View {
                     }
                 }
             }
-            .task {
+            .onAppear {
                 guard shouldLoadOnAppear else { return }
-                await viewModel.loadCart()
+                Task {
+                    await viewModel.loadCart()
+                }
             }
     }
 }
