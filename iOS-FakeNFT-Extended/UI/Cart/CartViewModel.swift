@@ -28,6 +28,7 @@ final class CartViewModel {
     
     private(set) var state: CartState = .initial
     private(set) var errorMessage: String?
+    private(set) var isRefreshing = false
     
     // MARK: - Computed properties
     
@@ -64,9 +65,13 @@ final class CartViewModel {
         
         switch state {
         case .content:
-            break
+            isRefreshing = true
         case .initial, .loading, .empty:
             state = .loading
+        }
+        
+        defer {
+            isRefreshing = false
         }
         
         do {

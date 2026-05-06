@@ -28,6 +28,10 @@ struct CartView: View {
     var body: some View {
         ZStack {
             content
+            
+            if viewModel.isRefreshing {
+                loadingOverlay
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.whiteYP)
@@ -64,6 +68,7 @@ private extension CartView {
         switch viewModel.state {
         case .initial, .loading:
             ProgressView()
+                .tint(.blackYP)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             
         case .empty:
@@ -117,6 +122,14 @@ private extension CartView {
                 .frame(width: 42, height: 42)
         }
         .buttonStyle(.plain)
+    }
+    
+    var loadingOverlay: some View {
+        ProgressView()
+            .tint(.blackYP)
+            .frame(width: 82, height: 82)
+            .background(.grayLightYP)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }
 

@@ -37,9 +37,10 @@ private extension CartNftCell {
     var nftImageView: some View {
         KFImage(nft.images.first)
             .placeholder {
-                AppIcon.nftStub.image
-                    .resizable()
-                    .scaledToFill()
+                ProgressView()
+                    .tint(.blackYP)
+                    .frame(width: 108, height: 108)
+                    .background(.grayLightYP)
             }
             .resizable()
             .scaledToFill()
