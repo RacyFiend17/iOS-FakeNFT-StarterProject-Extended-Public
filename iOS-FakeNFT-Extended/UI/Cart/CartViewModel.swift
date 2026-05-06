@@ -62,7 +62,10 @@ final class CartViewModel {
     func loadCart() async {
         errorMessage = nil
         
-        if case .initial = state {
+        switch state {
+        case .content:
+            break
+        case .initial, .loading, .empty:
             state = .loading
         }
         
