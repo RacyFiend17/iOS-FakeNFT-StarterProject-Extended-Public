@@ -26,28 +26,33 @@ struct CartView: View {
     // MARK: - Body
     
     var body: some View {
-        content
-            .onChange(of: viewModel.errorMessage) { _, newValue in
-                isErrorAlertPresented = newValue != nil
-            }
-            .alert(
-                viewModel.errorMessage ?? "",
-                isPresented: $isErrorAlertPresented
-            ) {
-                Button(Constants.cancelButtonTitle, role: .cancel) { }
-                
-                Button(Constants.retryButtonTitle) {
-                    Task {
-                        await viewModel.loadCart()
-                    }
-                }
-            }
-            .onAppear {
-                guard shouldLoadOnAppear else { return }
+        ZStack {
+            content
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.whiteYP)
+        .onChange(of: viewModel.errorMessage) { _, newValue in
+            isErrorAlertPresented = newValue != nil
+        }
+        .alert(
+            viewModel.errorMessage ?? "",
+            isPresented: $isErrorAlertPresented
+        ) {
+            Button(Constants.cancelButtonTitle, role: .cancel) { }
+            
+            Button(Constants.retryButtonTitle) {
                 Task {
                     await viewModel.loadCart()
                 }
             }
+        }
+        .onAppear {
+            guard shouldLoadOnAppear else { return }
+            
+            Task {
+                await viewModel.loadCart()
+            }
+        }
     }
 }
 
