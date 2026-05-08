@@ -1,9 +1,3 @@
-//
-//  StatisticsView.swift
-//  iOS-FakeNFT-Extended
-//
-//  Created by Илья Лобастов on 08.05.2026.
-//
 import SwiftUI
 
 struct StatisticsView: View {
@@ -11,8 +5,11 @@ struct StatisticsView: View {
 
     var body: some View {
         NavigationStack {
-            Text("Пользователей: \(users.count)")
-                .navigationTitle("Статистика")
+            StatisticsUserRow(
+                position: 1,
+                user: users[0]
+            )
+            .navigationTitle("Статистика")
         }
     }
 }
