@@ -7,9 +7,11 @@
 import SwiftUI
 
 struct StatisticsView: View {
+    private let users = StatisticsMockData.users
+
     var body: some View {
         NavigationStack {
-            Text("Статистика")
+            Text("Пользователей: \(users.count)")
                 .navigationTitle("Статистика")
         }
     }
