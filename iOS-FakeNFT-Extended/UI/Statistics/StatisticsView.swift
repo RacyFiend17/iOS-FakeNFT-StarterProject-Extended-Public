@@ -5,11 +5,20 @@ struct StatisticsView: View {
 
     var body: some View {
         NavigationStack {
-            StatisticsUserRow(
-                position: 1,
-                user: users[0]
-            )
+            ScrollView {
+                LazyVStack(spacing: 8) {
+                    ForEach(Array(users.enumerated()), id: \.element.id) { index, user in
+                        StatisticsUserRow(
+                            position: index + 1,
+                            user: user
+                        )
+                    }
+                }
+                .padding(.top, 20)
+            }
+            .background(.whiteUniversalYP)
             .navigationTitle("Статистика")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }
