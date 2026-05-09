@@ -3,9 +3,9 @@ import SwiftUI
 struct StatisticsView: View {
     @State private var sortOption: StatisticsSortOption = .rating
     @State private var isSortDialogPresented = false
-
+    
     private let users = StatisticsMockData.users
-
+    
     private var sortedUsers: [StatisticsUser] {
         switch sortOption {
         case .rating:
@@ -16,16 +16,21 @@ struct StatisticsView: View {
             }
         }
     }
-
+    
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 8) {
                     ForEach(Array(sortedUsers.enumerated()), id: \.element.id) { index, user in
-                        StatisticsUserRow(
-                            position: index + 1,
-                            user: user
-                        )
+                        NavigationLink {
+                            UserCardView(user: user)
+                        } label: {
+                            StatisticsUserRow(
+                                position: index + 1,
+                                user: user
+                            )
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.top, 20)
@@ -48,11 +53,11 @@ struct StatisticsView: View {
                 Button("По имени") {
                     sortOption = .name
                 }
-
+                
                 Button("По рейтингу") {
                     sortOption = .rating
                 }
-
+                
                 Button("Закрыть", role: .cancel) {}
             }
         }
