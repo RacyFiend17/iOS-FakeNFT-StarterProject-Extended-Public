@@ -3,14 +3,41 @@ import SwiftUI
 struct TabBarView: View {
     var body: some View {
         TabView {
+            ProfileView()
+                .tabItem {
+                    Label {
+                        Text("Профиль")
+                    } icon: {
+                        Image("ProfileYP")
+                    }
+                }
+
             TestCatalogView()
                 .tabItem {
-                    Label(
-                        NSLocalizedString("Tab.catalog", comment: ""),
-                        systemImage: "square.stack.3d.up.fill"
-                    )
+                    Label {
+                        Text("Каталог")
+                    } icon: {
+                        Image("catalogYP")
+                    }
                 }
-                .backgroundStyle(.background)
+
+            Text("Корзина")
+                .tabItem {
+                    Label {
+                        Text("Корзина")
+                    } icon: {
+                        Image("basketYP")
+                    }
+                }
+
+            Text("Статистика")
+                .tabItem {
+                    Label {
+                        Text("Статистика")
+                    } icon: {
+                        Image("statistics")
+                    }
+                }
         }
     }
 }

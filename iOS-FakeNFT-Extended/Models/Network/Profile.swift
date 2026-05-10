@@ -1,8 +1,11 @@
-//
-//  Profile.swift
-//  iOS-FakeNFT-Extended
-//
-//  Created by Качусов Степан on 09.05.2026.
-//
-
 import Foundation
+
+struct Profile: Codable, Equatable, Identifiable {
+    let id: String
+    let name: String
+    let avatar: String
+    let description: String
+    let website: String
+    let nfts: [String]
+    let likes: [String]
+}
