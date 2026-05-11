@@ -51,12 +51,10 @@ struct CartView: View {
                 }
             }
         }
-        .onAppear {
+        .task {
             guard shouldLoadOnAppear else { return }
             
-            Task {
-                await viewModel.loadCart()
-            }
+            await viewModel.loadCart()
         }
     }
 }
