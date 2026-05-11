@@ -35,7 +35,7 @@ struct CartNftCell: View {
 
 private extension CartNftCell {
     var nftImageView: some View {
-        KFImage(nft.images.first)
+        KFImage(nft.imagesUrls.first)
             .placeholder {
                 ProgressView()
                     .tint(.blackYP)
