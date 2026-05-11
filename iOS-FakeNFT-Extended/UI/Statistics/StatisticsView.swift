@@ -1,40 +1,36 @@
 import SwiftUI
 
 struct StatisticsView: View {
-    @State private var sortOption: StatisticsSortOption = .rating
+    @StateObject private var viewModel = StatisticsViewModel()
     @State private var isSortDialogPresented = false
-    
-    private let users = StatisticsMockData.users
-    
-    private var sortedUsers: [StatisticsUser] {
-        switch sortOption {
-        case .rating:
-            return users.sorted { $0.rating > $1.rating }
-        case .name:
-            return users.sorted {
-                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
-            }
-        }
-    }
-    
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 8) {
-                    ForEach(Array(sortedUsers.enumerated()), id: \.element.id) { index, user in
-                        NavigationLink {
-                            UserCardView(user: user)
-                        } label: {
-                            StatisticsUserRow(
-                                position: index + 1,
-                                user: user
-                            )
-                        }
-                        .buttonStyle(.plain)
+            List {
+                ForEach(Array(viewModel.sortedUsers.enumerated()), id: \.element.id) { index, user in
+                    NavigationLink {
+                        UserCardView(user: user)
+                    } label: {
+                        StatisticsUserRow(
+                            position: index + 1,
+                            user: user
+                        )
                     }
+                    .buttonStyle(.plain)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(
+                        EdgeInsets(
+                            top: 4,
+                            leading: 0,
+                            bottom: 4,
+                            trailing: 0
+                        )
+                    )
+                    .listRowBackground(Color.whiteUniversalYP)
                 }
-                .padding(.top, 20)
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
             .background(.whiteUniversalYP)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -51,13 +47,13 @@ struct StatisticsView: View {
                 titleVisibility: .visible
             ) {
                 Button("По имени") {
-                    sortOption = .name
+                    viewModel.sortByName()
                 }
-                
+
                 Button("По рейтингу") {
-                    sortOption = .rating
+                    viewModel.sortByRating()
                 }
-                
+
                 Button("Закрыть", role: .cancel) {}
             }
         }

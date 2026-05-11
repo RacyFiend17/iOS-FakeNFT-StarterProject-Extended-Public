@@ -60,11 +60,12 @@ private extension StatisticsUserRow {
     }
 
     var placeholderAvatar: some View {
-        Image(systemName: "person.circle.fill")
+        Image(.userFotoStubYP)
+            .renderingMode(.original)
             .resizable()
-            .scaledToFit()
-            .foregroundStyle(Color(.systemGray3))
+            .scaledToFill()
             .frame(width: 32, height: 32)
+            .clipShape(Circle())
     }
 }
 
