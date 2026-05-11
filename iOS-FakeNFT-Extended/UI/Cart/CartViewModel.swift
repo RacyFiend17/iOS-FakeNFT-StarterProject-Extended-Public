@@ -57,11 +57,21 @@ final class CartViewModel {
     // MARK: - Public Methods
     
     func loadCart() async {
+        await loadCart(shouldShowRefreshOverlay: true)
+    }
+    
+    func refreshCart() async {
+        await loadCart(shouldShowRefreshOverlay: false)
+    }
+    
+    // MARK: - Private Methods
+    
+    private func loadCart(shouldShowRefreshOverlay: Bool) async {
         errorMessage = nil
         
         switch state {
         case .content:
-            isRefreshing = true
+            isRefreshing = shouldShowRefreshOverlay
         case .initial, .loading, .empty:
             state = .loading
         }
@@ -77,8 +87,6 @@ final class CartViewModel {
             handleLoadingError(error)
         }
     }
-    
-    // MARK: - Private Methods
     
     private func loadCartNfts() async throws -> [Nft] {
         let order = try await orderService.loadOrder()

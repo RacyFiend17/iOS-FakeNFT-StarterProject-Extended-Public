@@ -10,6 +10,7 @@ import SwiftUI
 struct CartNftList: View {
     let nfts: [Nft]
     let onDeleteTap: (Nft) -> Void
+    let onRefresh: () async -> Void
     
     var body: some View {
         ScrollView {
@@ -21,12 +22,16 @@ struct CartNftList: View {
                 }
             }
         }
+        .refreshable {
+            await onRefresh()
+        }
     }
 }
 
 #Preview {
     CartNftList(
         nfts: [.mock1, .mock2, .mock3],
-        onDeleteTap: { _ in }
+        onDeleteTap: { _ in },
+        onRefresh: {}
     )
 }

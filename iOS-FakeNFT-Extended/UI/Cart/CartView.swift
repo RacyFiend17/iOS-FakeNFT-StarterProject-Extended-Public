@@ -100,6 +100,9 @@ private extension CartView {
                 nfts: nfts,
                 onDeleteTap: { _ in
                     // TODO: реализовать логику удаления в 3 части эпика
+                },
+                onRefresh: {
+                    await viewModel.refreshCart()
                 }
             )
             
