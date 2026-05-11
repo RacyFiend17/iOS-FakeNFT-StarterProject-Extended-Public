@@ -29,9 +29,10 @@ struct CartView: View {
         ZStack {
             content
             
-            if viewModel.isRefreshing {
-                loadingOverlay
-            }
+            loadingOverlay
+                .opacity(viewModel.isRefreshing ? 1 : 0)
+                .accessibilityHidden(!viewModel.isRefreshing)
+                .allowsHitTesting(viewModel.isRefreshing)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.whiteYP)
