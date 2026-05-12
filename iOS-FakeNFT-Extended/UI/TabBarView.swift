@@ -33,7 +33,7 @@ private extension TabBarView {
     }
     
     var cart: some View {
-        CartAssembly()
+        CartFlowView()
             .tabItem {
                 AppIcon.basket.image
                 Text(Constants.cartTitle)

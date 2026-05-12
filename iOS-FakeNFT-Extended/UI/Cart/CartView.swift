@@ -13,14 +13,17 @@ struct CartView: View {
     
     private let onSortButtonTap: () -> Void
     private let shouldLoadOnAppear: Bool
+    private let onPaymentTap: () -> Void
     
     init(viewModel: CartViewModel,
          shouldLoadOnAppear: Bool = true,
-         onSortButtonTap: @escaping () -> Void = {}
+         onSortButtonTap: @escaping () -> Void = {},
+         onPaymentTap: @escaping () -> Void = {}
     ) {
         _viewModel = State(initialValue: viewModel)
         self.shouldLoadOnAppear = shouldLoadOnAppear
         self.onSortButtonTap = onSortButtonTap
+        self.onPaymentTap = onPaymentTap
     }
     
     // MARK: - Body
@@ -109,9 +112,7 @@ private extension CartView {
             CartSummaryView(
                 totalCount: viewModel.totalCount,
                 totalPrice: viewModel.totalPrice,
-                onPaymentTap: {
-                    // TODO: реализовать логику перехода к оплате во 2 части эпика
-                }
+                onPaymentTap: onPaymentTap
             )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
