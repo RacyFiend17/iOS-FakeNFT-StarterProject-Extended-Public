@@ -11,7 +11,7 @@ struct PaymentSummaryView: View {
     let isPayButtonEnabled: Bool
     let onAgreementTap: () -> Void
     let onPayTap: () -> Void
-
+    
     // MARK: - Body
     
     var body: some View {
@@ -28,6 +28,7 @@ struct PaymentSummaryView: View {
                 topTrailingRadius: 12
             )
             .fill(.grayLightYP)
+            .ignoresSafeArea(edges: .bottom)
         )
     }
 }
@@ -63,7 +64,6 @@ private extension PaymentSummaryView {
                 )
         }
         .disabled(!isPayButtonEnabled)
-        .buttonStyle(.plain)
     }
 }
 
