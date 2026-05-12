@@ -10,6 +10,7 @@ import SwiftUI
 struct PaymentCurrencyList: View {
     let currencies: [Currency]
     let isSelected: (Currency) -> Bool
+    let onSelect: (Currency) -> Void
     
     private let columns = [
         GridItem(.flexible(), spacing: 7),
@@ -22,10 +23,15 @@ struct PaymentCurrencyList: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 7) {
                 ForEach(currencies, id: \.id) { currency in
-                    PaymentCurrencyCell(
-                        currency: currency,
-                        isSelected: isSelected(currency)
-                    )
+                    Button {
+                        onSelect(currency)
+                    } label: {
+                        PaymentCurrencyCell(
+                            currency: currency,
+                            isSelected: isSelected(currency)
+                        )
+                    }
+                    .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal, 16)
@@ -39,7 +45,8 @@ struct PaymentCurrencyList: View {
 #Preview("No selection") {
     PaymentCurrencyList(
         currencies: Currency.mocks,
-        isSelected: { _ in false }
+        isSelected: { _ in false },
+        onSelect: { _ in }
     )
 }
 
@@ -48,6 +55,7 @@ struct PaymentCurrencyList: View {
         currencies: Currency.mocks,
         isSelected: { currency in
             currency.id == Currency.bitcoin.id
-        }
+        },
+        onSelect: { _ in }
     )
 }
