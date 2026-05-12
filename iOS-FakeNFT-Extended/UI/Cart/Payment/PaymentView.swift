@@ -12,13 +12,16 @@ struct PaymentView: View {
     @State private var isErrorAlertPresented = false
     
     private let shouldLoadOnAppear: Bool
+    private let onAgreementTap: () -> Void
     
     init(
         viewModel: PaymentViewModel,
-        shouldLoadOnAppear: Bool = true
+        shouldLoadOnAppear: Bool = true,
+        onAgreementTap: @escaping () -> Void = {}
     ) {
         _viewModel = State(initialValue: viewModel)
         self.shouldLoadOnAppear = shouldLoadOnAppear
+        self.onAgreementTap = onAgreementTap
     }
     
     // MARK: - Body
@@ -85,9 +88,7 @@ private extension PaymentView {
             
             PaymentSummaryView(
                 isPayButtonEnabled: viewModel.isPayButtonEnabled,
-                onAgreementTap: {
-                    // TODO: открыть пользовательское соглашение
-                },
+                onAgreementTap: onAgreementTap,
                 onPayTap: {
                     // TODO: реализовать оплату
                 }
