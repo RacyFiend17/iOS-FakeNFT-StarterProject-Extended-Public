@@ -4,24 +4,68 @@ struct UserCardView: View {
     let user: StatisticsUser
 
     var body: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "person.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(Color(.systemGray3))
-                .frame(width: 80, height: 80)
+        VStack(alignment: .leading, spacing: 0) {
+            userInfoView
+                .padding(.top, 22)
 
-            Text(user.name)
-                .font(.system(size: 22, weight: .bold))
+            Text(user.description)
+                .font(.system(size: 13, weight: .regular))
+                .foregroundStyle(Color.blackUniversalYP)
+                .lineSpacing(2)
+                .padding(.top, 20)
 
-            Text("Рейтинг: \(user.rating)")
-                .font(.system(size: 17))
+            Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.whiteUniversalYP)
+        .padding(.horizontal, 16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(Color.whiteUniversalYP)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
+
+// MARK: - Subviews
+
+private extension UserCardView {
+    var userInfoView: some View {
+        HStack(spacing: 16) {
+            avatarView
+
+            Text(user.name)
+                .font(.system(size: 22, weight: .bold))
+                .foregroundStyle(Color.blackUniversalYP)
+
+            Spacer()
+        }
+    }
+
+    @ViewBuilder
+    var avatarView: some View {
+        if let avatarURL = user.avatarURL {
+            AsyncImage(url: avatarURL) { image in
+                image
+                    .resizable()
+                    .scaledToFill()
+            } placeholder: {
+                placeholderAvatarImage
+            }
+            .frame(width: 70, height: 70)
+            .clipShape(Circle())
+        } else {
+            placeholderAvatarImage
+                .frame(width: 70, height: 70)
+                .clipShape(Circle())
+        }
+    }
+
+    var placeholderAvatarImage: some View {
+        Image(.userFotoStubYP)
+            .renderingMode(.original)
+            .resizable()
+            .scaledToFill()
+    }
+}
+
+// MARK: - Preview
 
 #Preview {
     NavigationStack {
