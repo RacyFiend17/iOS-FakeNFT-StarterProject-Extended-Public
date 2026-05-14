@@ -149,12 +149,10 @@ private struct ProfileWebsiteView: View {
     let website: String
 
     var body: some View {
-        if let url = URL(string: website), !website.isEmpty {
-            Link(website, destination: url)
+        if !website.isEmpty {
+            Text(website)
                 .font(.caption3)
                 .foregroundStyle(.blueUniversalYP)
-        } else {
-            EmptyView()
         }
     }
 }

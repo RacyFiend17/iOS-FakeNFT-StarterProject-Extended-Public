@@ -29,7 +29,7 @@ final class ProfileViewModel {
             state = .failed("Не удалось загрузить профиль")
         }
     }
-
+    
     func retry() async {
         await loadProfile()
     }
