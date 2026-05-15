@@ -157,6 +157,30 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что ошибка загрузки заказа переводит корзину в empty и задаёт errorMessage.
+    func testLoadCartWhenOrderServiceFailsSetsEmptyStateAndErrorMessage() async {
+        // Given
+        let orderService = OrderServiceStub(error: TestError.someError)
+        let nftService = NftServiceStub(nftsById: [:])
+        
+        let viewModel = makeViewModelWithServices(
+            orderService: orderService,
+            nftService: nftService,
+            state: .initial
+        )
+        
+        // When
+        await viewModel.loadCart()
+        
+        // Then
+        guard case .empty = viewModel.state else {
+            XCTFail("Expected empty state")
+            return
+        }
+        
+        XCTAssertNotNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
