@@ -48,6 +48,36 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что ViewModel переводит корзину в empty после успешной загрузки заказа без NFT.
+    func testLoadCartWhenOrderHasNoNftsSetsEmptyState() async {
+        // Given
+        
+        let order = Order(
+            id: "empty-order",
+            nfts: []
+        )
+        
+        let viewModel = makeViewModel(
+            order: order,
+            nftsById: [:]
+        )
+        
+        // When
+        
+        await viewModel.loadCart()
+        
+        // Then
+        
+        guard case .empty = viewModel.state else {
+            XCTFail("Expected empty state")
+            return
+        }
+        
+        XCTAssertEqual(viewModel.totalCount, 0)
+        XCTAssertEqual(viewModel.totalPrice, 0)
+        XCTAssertNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods
     
     private func makeViewModel(
