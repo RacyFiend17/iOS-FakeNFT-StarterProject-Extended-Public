@@ -78,7 +78,23 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
-    // MARK: - Private Methods
+    /// Проверяет, что totalCount возвращает количество NFT из состояния content.
+    func testTotalCountWhenStateIsContentReturnsNftsCount() {
+        // Given
+        
+        let nfts = [Nft.mock1, Nft.mock2, Nft.mock3]
+        let viewModel = makeViewModelWithState(.content(nfts))
+        
+        // When
+        
+        let totalCount = viewModel.totalCount
+        
+        // Then
+        
+        XCTAssertEqual(totalCount, 3)
+    }
+    
+    // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
         order: Order,
@@ -91,6 +107,14 @@ final class CartViewModelTests: XCTestCase {
         return CartViewModel(
             orderService: orderService,
             nftService: nftService,
+            state: state
+        )
+    }
+    
+    private func makeViewModelWithState(_ state: CartState) -> CartViewModel {
+        makeViewModel(
+            order: Order(id: "unused-order", nfts: []),
+            nftsById: [:],
             state: state
         )
     }
