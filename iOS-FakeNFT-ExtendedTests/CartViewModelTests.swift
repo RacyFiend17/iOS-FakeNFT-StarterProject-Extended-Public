@@ -181,6 +181,32 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что ошибка загрузки NFT по id переводит корзину в empty и задаёт errorMessage.
+    func testLoadCartWhenNftServiceFailsSetsEmptyStateAndErrorMessage() async {
+        // Given
+        let missingNftId = "missing-nft-id"
+        let order = Order(
+            id: "order-1",
+            nfts: [missingNftId]
+        )
+        
+        let viewModel = makeViewModel(
+            order: order,
+            nftsById: [:]
+        )
+        
+        // When
+        await viewModel.loadCart()
+        
+        // Then
+        guard case .empty = viewModel.state else {
+            XCTFail("Expected empty state")
+            return
+        }
+        
+        XCTAssertNotNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
