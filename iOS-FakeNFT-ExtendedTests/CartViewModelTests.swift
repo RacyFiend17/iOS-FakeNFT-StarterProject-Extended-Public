@@ -94,6 +94,22 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertEqual(totalCount, 3)
     }
     
+    /// Проверяет, что totalPrice возвращает сумму цен NFT из состояния content.
+    func testTotalPriceWhenStateIsContentReturnsNftsTotalPrice() {
+        // Given
+        
+        let nfts = [Nft.mock1, Nft.mock2, Nft.mock3]
+        let viewModel = makeViewModelWithState(.content(nfts))
+        
+        // When
+        
+        let totalPrice = viewModel.totalPrice
+        
+        // Then
+        
+        XCTAssertEqual(totalPrice, 4.5, accuracy: 0.001)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
