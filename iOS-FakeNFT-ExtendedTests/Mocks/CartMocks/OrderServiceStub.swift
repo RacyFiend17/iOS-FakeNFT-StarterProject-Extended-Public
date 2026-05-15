@@ -1,0 +1,24 @@
+//
+//  OrderServiceStub.swift
+//  iOS-FakeNFT-ExtendedTests
+//
+//  Created by Алла on 15.05.2026.
+//
+
+@testable import iOS_FakeNFT_Extended
+
+final class OrderServiceStub: OrderService {
+    private let result: Result<Order, Error>
+    
+    init(order: Order) {
+        self.result = .success(order)
+    }
+    
+    init(error: Error) {
+        self.result = .failure(error)
+    }
+    
+    func loadOrder() async throws -> Order {
+        try result.get()
+    }
+}
