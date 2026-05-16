@@ -277,6 +277,15 @@
 			path = PaymentMocks;
 			sourceTree = "<group>";
 		};
+		4DACD7552FB8DBF0002155B3 /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				4DACD6CE2FB74015002155B3 /* CartViewModelTests.swift */,
+				4DACD7502FB8B1DC002155B3 /* PaymentViewModelTests.swift */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
 		ABC5E15F2C31F5AF002B4068 = {
 			isa = PBXGroup;
 			children = (
@@ -325,9 +334,8 @@
 		ABC5E17B2C31F5B0002B4068 /* iOS-FakeNFT-ExtendedTests */ = {
 			isa = PBXGroup;
 			children = (
+				4DACD7552FB8DBF0002155B3 /* Cart */,
 				4DACD7412FB7475A002155B3 /* Mocks */,
-				4DACD6CE2FB74015002155B3 /* CartViewModelTests.swift */,
-				4DACD7502FB8B1DC002155B3 /* PaymentViewModelTests.swift */,
 			);
 			path = "iOS-FakeNFT-ExtendedTests";
 			sourceTree = "<group>";
