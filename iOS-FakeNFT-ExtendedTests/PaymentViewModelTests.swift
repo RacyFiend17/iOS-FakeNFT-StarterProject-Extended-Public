@@ -67,7 +67,7 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.isPayButtonEnabled)
     }
     
-    /// Проверяет, что isSelected отличает выбранную валюту от невыбранной.
+    /// Проверяет, что isSelected отличает выбранную валюту от не выбранной.
     func testIsSelectedWhenCurrencyWasSelectedReturnsCorrectSelectionState() {
         // Given
         let currency1 = Currency.shibaInu
@@ -98,8 +98,44 @@ final class PaymentViewModelTests: XCTestCase {
         // Then
         XCTAssertFalse(isPayButtonEnabled)
     }
-
-
+    
+    /// Проверяет, что повторная успешная загрузка валют очищает старое errorMessage.
+    func testLoadCurrenciesWhenRetrySucceedsClearsPreviousErrorMessage() async {
+        // Given
+        let currencies = [Currency.bitcoin]
+        let currencyService = SequentialCurrencyServiceStub(
+            results: [
+                .failure(TestError.someError),
+                .success(currencies)
+            ]
+        )
+        
+        let viewModel = PaymentViewModel(currencyService: currencyService)
+        
+        // When
+        await viewModel.loadCurrencies()
+        
+        // Then
+        guard case .failed = viewModel.state else {
+            XCTFail("Expected failed state")
+            return
+        }
+        
+        XCTAssertNotNil(viewModel.errorMessage)
+        
+        // When
+        await viewModel.loadCurrencies()
+        
+        // Then
+        guard case .content(let loadedCurrencies) = viewModel.state else {
+            XCTFail("Expected content state")
+            return
+        }
+        
+        XCTAssertEqual(loadedCurrencies.map(\.id), currencies.map(\.id))
+        XCTAssertNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
