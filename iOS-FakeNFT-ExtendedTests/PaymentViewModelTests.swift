@@ -53,6 +53,21 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что выбор валюты сохраняет её и включает кнопку оплаты.
+    func testSelectCurrencyStoresSelectedCurrencyAndEnablesPayButton() {
+        // Given
+        let currency = Currency.shibaInu
+        let viewModel = makeViewModel(currencies: [currency])
+        
+        // When
+        viewModel.selectCurrency(currency)
+        
+        // Then
+        XCTAssertEqual(viewModel.selectedCurrency?.id, currency.id)
+        XCTAssertTrue(viewModel.isPayButtonEnabled)
+    }
+
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
