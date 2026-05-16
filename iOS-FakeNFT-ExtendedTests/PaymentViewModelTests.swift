@@ -86,6 +86,19 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertTrue(isSelectedCurrency1)
         XCTAssertFalse(isSelectedCurrency2)
     }
+    
+    /// Проверяет, что кнопка оплаты выключена без выбранной валюты.
+    func testIsPayButtonEnabledWhenCurrencyIsNotSelectedReturnsFalse() {
+        // Given
+        let viewModel = makeViewModel(currencies: [])
+        
+        // When
+        let isPayButtonEnabled = viewModel.isPayButtonEnabled
+        
+        // Then
+        XCTAssertFalse(isPayButtonEnabled)
+    }
+
 
     // MARK: - Private Methods (Helpers)
     
