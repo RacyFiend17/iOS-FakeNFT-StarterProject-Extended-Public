@@ -66,8 +66,27 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedCurrency?.id, currency.id)
         XCTAssertTrue(viewModel.isPayButtonEnabled)
     }
-
     
+    /// Проверяет, что isSelected отличает выбранную валюту от невыбранной.
+    func testIsSelectedWhenCurrencyWasSelectedReturnsCorrectSelectionState() {
+        // Given
+        let currency1 = Currency.shibaInu
+        let currency2 = Currency.dogecoin
+        let viewModel = makeViewModel(
+            currencies: [currency1, currency2]
+        )
+        
+        viewModel.selectCurrency(currency1)
+        
+        // When
+        let isSelectedCurrency1 = viewModel.isSelected(currency1)
+        let isSelectedCurrency2 = viewModel.isSelected(currency2)
+        
+        // Then
+        XCTAssertTrue(isSelectedCurrency1)
+        XCTAssertFalse(isSelectedCurrency2)
+    }
+
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
