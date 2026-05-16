@@ -35,6 +35,24 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что ошибка загрузки валют переводит состояние в failed и задаёт errorMessage.
+    func testLoadCurrenciesWhenServiceFailsSetsFailedStateAndErrorMessage() async {
+        // Given
+        let error = TestError.someError
+        let viewModel = makeViewModelWithError(error)
+        
+        // When
+        await viewModel.loadCurrencies()
+        
+        // Then
+        guard case .failed = viewModel.state else {
+            XCTFail("Expected failed state")
+            return
+        }
+        
+        XCTAssertNotNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
@@ -42,6 +60,12 @@ final class PaymentViewModelTests: XCTestCase {
     ) -> PaymentViewModel {
         PaymentViewModel(
             currencyService: CurrencyServiceStub(currencies: currencies)
+        )
+    }
+    
+    private func makeViewModelWithError(_ error: Error) -> PaymentViewModel {
+        PaymentViewModel(
+            currencyService: CurrencyServiceStub(error: error)
         )
     }
 }
