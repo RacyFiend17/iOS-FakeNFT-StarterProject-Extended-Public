@@ -1,50 +1,97 @@
 import SwiftUI
 
 struct CatalogView: View {
-    @Environment(ServicesAssembly.self) var servicesAssembly
-    @State private var presentingNft = false
-
-//    var body: some View {
-//        Button {
-//            showNft()
-//        } label: {
-//            Text(Constants.openNftTitle)
-//                .tint(.blue)
-//        }
-//        .backgroundStyle(.background)
-//        .sheet(isPresented: $presentingNft) {
-//            NftDetailBridgeView()
-//        }
-//    }
-//
-//    func showNft() {
-//        presentingNft = true
-//    }
+    
+    @Environment(ServicesAssembly.self)
+    private var servicesAssembly
+    
+    @State
+    private var viewModel: CatalogViewModel?
+    
+    @State
+    private var showSortDialog = false
     
     var body: some View {
-        List {
-            Text("Hello, World!")
+        NavigationStack {
+            content
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showSortDialog = true
+                        } label: {
+                            AppIcon.sort.image
+                                .foregroundStyle(Color(.blackYP))
+                        }
+                    }
+                }
+                .confirmationDialog(
+                    "Сортировка",
+                    isPresented: $showSortDialog,
+                    titleVisibility: .visible
+                ) {
+                    
+                    ForEach(CatalogSortOption.allCases, id: \.self) { option in
+                        Button(option.title) {
+                            viewModel?.updateSort(option)
+                        }
+                    }
+                    
+                    Button("Закрыть", role: .cancel) {
+                        showSortDialog = false
+                    }
+                }
         }
         .task {
-            do {
-                let url = URL(string: "\(RequestConstants.baseURL)/api/v1/collections")!
-                
-                var request = URLRequest(url: url)
-                request.addValue(
-                    RequestConstants.token,
-                    forHTTPHeaderField: "X-Practicum-Mobile-Token"
+            if viewModel == nil {
+                let vm = CatalogViewModel(
+                    service: servicesAssembly.catalogService
                 )
-
-                let (data, _) = try await URLSession.shared.data(for: request)
-
-                print(String(decoding: data, as: UTF8.self))
-            } catch {
-                print(error)
+                
+                viewModel = vm
+                
+                await vm.load()
             }
         }
     }
-}
-
-private enum Constants {
-    static let openNftTitle = NSLocalizedString("Catalog.openNft", comment: "")
+    
+    @ViewBuilder
+    private var content: some View {
+        
+        if let viewModel {
+            
+            switch viewModel.state {
+                
+            case .loading:
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .blackYP))
+                
+            case .empty:
+                Text("Коллекции отсутствуют")
+                
+            case .error(let message):
+                VStack(spacing: 12) {
+                    Text("Ошибка")
+                    Text(message)
+                }
+                
+            case .loaded(let collections):
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        
+                        ForEach(collections) { collection in
+                            
+                            NavigationLink {
+                                CollectionDetailsView(collection: collection)
+                            } label: {
+                                CollectionCellView(collection: collection)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 20)
+                }
+            }
+        }
+    }
 }

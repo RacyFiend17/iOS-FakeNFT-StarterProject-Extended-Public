@@ -16,20 +16,20 @@ final class CatalogViewModel {
     
     var state: CatalogState = .loading
     
-    @AppStorage("catalog_sort")
-    private var sortOptionRawValue: String = CatalogSortOption.byNftCount.rawValue
+    private let sortKey = "catalog_sort"
+    
+    private var collections: [Collection] = []
     
     var sortOption: CatalogSortOption {
         get {
-            CatalogSortOption(rawValue: sortOptionRawValue) ?? .byNftCount
+            let rawValue = UserDefaults.standard.string(forKey: sortKey)
+            return CatalogSortOption(rawValue: rawValue ?? "") ?? .byNftCount
         }
         set {
-            sortOptionRawValue = newValue.rawValue
+            UserDefaults.standard.set(newValue.rawValue, forKey: sortKey)
             applySorting()
         }
     }
-    
-    private var collections: [Collection] = []
     
     init(service: CatalogService) {
         self.service = service
@@ -42,7 +42,6 @@ final class CatalogViewModel {
             let collections = try await service.loadCollections()
             
             self.collections = collections
-            
             applySorting()
             
         } catch {
@@ -55,24 +54,24 @@ final class CatalogViewModel {
     }
     
     private func applySorting() {
-        let sortedCollections: [Collection]
+        let sorted: [Collection]
         
         switch sortOption {
         case .byName:
-            sortedCollections = collections.sorted {
+            sorted = collections.sorted {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
             
         case .byNftCount:
-            sortedCollections = collections.sorted {
+            sorted = collections.sorted {
                 $0.nfts.count > $1.nfts.count
             }
         }
         
-        if sortedCollections.isEmpty {
+        if sorted.isEmpty {
             state = .empty
         } else {
-            state = .loaded(sortedCollections)
+            state = .loaded(sorted)
         }
     }
 }
