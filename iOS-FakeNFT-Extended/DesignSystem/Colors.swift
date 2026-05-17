@@ -1,4 +1,4 @@
-import UIKit
+import SwiftUI
 
 extension UIColor {
     // Creates color from a hex string
