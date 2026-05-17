@@ -5,7 +5,6 @@
 //  Created by Дмитрий Перчемиди on 15.05.2026.
 //
 
-import Foundation
 import SwiftUI
 
 @MainActor
@@ -68,10 +67,6 @@ final class CatalogViewModel {
             }
         }
         
-        if sorted.isEmpty {
-            state = .empty
-        } else {
-            state = .loaded(sorted)
-        }
+        state = sorted.isEmpty ? .empty : .loaded(sorted)  
     }
 }

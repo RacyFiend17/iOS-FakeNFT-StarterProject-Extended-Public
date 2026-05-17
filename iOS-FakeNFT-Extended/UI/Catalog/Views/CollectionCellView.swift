@@ -25,7 +25,7 @@ struct CollectionCellView: View {
             .frame(height: 140)
             .frame(maxWidth: .infinity)
             .clipped()
-            .cornerRadius(12)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             
             Text("\(collection.name) (\(collection.nfts.count))")
                 .font(.bodyBold)
