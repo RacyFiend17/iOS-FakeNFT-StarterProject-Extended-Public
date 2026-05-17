@@ -43,22 +43,32 @@ private extension UserCardView {
         }
     }
     
+    @ViewBuilder
     var websiteButton: some View {
-        Button {
-            
-        } label: {
-            Text("Перейти на сайт пользователя")
-                .font(.system(size: 13, weight: .regular))
-                .foregroundStyle(Color.blackUniversalYP)
-                .frame(maxWidth: .infinity)
-                .frame(height: 40)
-                .background(Color.whiteUniversalYP)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.blackUniversalYP, lineWidth: 1)
-                }
+        if let websiteURL = user.websiteURL {
+            NavigationLink {
+                UserWebsiteView(url: websiteURL)
+            } label: {
+                websiteButtonContent
+            }
+            .buttonStyle(.plain)
+        } else {
+            websiteButtonContent
+                .opacity(0.5)
         }
-        .disabled(user.websiteURL == nil)
+    }
+    
+    var websiteButtonContent: some View {
+        Text("Перейти на сайт пользователя")
+            .font(.system(size: 13, weight: .regular))
+            .foregroundStyle(Color.blackUniversalYP)
+            .frame(maxWidth: .infinity)
+            .frame(height: 40)
+            .background(Color.whiteUniversalYP)
+            .overlay {
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(Color.blackUniversalYP, lineWidth: 1)
+            }
     }
     
     @ViewBuilder
