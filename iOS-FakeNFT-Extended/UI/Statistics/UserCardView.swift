@@ -17,6 +17,9 @@ struct UserCardView: View {
             websiteButton
                 .padding(.top, 28)
             
+            collectionButton
+                .padding(.top, 41)
+            
             Spacer()
         }
         .padding(.horizontal, 16)
@@ -69,6 +72,26 @@ private extension UserCardView {
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.blackUniversalYP, lineWidth: 1)
             }
+    }
+    
+    var collectionButton: some View {
+        NavigationLink {
+            UsersCollectionView(user: user)
+        } label: {
+            HStack(spacing: 0) {
+                Text("Коллекция NFT  (\(user.nfts.count))")
+                    .font(.system(size: 17, weight: .bold))
+                    .foregroundStyle(Color.blackUniversalYP)
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 22, weight: .regular))
+                    .foregroundStyle(Color.blackUniversalYP)
+            }
+            .frame(height: 44)
+        }
+        .buttonStyle(.plain)
     }
     
     @ViewBuilder
