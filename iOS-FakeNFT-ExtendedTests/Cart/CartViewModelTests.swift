@@ -41,7 +41,7 @@ final class CartViewModelTests: XCTestCase {
         }
         
         XCTAssertEqual(nfts.count, 3)
-        XCTAssertEqual(nfts.map(\.id), [nft1.id, nft2.id, nft3.id])
+        XCTAssertEqual(nfts.map(\.id), [nft1.id, nft3.id, nft2.id])
         XCTAssertNil(viewModel.errorMessage)
     }
     
@@ -153,7 +153,7 @@ final class CartViewModelTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(refreshedNfts.map(\.id), [nft2.id, nft3.id])
+        XCTAssertEqual(refreshedNfts.map(\.id), [nft3.id, nft2.id])
         XCTAssertNil(viewModel.errorMessage)
     }
     
@@ -212,14 +212,17 @@ final class CartViewModelTests: XCTestCase {
     private func makeViewModel(
         order: Order,
         nftsById: [String: Nft],
-        state: CartState = .initial
+        state: CartState = .initial,
+        userDefaults: UserDefaults? = nil
     ) -> CartViewModel {
         let orderService = OrderServiceStub(order: order)
         let nftService = NftServiceStub(nftsById: nftsById)
+        let userDefaults = userDefaults ?? makeUserDefaults()
         
         return CartViewModel(
             orderService: orderService,
             nftService: nftService,
+            userDefaults: userDefaults,
             state: state
         )
     }
@@ -235,12 +238,28 @@ final class CartViewModelTests: XCTestCase {
     private func makeViewModelWithServices(
         orderService: OrderService,
         nftService: NftService,
-        state: CartState = .initial
+        state: CartState = .initial,
+        userDefaults: UserDefaults? = nil
     ) -> CartViewModel {
-        CartViewModel(
+        let userDefaults = userDefaults ?? makeUserDefaults()
+        
+        return CartViewModel(
             orderService: orderService,
             nftService: nftService,
+            userDefaults: userDefaults,
             state: state
         )
+    }
+    
+    private func makeUserDefaults() -> UserDefaults {
+        let suiteName = "CartViewModelTests-\(UUID().uuidString)"
+        
+        guard let userDefaults = UserDefaults(suiteName: suiteName) else {
+            XCTFail("Failed to create test UserDefaults")
+            return .standard
+        }
+        
+        userDefaults.removePersistentDomain(forName: suiteName)
+        return userDefaults
     }
 }

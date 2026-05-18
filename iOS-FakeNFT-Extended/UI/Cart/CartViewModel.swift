@@ -33,6 +33,7 @@ final class CartViewModel {
 
     private let orderService: OrderService
     private let nftService: NftService
+    private let userDefaults: UserDefaults
 
     private(set) var state: CartState = .initial
     private(set) var errorMessage: String?
@@ -60,10 +61,12 @@ final class CartViewModel {
     init(
         orderService: OrderService,
         nftService: NftService,
+        userDefaults: UserDefaults = .standard,
         state: CartState = .initial
     ) {
         self.orderService = orderService
         self.nftService = nftService
+        self.userDefaults = userDefaults
         self.state = state
         self.selectedSortOption = storedSortOption
     }
@@ -138,7 +141,7 @@ final class CartViewModel {
 
     private var storedSortOption: CartSortOption {
         get {
-            guard let rawValue = UserDefaults.standard.string(
+            guard let rawValue = userDefaults.string(
                 forKey: Constants.selectedSortOptionKey
             ) else {
                 return .name
@@ -148,7 +151,7 @@ final class CartViewModel {
         }
 
         set {
-            UserDefaults.standard.set(
+            userDefaults.set(
                 newValue.rawValue,
                 forKey: Constants.selectedSortOptionKey
             )
