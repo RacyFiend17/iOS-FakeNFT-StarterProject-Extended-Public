@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Kingfisher
 
 struct CartNftCell: View {
     let nft: Nft
@@ -35,17 +34,28 @@ struct CartNftCell: View {
 
 private extension CartNftCell {
     var nftImageView: some View {
-        KFImage(nft.imagesUrls.first)
-            .placeholder {
+        AsyncImage(url: nft.imagesUrls.first) { phase in
+            switch phase {
+            case .empty:
                 ProgressView()
                     .tint(.blackYP)
                     .frame(width: 108, height: 108)
                     .background(.grayLightYP)
+                
+            case .success(let image):
+                image
+                    .resizable()
+                    .scaledToFill()
+                
+            case .failure:
+                Color.grayLightYP
+                
+            @unknown default:
+                EmptyView()
             }
-            .resizable()
-            .scaledToFill()
-            .frame(width: 108, height: 108)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .frame(width: 108, height: 108)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
     
     var nftNameAndRating: some View {
