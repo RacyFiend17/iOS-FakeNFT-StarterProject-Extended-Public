@@ -14,9 +14,7 @@ struct Currency: Decodable, Sendable {
     let imageUrl: URL
     
     enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case name
+        case id, title, name
         case imageUrl = "image"
     }
 }

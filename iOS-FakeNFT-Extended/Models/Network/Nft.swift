@@ -8,11 +8,8 @@ struct Nft: Decodable, Sendable {
     let price: Double
 
     enum CodingKeys: String, CodingKey {
-        case id
-        case name
+        case id, name, rating, price
         case imagesUrls = "images"
-        case rating
-        case price
     }
 }
 
