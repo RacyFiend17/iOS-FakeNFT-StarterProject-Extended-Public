@@ -1,6 +1,6 @@
 import Foundation
 
-struct NFTRequest: NetworkRequest {
+struct NFTByIdRequest: NetworkRequest {
 
     let id: String
 

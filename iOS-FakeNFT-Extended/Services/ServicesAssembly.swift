@@ -27,4 +27,8 @@ final class ServicesAssembly {
             networkClient: networkClient
         )
     }
+    
+    var collectionService: CollectionService {
+        CollectionService(networkClient: networkClient)
+    }
 }
