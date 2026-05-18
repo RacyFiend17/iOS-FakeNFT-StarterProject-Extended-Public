@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Kingfisher
 
 struct PaymentCurrencyCell: View {
     let currency: Currency
@@ -42,16 +41,29 @@ private extension PaymentCurrencyCell {
                 .fill(.blackUniversalYP)
                 .frame(width: 36, height: 36)
             
-            KFImage(currency.imageUrl)
-                .placeholder {
+            AsyncImage(url: currency.imageUrl) { phase in
+                switch phase {
+                case .empty:
                     ProgressView()
                         .tint(.blackYP)
                         .frame(width: 36, height: 36)
                         .background(.grayLightYP)
+                    
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 36, height: 36)
+                    
+                case .failure:
+                    RoundedRectangle(cornerRadius: 6)
+                        .fill(.blackUniversalYP)
+                        .frame(width: 36, height: 36)
+                    
+                @unknown default:
+                    EmptyView()
                 }
-                .resizable()
-                .scaledToFit()
-                .frame(width: 36, height: 36)
+            }
         }
     }
     
