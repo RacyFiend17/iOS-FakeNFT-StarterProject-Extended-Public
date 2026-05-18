@@ -207,6 +207,25 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNotNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что выбор сортировки по цене пересортировывает уже загруженные NFT.
+    func testSelectSortOptionWhenPriceSelectedSortsContentByPrice() {
+        // Given
+        let nfts = [Nft.mock1, Nft.mock2, Nft.mock3]
+        let viewModel = makeViewModelWithState(.content(nfts))
+        
+        // When
+        viewModel.selectSortOption(.price)
+        
+        // Then
+        guard case .content(let sortedNfts) = viewModel.state else {
+            XCTFail("Expected content state")
+            return
+        }
+        
+        XCTAssertEqual(sortedNfts.map(\.id), [Nft.mock3.id, Nft.mock1.id, Nft.mock2.id])
+        XCTAssertEqual(viewModel.selectedSortOption, .price)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
