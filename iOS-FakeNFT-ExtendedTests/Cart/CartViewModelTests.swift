@@ -245,6 +245,27 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedSortOption, .rating)
     }
     
+    /// Проверяет, что выбранный способ сортировки сохраняется и восстанавливается.
+    func testInitWhenSortOptionWasSavedRestoresSelectedSortOption() {
+        // Given
+        let userDefaults = makeUserDefaults()
+        let firstViewModel = makeViewModelWithState(
+            .content([Nft.mock1]),
+            userDefaults: userDefaults
+        )
+        
+        // When
+        firstViewModel.selectSortOption(.price)
+        
+        let secondViewModel = makeViewModelWithState(
+            .content([Nft.mock1]),
+            userDefaults: userDefaults
+        )
+        
+        // Then
+        XCTAssertEqual(secondViewModel.selectedSortOption, .price)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
@@ -265,11 +286,15 @@ final class CartViewModelTests: XCTestCase {
         )
     }
     
-    private func makeViewModelWithState(_ state: CartState) -> CartViewModel {
+    private func makeViewModelWithState(
+        _ state: CartState,
+        userDefaults: UserDefaults? = nil
+    ) -> CartViewModel {
         makeViewModel(
             order: Order(id: "unused-order", nfts: []),
             nftsById: [:],
-            state: state
+            state: state,
+            userDefaults: userDefaults
         )
     }
     
