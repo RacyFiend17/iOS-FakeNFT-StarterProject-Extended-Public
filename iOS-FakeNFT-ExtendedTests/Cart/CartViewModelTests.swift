@@ -397,6 +397,42 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.totalPrice, nft1.price + nft3.price, accuracy: 0.001)
     }
     
+    /// Проверяет, что удаление последнего NFT переводит корзину в пустое состояние.
+    func testDeleteSelectedNftWhenLastNftDeletedSetsEmptyState() async {
+        // Given
+        let nft = Nft.mock1
+        
+        let orderService = SequentialOrderServiceStub(
+            orders: []
+        )
+        
+        let nftService = NftServiceStub(nftsById: [:])
+        
+        let viewModel = makeViewModelWithServices(
+            orderService: orderService,
+            nftService: nftService,
+            state: .content([nft])
+        )
+        
+        viewModel.selectNftToDelete(nft)
+        
+        // When
+        await viewModel.deleteSelectedNft()
+        
+        // Then
+        guard case .empty = viewModel.state else {
+            XCTFail("Expected empty state")
+            return
+        }
+        
+        XCTAssertEqual(orderService.updatedNftIds, [])
+        XCTAssertEqual(viewModel.totalCount, 0)
+        XCTAssertEqual(viewModel.totalPrice, 0)
+        XCTAssertNil(viewModel.selectedNftToDelete)
+    }
+    
+    
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
