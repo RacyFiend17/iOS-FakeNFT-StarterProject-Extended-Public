@@ -431,7 +431,34 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.selectedNftToDelete)
     }
     
-    
+    /// Проверяет, что ошибка удаления NFT задаёт errorMessage и не очищает выбранный NFT.
+    func testDeleteSelectedNftWhenUpdateOrderFailsSetsErrorMessage() async {
+        // Given
+        let orderService = OrderServiceStub(error: TestError.someError)
+        let nftService = NftServiceStub(nftsById: [:])
+        
+        let viewModel = makeViewModelWithServices(
+            orderService: orderService,
+            nftService: nftService,
+            state: .content([Nft.mock1])
+        )
+        
+        viewModel.selectNftToDelete(Nft.mock1)
+        
+        // When
+        await viewModel.deleteSelectedNft()
+        
+        // Then
+        XCTAssertNotNil(viewModel.errorMessage)
+        XCTAssertEqual(viewModel.selectedNftToDelete?.id, Nft.mock1.id)
+        
+        guard case .content(let nfts) = viewModel.state else {
+            XCTFail("Expected content state")
+            return
+        }
+        
+        XCTAssertEqual(nfts.map(\.id), [Nft.mock1.id])
+    }
     
     // MARK: - Private Methods (Helpers)
     
