@@ -21,4 +21,13 @@ final class OrderServiceStub: OrderService {
     func loadOrder() async throws -> Order {
         try result.get()
     }
+    
+    func updateOrder(nftIds: [String]) async throws -> Order {
+        let currentOrder = try result.get()
+        
+        return Order(
+            id: currentOrder.id,
+            nfts: nftIds
+        )
+    }
 }

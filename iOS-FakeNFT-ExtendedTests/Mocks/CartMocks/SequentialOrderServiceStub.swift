@@ -13,6 +13,7 @@ final class SequentialOrderServiceStub: OrderService {
     }
     
     private var orders: [Order]
+    private(set) var updatedNftIds: [String]?
     
     init(orders: [Order]) {
         self.orders = orders
@@ -24,5 +25,14 @@ final class SequentialOrderServiceStub: OrderService {
         }
         
         return orders.removeFirst()
+    }
+    
+    func updateOrder(nftIds: [String]) async throws -> Order {
+        updatedNftIds = nftIds
+        
+        return Order(
+            id: "updated-order",
+            nfts: nftIds
+        )
     }
 }

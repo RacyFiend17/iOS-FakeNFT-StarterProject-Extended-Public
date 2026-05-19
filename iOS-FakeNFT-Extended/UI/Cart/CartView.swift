@@ -205,6 +205,10 @@ private struct CartPreviewService: OrderService, NftService {
     func loadNft(id: String) async throws -> Nft {
         .mock1
     }
+    
+    func updateOrder(nftIds: [String]) async throws -> Order {
+        Order(id: "preview-order", nfts: nftIds)
+    }
 }
 
 extension CartViewModel {
