@@ -29,7 +29,6 @@ struct CatalogView: View {
                     isPresented: $showSortDialog,
                     titleVisibility: .visible
                 ) {
-                    
                     ForEach(CatalogSortOption.allCases, id: \.self) { option in
                         Button(option.title) {
                             viewModel?.updateSort(option)
@@ -54,6 +53,15 @@ struct CatalogView: View {
         }
     }
     
+    var customProgressView: some View {
+        ProgressView()
+            .progressViewStyle(
+                CircularProgressViewStyle(
+                    tint: .black
+                )
+            )
+    }
+    
     @ViewBuilder
     private var content: some View {
         
@@ -62,8 +70,7 @@ struct CatalogView: View {
             switch viewModel.state {
                 
             case .loading:
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .blackYP))
+                customProgressView
                 
             case .empty:
                 Text("Коллекции отсутствуют")
@@ -72,6 +79,12 @@ struct CatalogView: View {
                 VStack(spacing: 12) {
                     Text("Ошибка")
                     Text(message)
+                    
+                    Button("Повторить") {
+                        Task {
+                            await viewModel.load()
+                        }
+                    }
                 }
                 
             case .loaded(let collections):

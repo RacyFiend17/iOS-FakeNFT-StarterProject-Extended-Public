@@ -20,24 +20,31 @@ actor CollectionService: CollectionServiceProtocol {
     }
     
     func loadNfts(ids: [String]) async throws -> [Nft] {
-        
-        return try await withThrowingTaskGroup(of: Nft.self) { group in
-            
-            for id in ids {
+
+        let uniqueIds = Array(NSOrderedSet(array: ids)) as? [String] ?? []
+
+        return try await withThrowingTaskGroup(of: (Int, Nft).self) { group in
+
+            for (index, id) in uniqueIds.enumerated() {
+
                 group.addTask {
-                    try await self.networkClient.send(
+                    let nft: Nft = try await self.networkClient.send(
                         request: NFTByIdRequest(id: id)
                     )
+
+                    return (index, nft)
                 }
             }
-            
-            var nfts: [Nft] = []
-            
-            for try await nft in group {
-                nfts.append(nft)
+
+            var indexedNfts: [(Int, Nft)] = []
+
+            for try await result in group {
+                indexedNfts.append(result)
             }
-            
-            return nfts
+
+            return indexedNfts
+                .sorted { $0.0 < $1.0 }
+                .map(\.1)
         }
     }
 }

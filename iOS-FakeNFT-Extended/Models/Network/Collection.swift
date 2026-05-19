@@ -18,4 +18,8 @@ struct Collection: Identifiable, Decodable, Sendable {
     let id: String
 }
 
-
+extension Collection {
+    var numberOfUniqueNFTs: Int {
+        Array(NSOrderedSet(array: nfts)).count
+    }
+}

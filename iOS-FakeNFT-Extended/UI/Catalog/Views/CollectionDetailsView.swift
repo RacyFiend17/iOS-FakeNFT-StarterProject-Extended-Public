@@ -33,9 +33,9 @@ struct CollectionDetailsView: View {
     }
     
     private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
+        GridItem(.flexible(), spacing: 9),
+        GridItem(.flexible(), spacing: 9),
+        GridItem(.flexible(), spacing: 9)
     ]
     
     var body: some View {
@@ -89,6 +89,8 @@ private extension CollectionDetailsView {
                 grid
             }
         }
+        .ignoresSafeArea(edges: .top)
+        .toolbarBackground(.hidden, for: .navigationBar)
     }
     
     var cover: some View {
@@ -104,7 +106,6 @@ private extension CollectionDetailsView {
         .frame(maxWidth: .infinity)
         .clipped()
         .cornerRadius(16)
-        .ignoresSafeArea(edges: .top)
     }
     
     var info: some View {
@@ -120,7 +121,7 @@ private extension CollectionDetailsView {
                 Button {
                     UIApplication.shared.open(collection.website)
                 } label: {
-                    Text("Автор коллекции: \(collection.author)")
+                    Text("\(collection.author)")
                         .font(.caption3)
                         .foregroundStyle(.blue)
                 }
@@ -137,8 +138,11 @@ private extension CollectionDetailsView {
     
     var grid: some View {
         
-        LazyVGrid(columns: columns, spacing: 9) {
-            
+        LazyVGrid(
+            columns: columns,
+            alignment: .center,
+            spacing: 28,
+        ) {
             ForEach(viewModel.nfts) { nft in
                 
                 NftCellView(nft: nft)

@@ -63,7 +63,7 @@ final class CatalogViewModel {
             
         case .byNftCount:
             sorted = collections.sorted {
-                $0.nfts.count > $1.nfts.count
+                $0.numberOfUniqueNFTs > $1.numberOfUniqueNFTs
             }
         }
         

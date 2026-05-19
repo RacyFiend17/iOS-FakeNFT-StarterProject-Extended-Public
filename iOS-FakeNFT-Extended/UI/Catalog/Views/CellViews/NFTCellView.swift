@@ -22,9 +22,10 @@ struct NftCellView: View {
                         .resizable()
                         .scaledToFill()
                 } placeholder: {
-                    ProgressView()
+                    customProgressView
                 }
-                .frame(width: 108, height: 108)
+                .aspectRatio(1, contentMode: .fill)
+                .frame(maxWidth: .infinity)
                 .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 
@@ -72,6 +73,15 @@ struct NftCellView: View {
                 }
             }
         }
-        .frame(width: 108)
+//        .frame(width: 108)
+    }
+    
+    var customProgressView: some View {
+        ProgressView()
+            .progressViewStyle(
+                CircularProgressViewStyle(
+                    tint: .black
+                )
+            )
     }
 }
