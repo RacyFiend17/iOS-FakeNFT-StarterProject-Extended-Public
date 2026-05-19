@@ -9,7 +9,8 @@ struct ProfileView: View {
             if let viewModel {
                 ProfileContentView(
                     viewModel: viewModel,
-                    profileService: servicesAssembly.profileService
+                    profileService: servicesAssembly.profileService,
+                    nftService: servicesAssembly.nftService
                 )
             } else {
                 ProgressView()
@@ -29,8 +30,10 @@ private struct ProfileContentView: View {
     @Bindable var viewModel: ProfileViewModel
 
     let profileService: ProfileService
+    let nftService: NftService
 
     @State private var isEditingProfile = false
+    @State private var isMyNFTPresented = false
 
     var body: some View {
         NavigationStack {
@@ -47,6 +50,14 @@ private struct ProfileContentView: View {
                             }
                         )
                     }
+                }
+                .navigationDestination(isPresented: $isMyNFTPresented) {
+                    MyNFTView(
+                        viewModel: MyNFTViewModel(
+                            profileService: profileService,
+                            nftService: nftService
+                        )
+                    )
                 }
         }
         .task {
@@ -127,21 +138,48 @@ private struct ProfileContentView: View {
                 .padding(.top, 24)
 
                 VStack(spacing: 0) {
-                    ProfileMenuRowView(
+                    ProfileNavigationRowView(
                         title: "Мои NFT",
                         count: profile.nfts.count
-                    )
+                    ) {
+                        isMyNFTPresented = true
+                    }
 
-                    ProfileMenuRowView(
+                    ProfileNavigationRowView(
                         title: "Избранные NFT",
                         count: profile.likes.count
-                    )
+                    ) {}
                 }
                 .padding(.top, 40)
                 .padding(.horizontal, 16)
             }
         }
         .background(.whiteYP)
+    }
+}
+
+private struct ProfileNavigationRowView: View {
+    let title: String
+    let count: Int
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text("\(title) (\(count))")
+                    .font(.bodyBold)
+                    .foregroundStyle(.blackYP)
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.bodySemibold)
+                    .foregroundStyle(.blackYP)
+            }
+            .frame(height: 54)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -168,6 +206,12 @@ private final class MockProfileService: ProfileService {
     }
 }
 
+private final class MockNftService: NftService {
+    func loadNft(id: String) async throws -> Nft {
+        fatalError()
+    }
+}
+
 private extension Profile {
     static let preview = Profile(
         id: "1",
@@ -182,11 +226,13 @@ private extension Profile {
 
 #Preview("Profile") {
     let profileService = MockProfileService()
+    let nftService = MockNftService()
     let viewModel = ProfileViewModel(profileService: profileService)
 
     ProfileContentView(
         viewModel: viewModel,
-        profileService: profileService
+        profileService: profileService,
+        nftService: nftService
     )
     .task {
         await viewModel.loadProfile()

@@ -3,11 +3,10 @@ import SwiftUI
 struct ProfileMenuRowView: View {
     let title: String
     let count: Int
+    let action: () -> Void
 
     var body: some View {
-        Button {
-            // TODO: переход на экран списка NFT будет в следующих задачах эпика.
-        } label: {
+        Button(action: action) {
             HStack {
                 Text("\(title) (\(count))")
                     .font(.bodyBold)
