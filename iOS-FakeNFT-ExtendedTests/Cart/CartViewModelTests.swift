@@ -333,6 +333,35 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.selectedNftToDelete)
     }
     
+    /// Проверяет, что удаление NFT отправляет на сервер список без выбранного NFT.
+    func testDeleteSelectedNftWhenNftSelectedUpdatesOrderWithoutSelectedNft() async {
+        // Given
+        let nft1 = Nft.mock1
+        let nft2 = Nft.mock2
+        let nft3 = Nft.mock3
+        
+        let orderService = SequentialOrderServiceStub(
+            orders: []
+        )
+        
+        let nftService = NftServiceStub(nftsById: [:])
+        
+        let viewModel = makeViewModelWithServices(
+            orderService: orderService,
+            nftService: nftService,
+            state: .content([nft1, nft2, nft3])
+        )
+        
+        viewModel.selectNftToDelete(nft2)
+        
+        // When
+        await viewModel.deleteSelectedNft()
+        
+        // Then
+        XCTAssertEqual(orderService.updatedNftIds, [nft1.id, nft3.id])
+        XCTAssertNil(viewModel.selectedNftToDelete)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
