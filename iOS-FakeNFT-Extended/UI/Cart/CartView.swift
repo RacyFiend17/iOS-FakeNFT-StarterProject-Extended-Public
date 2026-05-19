@@ -10,19 +10,17 @@ import SwiftUI
 struct CartView: View {
     @State private var viewModel: CartViewModel
     @State private var isErrorAlertPresented = false
+    @State private var isSortDialogPresented = false
     
-    private let onSortButtonTap: () -> Void
     private let shouldLoadOnAppear: Bool
     private let onPaymentTap: () -> Void
     
     init(viewModel: CartViewModel,
          shouldLoadOnAppear: Bool = true,
-         onSortButtonTap: @escaping () -> Void = {},
          onPaymentTap: @escaping () -> Void = {}
     ) {
         _viewModel = State(initialValue: viewModel)
         self.shouldLoadOnAppear = shouldLoadOnAppear
-        self.onSortButtonTap = onSortButtonTap
         self.onPaymentTap = onPaymentTap
     }
     
@@ -54,6 +52,14 @@ struct CartView: View {
                 }
             }
         }
+        .confirmationDialog(
+            Constants.sortDialogTitle,
+            isPresented: $isSortDialogPresented,
+            titleVisibility: .visible,
+            actions: {
+                sortDialogActions
+            }
+        )
         .task {
             guard shouldLoadOnAppear else { return }
             
@@ -119,12 +125,31 @@ private extension CartView {
     }
     
     var sortButton: some View {
-        Button(action: onSortButtonTap) {
+        Button {
+            isSortDialogPresented = true
+        } label: {
             AppIcon.sort.image
                 .foregroundStyle(.blackYP)
                 .frame(width: 42, height: 42)
         }
         .buttonStyle(.plain)
+    }
+    
+    @ViewBuilder
+    var sortDialogActions: some View {
+        Button(Constants.sortByPriceTitle) {
+            viewModel.selectSortOption(.price)
+        }
+        
+        Button(Constants.sortByRatingTitle) {
+            viewModel.selectSortOption(.rating)
+        }
+        
+        Button(Constants.sortByNameTitle) {
+            viewModel.selectSortOption(.name)
+        }
+        
+        Button(Constants.closeButtonTitle, role: .cancel) { }
     }
     
     var loadingOverlay: some View {
@@ -143,6 +168,12 @@ private extension CartView {
         static let emptyCartTitle = "Корзина пуста"
         static let cancelButtonTitle = "Отмена"
         static let retryButtonTitle = "Повторить"
+        
+        static let sortDialogTitle = "Сортировка"
+        static let sortByPriceTitle = "По цене"
+        static let sortByRatingTitle = "По рейтингу"
+        static let sortByNameTitle = "По названию"
+        static let closeButtonTitle = "Закрыть"
     }
 }
 
