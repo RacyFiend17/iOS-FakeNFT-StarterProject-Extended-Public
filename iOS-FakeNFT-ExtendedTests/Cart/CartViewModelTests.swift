@@ -320,6 +320,19 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.selectedNftToDelete?.id, Nft.mock1.id)
     }
     
+    /// Проверяет, что отмена удаления очищает выбранный NFT.
+    func testCancelNftDeletionClearsSelectedNft() {
+        // Given
+        let viewModel = makeViewModelWithState(.content([Nft.mock1]))
+        viewModel.selectNftToDelete(Nft.mock1)
+        
+        // When
+        viewModel.cancelNftDeletion()
+        
+        // Then
+        XCTAssertNil(viewModel.selectedNftToDelete)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
