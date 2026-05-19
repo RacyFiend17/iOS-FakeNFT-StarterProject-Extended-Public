@@ -362,6 +362,41 @@ final class CartViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.selectedNftToDelete)
     }
     
+    /// Проверяет, что успешное удаление NFT обновляет состояние корзины.
+    func testDeleteSelectedNftWhenRequestSucceedsUpdatesContentState() async {
+        // Given
+        let nft1 = Nft.mock1
+        let nft2 = Nft.mock2
+        let nft3 = Nft.mock3
+        
+        let orderService = SequentialOrderServiceStub(
+            orders: []
+        )
+        
+        let nftService = NftServiceStub(nftsById: [:])
+        
+        let viewModel = makeViewModelWithServices(
+            orderService: orderService,
+            nftService: nftService,
+            state: .content([nft1, nft2, nft3])
+        )
+        
+        viewModel.selectNftToDelete(nft2)
+        
+        // When
+        await viewModel.deleteSelectedNft()
+        
+        // Then
+        guard case .content(let nfts) = viewModel.state else {
+            XCTFail("Expected content state")
+            return
+        }
+        
+        XCTAssertEqual(nfts.map(\.id), [nft1.id, nft3.id])
+        XCTAssertEqual(viewModel.totalCount, 2)
+        XCTAssertEqual(viewModel.totalPrice, nft1.price + nft3.price, accuracy: 0.001)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
