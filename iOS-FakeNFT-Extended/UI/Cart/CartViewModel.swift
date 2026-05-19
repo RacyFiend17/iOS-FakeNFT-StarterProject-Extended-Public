@@ -39,6 +39,7 @@ final class CartViewModel {
     private(set) var errorMessage: String?
     private(set) var isRefreshing = false
     private(set) var selectedSortOption: CartSortOption = .name
+    private(set) var selectedNftToDelete: Nft?
 
     // MARK: - Computed properties
 
@@ -72,40 +73,71 @@ final class CartViewModel {
     }
 
     // MARK: - Public Methods
-
+    
     func loadCart() async {
         await loadCart(shouldShowRefreshOverlay: true)
     }
-
+    
     func refreshCart() async {
         await loadCart(shouldShowRefreshOverlay: false)
     }
-
+    
     func selectSortOption(_ option: CartSortOption) {
         selectedSortOption = option
         storedSortOption = option
-
+        
         if case .content(let nfts) = state {
             state = .content(sortedNfts(nfts))
         }
     }
-
+    
+    func selectNftToDelete(_ nft: Nft) {
+        selectedNftToDelete = nft
+    }
+    
+    func cancelNftDeletion() {
+        selectedNftToDelete = nil
+    }
+    
+    func deleteSelectedNft() async {
+        errorMessage = nil
+        
+        guard let nftToDelete = selectedNftToDelete else {
+            return
+        }
+        
+        guard case .content(let nfts) = state else {
+            return
+        }
+        
+        let updatedNfts = nfts.filter { $0.id != nftToDelete.id }
+        let updatedNftIds = updatedNfts.map(\.id)
+        
+        do {
+            _ = try await orderService.updateOrder(nftIds: updatedNftIds)
+            selectedNftToDelete = nil
+            state = updatedNfts.isEmpty ? .empty : .content(sortedNfts(updatedNfts))
+        } catch {
+            errorMessage = ErrorMessageFactory.message(from: error)
+        }
+    }
+    
     // MARK: - Private Methods
-
+    
     private func loadCart(shouldShowRefreshOverlay: Bool) async {
         errorMessage = nil
-
+        
         switch state {
         case .content:
             isRefreshing = shouldShowRefreshOverlay
         case .initial, .loading, .empty:
             state = .loading
         }
-
+        
         defer {
             isRefreshing = false
         }
-
+        
         do {
             let nfts = try await loadCartNfts()
             let sortedCartNfts = sortedNfts(nfts)
@@ -114,31 +146,31 @@ final class CartViewModel {
             handleLoadingError(error)
         }
     }
-
+    
     private func loadCartNfts() async throws -> [Nft] {
         let order = try await orderService.loadOrder()
         var nfts: [Nft] = []
-
+        
         for id in order.nfts {
             let nft = try await nftService.loadNft(id: id)
             nfts.append(nft)
         }
-
+        
         return nfts
     }
-
+    
     // MARK: - Error handling
-
+    
     private func handleLoadingError(_ error: Error) {
         errorMessage = ErrorMessageFactory.message(from: error)
-
+        
         if case .loading = state {
             state = .empty
         }
     }
-
+    
     // MARK: - Sorting
-
+    
     private var storedSortOption: CartSortOption {
         get {
             guard let rawValue = userDefaults.string(
@@ -146,10 +178,10 @@ final class CartViewModel {
             ) else {
                 return .name
             }
-
+            
             return CartSortOption(rawValue: rawValue) ?? .name
         }
-
+        
         set {
             userDefaults.set(
                 newValue.rawValue,
@@ -157,24 +189,24 @@ final class CartViewModel {
             )
         }
     }
-
+    
     private func sortedNfts(_ nfts: [Nft]) -> [Nft] {
         switch selectedSortOption {
         case .price:
             nfts.sorted { $0.price < $1.price }
-
+            
         case .rating:
             nfts.sorted { $0.rating > $1.rating }
-
+            
         case .name:
             nfts.sorted {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
         }
     }
-
+    
     // MARK: - Constants
-
+    
     private enum Constants {
         static let selectedSortOptionKey = "cartSelectedSortOption"
     }
