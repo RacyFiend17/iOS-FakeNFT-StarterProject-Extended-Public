@@ -73,7 +73,6 @@ struct NftCellView: View {
                 }
             }
         }
-//        .frame(width: 108)
     }
     
     var customProgressView: some View {
