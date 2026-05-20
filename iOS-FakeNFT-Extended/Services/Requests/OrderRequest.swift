@@ -24,11 +24,14 @@ struct UpdateOrderRequest: NetworkRequest {
         .put
     }
     
-    var dto: Encodable? {
-        UpdateOrderDto(nfts: nftIds)
+    var httpBody: Data? {
+        nftIds
+            .map { "nfts=\($0)" }
+            .joined(separator: "&")
+            .data(using: .utf8)
     }
-}
-
-private struct UpdateOrderDto: Encodable {
-    let nfts: [String]
+    
+    var contentType: String? {
+        "application/x-www-form-urlencoded"
+    }
 }
