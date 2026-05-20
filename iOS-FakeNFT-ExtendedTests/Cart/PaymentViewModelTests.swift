@@ -144,6 +144,30 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что оплата без выбранной валюты не вызывает сервис оплаты.
+    func testPayOrderWhenCurrencyIsNotSelectedDoesNotCallOrderService() async {
+        // Given
+        let orderService = OrderServiceStub(
+            order: Order(
+                id: "test-order",
+                nfts: []
+            )
+        )
+        
+        let viewModel = PaymentViewModel(
+            currencyService: CurrencyServiceStub(currencies: []),
+            orderService: orderService
+        )
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertNil(orderService.paidCurrencyId)
+        XCTAssertNil(viewModel.paymentResult)
+        XCTAssertNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(

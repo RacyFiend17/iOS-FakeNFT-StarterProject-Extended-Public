@@ -9,13 +9,24 @@
 
 final class OrderServiceStub: OrderService {
     private let result: Result<Order, Error>
+    private let paymentResult: Result<PaymentResult, Error>
+    private(set) var paidCurrencyId: String?
     
-    init(order: Order) {
+    init(
+        order: Order,
+        paymentResult: PaymentResult = PaymentResult(
+            success: true,
+            orderId: "test-order",
+            id: "test-payment"
+        )
+    ) {
         self.result = .success(order)
+        self.paymentResult = .success(paymentResult)
     }
     
     init(error: Error) {
         self.result = .failure(error)
+        self.paymentResult = .failure(error)
     }
     
     func loadOrder() async throws -> Order {
@@ -32,10 +43,7 @@ final class OrderServiceStub: OrderService {
     }
     
     func payOrder(currencyId: String) async throws -> PaymentResult {
-        PaymentResult(
-            success: true,
-            orderId: "test-order",
-            id: currencyId
-        )
+        paidCurrencyId = currencyId
+        return try paymentResult.get()
     }
 }
