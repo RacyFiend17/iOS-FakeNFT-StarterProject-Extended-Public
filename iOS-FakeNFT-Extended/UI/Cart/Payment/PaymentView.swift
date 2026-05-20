@@ -111,9 +111,12 @@ private extension PaymentView {
 
 #Preview {
     NavigationStack {
+        let service = PaymentPreviewService()
+        
         PaymentView(
             viewModel: PaymentViewModel(
-                currencyService: PaymentPreviewService()
+                currencyService: service,
+                orderService: service
             )
         )
     }
@@ -121,8 +124,20 @@ private extension PaymentView {
 
 // MARK: - Preview Mocks
 
-private struct PaymentPreviewService: CurrencyService {
+private struct PaymentPreviewService: CurrencyService, OrderService {
     func loadCurrencies() async throws -> [Currency] {
         Currency.mocks
+    }
+    
+    func loadOrder() async throws -> Order {
+        Order(id: "preview-order", nfts: [])
+    }
+    
+    func updateOrder(nftIds: [String]) async throws -> Order {
+        Order(id: "preview-order", nfts: nftIds)
+    }
+    
+    func payOrder(currencyId: String) async throws -> PaymentResult {
+        PaymentResult(success: true, orderId: "preview-order", id: currencyId)
     }
 }

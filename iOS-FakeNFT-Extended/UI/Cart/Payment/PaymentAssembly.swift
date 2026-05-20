@@ -20,7 +20,8 @@ struct PaymentAssembly: View {
     var body: some View {
         PaymentView(
             viewModel: PaymentViewModel(
-                currencyService: servicesAssembly.currencyService
+                currencyService: servicesAssembly.currencyService,
+                orderService: servicesAssembly.orderService
             ),
             onAgreementTap: onAgreementTap
         )

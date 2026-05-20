@@ -24,6 +24,7 @@ final class PaymentViewModel {
     // MARK: - Private properties
     
     private let currencyService: CurrencyService
+    private let orderService: OrderService
     
     private(set) var state: PaymentState = .initial
     private(set) var selectedCurrency: Currency?
@@ -37,8 +38,12 @@ final class PaymentViewModel {
     
     // MARK: - Init
     
-    init(currencyService: CurrencyService) {
+    init(
+        currencyService: CurrencyService,
+        orderService: OrderService
+    ) {
         self.currencyService = currencyService
+        self.orderService = orderService
     }
     
     // MARK: - Public Methods

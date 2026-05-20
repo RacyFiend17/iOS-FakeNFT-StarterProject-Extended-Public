@@ -110,7 +110,15 @@ final class PaymentViewModelTests: XCTestCase {
             ]
         )
         
-        let viewModel = PaymentViewModel(currencyService: currencyService)
+        let viewModel = PaymentViewModel(
+            currencyService: currencyService,
+            orderService: OrderServiceStub(
+                order: Order(
+                    id: "test-order",
+                    nfts: []
+                )
+            )
+        )
         
         // When
         await viewModel.loadCurrencies()
@@ -142,13 +150,25 @@ final class PaymentViewModelTests: XCTestCase {
         currencies: [Currency]
     ) -> PaymentViewModel {
         PaymentViewModel(
-            currencyService: CurrencyServiceStub(currencies: currencies)
+            currencyService: CurrencyServiceStub(currencies: currencies),
+            orderService: OrderServiceStub(
+                order: Order(
+                    id: "test-order",
+                    nfts: []
+                )
+            )
         )
     }
     
     private func makeViewModelWithError(_ error: Error) -> PaymentViewModel {
         PaymentViewModel(
-            currencyService: CurrencyServiceStub(error: error)
+            currencyService: CurrencyServiceStub(error: error),
+            orderService: OrderServiceStub(
+                order: Order(
+                    id: "test-order",
+                    nfts: []
+                )
+            )
         )
     }
 }
