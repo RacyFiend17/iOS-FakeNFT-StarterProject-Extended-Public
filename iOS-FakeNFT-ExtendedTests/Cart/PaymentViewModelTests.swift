@@ -228,6 +228,29 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что ошибка оплаты задаёт errorMessage и не сохраняет результат оплаты.
+    func testPayOrderWhenRequestFailsSetsErrorMessage() async {
+        // Given
+        let currency = Currency.bitcoin
+        let orderService = OrderServiceStub(error: TestError.someError)
+        
+        let viewModel = PaymentViewModel(
+            currencyService: CurrencyServiceStub(currencies: [currency]),
+            orderService: orderService
+        )
+        
+        viewModel.selectCurrency(currency)
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertEqual(orderService.paidCurrencyId, currency.id)
+        XCTAssertNil(viewModel.paymentResult)
+        XCTAssertNotNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isPaying)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
