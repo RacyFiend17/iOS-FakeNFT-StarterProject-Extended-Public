@@ -29,6 +29,11 @@ struct PaymentView: View {
     var body: some View {
         ZStack {
             content
+            
+            LoadingOverlayView()
+                .opacity(viewModel.isPaying ? 1 : 0)
+                .accessibilityHidden(!viewModel.isPaying)
+                .allowsHitTesting(viewModel.isPaying)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.whiteYP)
@@ -90,7 +95,9 @@ private extension PaymentView {
                 isPayButtonEnabled: viewModel.isPayButtonEnabled,
                 onAgreementTap: onAgreementTap,
                 onPayTap: {
-                    // TODO: реализовать оплату
+                    Task {
+                        await viewModel.payOrder()
+                    }
                 }
             )
         }

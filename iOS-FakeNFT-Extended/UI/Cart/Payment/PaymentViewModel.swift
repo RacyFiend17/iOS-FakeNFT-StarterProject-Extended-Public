@@ -29,6 +29,8 @@ final class PaymentViewModel {
     private(set) var state: PaymentState = .initial
     private(set) var selectedCurrency: Currency?
     private(set) var errorMessage: String?
+    private(set) var paymentResult: PaymentResult?
+    private(set) var isPaying = false
     
     // MARK: - Computed properties
     
@@ -67,6 +69,28 @@ final class PaymentViewModel {
     
     func isSelected(_ currency: Currency) -> Bool {
         selectedCurrency?.id == currency.id
+    }
+    
+    func payOrder() async {
+        errorMessage = nil
+        
+        guard let selectedCurrency else {
+            return
+        }
+        
+        isPaying = true
+        
+        defer {
+            isPaying = false
+        }
+        
+        do {
+            paymentResult = try await orderService.payOrder(
+                currencyId: selectedCurrency.id
+            )
+        } catch {
+            handleLoadingError(error)
+        }
     }
     
     // MARK: - Error handling
