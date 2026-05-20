@@ -193,6 +193,41 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertEqual(orderService.paidCurrencyId, currency.id)
     }
     
+    /// Проверяет, что успешная оплата сохраняет результат оплаты.
+    func testPayOrderWhenRequestSucceedsStoresPaymentResult() async {
+        // Given
+        let currency = Currency.bitcoin
+        let expectedPaymentResult = PaymentResult(
+            success: true,
+            orderId: "test-order",
+            id: "test-payment"
+        )
+        
+        let orderService = OrderServiceStub(
+            order: Order(
+                id: "test-order",
+                nfts: []
+            ),
+            paymentResult: expectedPaymentResult
+        )
+        
+        let viewModel = PaymentViewModel(
+            currencyService: CurrencyServiceStub(currencies: [currency]),
+            orderService: orderService
+        )
+        
+        viewModel.selectCurrency(currency)
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertEqual(viewModel.paymentResult?.success, expectedPaymentResult.success)
+        XCTAssertEqual(viewModel.paymentResult?.orderId, expectedPaymentResult.orderId)
+        XCTAssertEqual(viewModel.paymentResult?.id, expectedPaymentResult.id)
+        XCTAssertNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
