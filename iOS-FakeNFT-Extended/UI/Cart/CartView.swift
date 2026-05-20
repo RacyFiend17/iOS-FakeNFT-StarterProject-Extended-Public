@@ -33,7 +33,7 @@ struct CartView: View {
                 .blur(radius: isDeleteConfirmationPresented ? 12 : 0)
                 .disabled(isDeleteConfirmationPresented)
             
-            loadingOverlay
+            LoadingOverlayView()
                 .opacity(viewModel.isRefreshing ? 1 : 0)
                 .accessibilityHidden(!viewModel.isRefreshing)
                 .allowsHitTesting(viewModel.isRefreshing)
@@ -157,14 +157,6 @@ private extension CartView {
         }
         
         Button(Constants.closeButtonTitle, role: .cancel) { }
-    }
-    
-    var loadingOverlay: some View {
-        ProgressView()
-            .tint(.blackYP)
-            .frame(width: 82, height: 82)
-            .background(.grayLightYP)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
     }
     
     @ViewBuilder
