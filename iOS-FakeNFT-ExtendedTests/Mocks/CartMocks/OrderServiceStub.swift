@@ -30,4 +30,12 @@ final class OrderServiceStub: OrderService {
             nfts: nftIds
         )
     }
+    
+    func payOrder(currencyId: String) async throws -> PaymentResult {
+        PaymentResult(
+            success: true,
+            orderId: "test-order",
+            id: currencyId
+        )
+    }
 }
