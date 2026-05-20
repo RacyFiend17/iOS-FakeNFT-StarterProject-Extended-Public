@@ -11,6 +11,7 @@ struct CartView: View {
     @State private var viewModel: CartViewModel
     @State private var isErrorAlertPresented = false
     @State private var isSortDialogPresented = false
+    @State private var isDeleteConfirmationPresented = false
     
     private let shouldLoadOnAppear: Bool
     private let onPaymentTap: () -> Void
@@ -29,14 +30,19 @@ struct CartView: View {
     var body: some View {
         ZStack {
             content
+                .blur(radius: isDeleteConfirmationPresented ? 12 : 0)
+                .disabled(isDeleteConfirmationPresented)
             
             loadingOverlay
                 .opacity(viewModel.isRefreshing ? 1 : 0)
                 .accessibilityHidden(!viewModel.isRefreshing)
                 .allowsHitTesting(viewModel.isRefreshing)
+            
+            deleteConfirmationOverlay
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.whiteYP)
+        .toolbar(isDeleteConfirmationPresented ? .hidden : .visible, for: .tabBar)
         .onChange(of: viewModel.errorMessage) { _, newValue in
             isErrorAlertPresented = newValue != nil
         }
@@ -107,8 +113,9 @@ private extension CartView {
             
             CartNftList(
                 nfts: nfts,
-                onDeleteTap: { _ in
-                    // TODO: реализовать логику удаления в 3 части эпика
+                onDeleteTap: { nft in
+                    viewModel.selectNftToDelete(nft)
+                    isDeleteConfirmationPresented = true
                 },
                 onRefresh: {
                     await viewModel.refreshCart()
@@ -158,6 +165,29 @@ private extension CartView {
             .frame(width: 82, height: 82)
             .background(.grayLightYP)
             .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+    
+    @ViewBuilder
+    var deleteConfirmationOverlay: some View {
+        if isDeleteConfirmationPresented,
+           let nft = viewModel.selectedNftToDelete {
+            DeleteNftConfirmationView(
+                nft: nft,
+                onDeleteTap: {
+                    Task {
+                        await viewModel.deleteSelectedNft()
+                        
+                        if viewModel.selectedNftToDelete == nil {
+                            isDeleteConfirmationPresented = false
+                        }
+                    }
+                },
+                onCancelTap: {
+                    viewModel.cancelNftDeletion()
+                    isDeleteConfirmationPresented = false
+                }
+            )
+        }
     }
 }
 
