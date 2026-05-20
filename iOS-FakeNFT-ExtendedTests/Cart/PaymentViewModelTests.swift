@@ -226,6 +226,7 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.paymentResult?.orderId, expectedPaymentResult.orderId)
         XCTAssertEqual(viewModel.paymentResult?.id, expectedPaymentResult.id)
         XCTAssertNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isPaying)
     }
     
     /// Проверяет, что ошибка оплаты задаёт errorMessage и не сохраняет результат оплаты.
