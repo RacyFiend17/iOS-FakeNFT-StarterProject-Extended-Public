@@ -168,6 +168,31 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что оплата выбранной валютой передаёт id валюты в сервис.
+    func testPayOrderWhenCurrencyIsSelectedCallsOrderServiceWithCurrencyId() async {
+        // Given
+        let currency = Currency.bitcoin
+        let orderService = OrderServiceStub(
+            order: Order(
+                id: "test-order",
+                nfts: []
+            )
+        )
+        
+        let viewModel = PaymentViewModel(
+            currencyService: CurrencyServiceStub(currencies: [currency]),
+            orderService: orderService
+        )
+        
+        viewModel.selectCurrency(currency)
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertEqual(orderService.paidCurrencyId, currency.id)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
