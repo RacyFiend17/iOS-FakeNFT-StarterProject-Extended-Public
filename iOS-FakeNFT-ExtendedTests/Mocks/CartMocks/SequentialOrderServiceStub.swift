@@ -13,10 +13,24 @@ final class SequentialOrderServiceStub: OrderService {
     }
     
     private var orders: [Order]
+    private var paymentResults: [Result<PaymentResult, Error>]
+    
     private(set) var updatedNftIds: [String]?
     
-    init(orders: [Order]) {
+    init(
+        orders: [Order],
+        paymentResults: [Result<PaymentResult, Error>] = [
+            .success(
+                PaymentResult(
+                    success: true,
+                    orderId: "test-order",
+                    id: "test-payment"
+                )
+            )
+        ]
+    ) {
         self.orders = orders
+        self.paymentResults = paymentResults
     }
     
     func loadOrder() async throws -> Order {
@@ -37,11 +51,11 @@ final class SequentialOrderServiceStub: OrderService {
     }
     
     func payOrder(currencyId: String) async throws -> PaymentResult {
-        PaymentResult(
-            success: true,
-            orderId: "test-order",
-            id: currencyId
-        )
+        guard !paymentResults.isEmpty else {
+            throw StubError.noMoreOrders
+        }
+        
+        return try paymentResults.removeFirst().get()
     }
     
     func completeOrder(nftIds: [String]) async throws -> Order {

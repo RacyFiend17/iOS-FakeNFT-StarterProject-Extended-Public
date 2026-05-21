@@ -283,6 +283,53 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertEqual(orderService.completedNftIds, order.nfts)
     }
     
+    /// Проверяет, что повторная оплата после ошибки может завершиться успешно.
+    func testPayOrderWhenRetryAfterFailureSucceedsStoresPaymentResult() async {
+        // Given
+        let currency = Currency.bitcoin
+        let order = Order(
+            id: "test-order",
+            nfts: [Nft.mock1.id]
+        )
+        
+        let expectedPaymentResult = PaymentResult(
+            success: true,
+            orderId: "test-order",
+            id: "test-payment"
+        )
+        
+        let orderService = SequentialOrderServiceStub(
+            orders: [order, order],
+            paymentResults: [
+                .failure(TestError.someError),
+                .success(expectedPaymentResult)
+            ]
+        )
+        
+        let viewModel = PaymentViewModel(
+            currencyService: CurrencyServiceStub(currencies: [currency]),
+            orderService: orderService
+        )
+        
+        viewModel.selectCurrency(currency)
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertNil(viewModel.paymentResult)
+        XCTAssertNotNil(viewModel.errorMessage)
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertEqual(viewModel.paymentResult?.success, expectedPaymentResult.success)
+        XCTAssertEqual(viewModel.paymentResult?.orderId, expectedPaymentResult.orderId)
+        XCTAssertEqual(viewModel.paymentResult?.id, expectedPaymentResult.id)
+        XCTAssertNil(viewModel.errorMessage)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
