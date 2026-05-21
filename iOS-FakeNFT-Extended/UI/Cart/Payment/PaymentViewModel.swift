@@ -85,9 +85,14 @@ final class PaymentViewModel {
         }
         
         do {
-            paymentResult = try await orderService.payOrder(
+            let order = try await orderService.loadOrder()
+            let result = try await orderService.payOrder(
                 currencyId: selectedCurrency.id
             )
+            
+            _ = try await orderService.completeOrder(nftIds: order.nfts)
+            
+            paymentResult = result
         } catch {
             handleLoadingError(error)
         }

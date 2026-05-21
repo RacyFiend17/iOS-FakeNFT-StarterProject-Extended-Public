@@ -147,4 +147,8 @@ private struct PaymentPreviewService: CurrencyService, OrderService {
     func payOrder(currencyId: String) async throws -> PaymentResult {
         PaymentResult(success: true, orderId: "preview-order", id: currencyId)
     }
+    
+    func completeOrder(nftIds: [String]) async throws -> Order {
+        Order(id: "preview-order", nfts: nftIds)
+    }
 }

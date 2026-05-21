@@ -11,6 +11,7 @@ final class OrderServiceStub: OrderService {
     private let result: Result<Order, Error>
     private let paymentResult: Result<PaymentResult, Error>
     private(set) var paidCurrencyId: String?
+    private(set) var completedNftIds: [String]?
     
     init(
         order: Order,
@@ -22,6 +23,14 @@ final class OrderServiceStub: OrderService {
     ) {
         self.result = .success(order)
         self.paymentResult = .success(paymentResult)
+    }
+    
+    init(
+        order: Order,
+        paymentError: Error
+    ) {
+        self.result = .success(order)
+        self.paymentResult = .failure(paymentError)
     }
     
     init(error: Error) {
@@ -45,5 +54,14 @@ final class OrderServiceStub: OrderService {
     func payOrder(currencyId: String) async throws -> PaymentResult {
         paidCurrencyId = currencyId
         return try paymentResult.get()
+    }
+    
+    func completeOrder(nftIds: [String]) async throws -> Order {
+        completedNftIds = nftIds
+        
+        return Order(
+            id: "completed-order",
+            nfts: nftIds
+        )
     }
 }

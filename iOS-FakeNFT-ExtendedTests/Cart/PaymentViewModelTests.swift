@@ -233,7 +233,13 @@ final class PaymentViewModelTests: XCTestCase {
     func testPayOrderWhenRequestFailsSetsErrorMessage() async {
         // Given
         let currency = Currency.bitcoin
-        let orderService = OrderServiceStub(error: TestError.someError)
+        let orderService = OrderServiceStub(
+            order: Order(
+                id: "test-order",
+                nfts: [Nft.mock1.id]
+            ),
+            paymentError: TestError.someError
+        )
         
         let viewModel = PaymentViewModel(
             currencyService: CurrencyServiceStub(currencies: [currency]),

@@ -43,4 +43,8 @@ final class SequentialOrderServiceStub: OrderService {
             id: currencyId
         )
     }
+    
+    func completeOrder(nftIds: [String]) async throws -> Order {
+        Order(id: "completed-order", nfts: nftIds)
+    }
 }
