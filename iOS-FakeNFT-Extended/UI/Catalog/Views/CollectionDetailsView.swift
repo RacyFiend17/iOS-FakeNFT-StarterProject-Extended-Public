@@ -61,6 +61,7 @@ struct CollectionDetailsView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .bottomBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
@@ -131,8 +132,7 @@ private extension CollectionDetailsView {
                 .font(.caption2)
                 .foregroundStyle(Color(.blackYP))
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 16)
+        .padding([.horizontal, .top], 16)
         .padding(.bottom, 24)
     }
     
@@ -140,7 +140,6 @@ private extension CollectionDetailsView {
         
         LazyVGrid(
             columns: columns,
-            alignment: .center,
             spacing: 28,
         ) {
             ForEach(viewModel.nfts) { nft in
