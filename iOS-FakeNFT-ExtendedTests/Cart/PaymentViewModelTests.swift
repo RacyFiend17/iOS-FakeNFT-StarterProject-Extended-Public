@@ -258,6 +258,31 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isPaying)
     }
     
+    /// Проверяет, что успешная оплата завершает заказ с NFT из загруженного заказа.
+    func testPayOrderWhenRequestSucceedsCompletesOrderWithLoadedNftIds() async {
+        // Given
+        let currency = Currency.bitcoin
+        let order = Order(
+            id: "test-order",
+            nfts: [Nft.mock1.id, Nft.mock2.id]
+        )
+        
+        let orderService = OrderServiceStub(order: order)
+        
+        let viewModel = PaymentViewModel(
+            currencyService: CurrencyServiceStub(currencies: [currency]),
+            orderService: orderService
+        )
+        
+        viewModel.selectCurrency(currency)
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertEqual(orderService.completedNftIds, order.nfts)
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
