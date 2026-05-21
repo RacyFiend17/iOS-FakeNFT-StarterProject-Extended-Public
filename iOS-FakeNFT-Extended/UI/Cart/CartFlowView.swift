@@ -36,7 +36,10 @@ struct CartFlowView: View {
                 }
                 .navigationDestination(isPresented: $isPaymentSuccessPresented) {
                     PaymentSuccessView(
-                        onBackToCartTap: {}
+                        onBackToCartTap: {
+                            isPaymentSuccessPresented = false
+                            isPaymentPresented = false
+                        }
                     )
                 }
             }
