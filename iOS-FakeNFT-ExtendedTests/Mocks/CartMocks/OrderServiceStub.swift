@@ -12,6 +12,7 @@ final class OrderServiceStub: OrderService {
     private let paymentResult: Result<PaymentResult, Error>
     private(set) var paidCurrencyId: String?
     private(set) var completedNftIds: [String]?
+    private(set) var updatedNftIds: [String]?
     
     init(
         order: Order,
@@ -43,6 +44,8 @@ final class OrderServiceStub: OrderService {
     }
     
     func updateOrder(nftIds: [String]) async throws -> Order {
+        updatedNftIds = nftIds
+        
         let currentOrder = try result.get()
         
         return Order(

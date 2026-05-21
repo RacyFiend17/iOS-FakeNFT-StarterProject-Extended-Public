@@ -330,6 +330,31 @@ final class PaymentViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
     }
     
+    /// Проверяет, что успешная оплата очищает заказ после завершения.
+    func testPayOrderWhenRequestSucceedsClearsOrderAfterCompletion() async {
+        // Given
+        let currency = Currency.bitcoin
+        let order = Order(
+            id: "test-order",
+            nfts: [Nft.mock1.id, Nft.mock2.id]
+        )
+        
+        let orderService = OrderServiceStub(order: order)
+        
+        let viewModel = PaymentViewModel(
+            currencyService: CurrencyServiceStub(currencies: [currency]),
+            orderService: orderService
+        )
+        
+        viewModel.selectCurrency(currency)
+        
+        // When
+        await viewModel.payOrder()
+        
+        // Then
+        XCTAssertEqual(orderService.updatedNftIds, [])
+    }
+    
     // MARK: - Private Methods (Helpers)
     
     private func makeViewModel(
