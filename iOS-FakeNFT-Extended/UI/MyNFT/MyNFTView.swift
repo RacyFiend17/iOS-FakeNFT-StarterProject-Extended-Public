@@ -69,7 +69,9 @@ struct MyNFTView: View {
                 Button("Закрыть", role: .cancel) {}
             }
             .task {
-                await viewModel.loadNFTs()
+                if viewModel.state == .idle {
+                    await viewModel.loadNFTs()
+                }
             }
     }
 
@@ -92,15 +94,25 @@ struct MyNFTView: View {
     }
 
     private var nftList: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(viewModel.nfts) { nft in
-                    MyNFTRowView(nft: nft)
-                }
+        List {
+            ForEach(viewModel.nfts) { nft in
+                MyNFTRowView(nft: nft)
+                    .padding(.top, nft.id == viewModel.nfts.first?.id ? 20 : 0)
+                    .listRowInsets(
+                        EdgeInsets(
+                            top: 0,
+                            leading: 16,
+                            bottom: 0,
+                            trailing: 16
+                        )
+                    )
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.whiteYP)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 20)
         }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .background(.whiteYP)
     }
 
     private var emptyView: some View {

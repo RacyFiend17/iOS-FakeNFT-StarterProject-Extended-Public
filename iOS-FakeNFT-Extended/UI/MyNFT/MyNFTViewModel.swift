@@ -34,6 +34,8 @@ final class MyNFTViewModel {
 
     private let profileService: ProfileService
     private let nftService: NftService
+    private let userDefaults: UserDefaults
+    private let sortOptionKey = "myNFTSortOption"
 
     var state: State = .idle
     var nfts: [Nft] = []
@@ -41,10 +43,17 @@ final class MyNFTViewModel {
 
     init(
         profileService: ProfileService,
-        nftService: NftService
+        nftService: NftService,
+        userDefaults: UserDefaults = .standard
     ) {
         self.profileService = profileService
         self.nftService = nftService
+        self.userDefaults = userDefaults
+
+        if let rawValue = userDefaults.string(forKey: sortOptionKey),
+           let sortOption = SortOption(rawValue: rawValue) {
+            selectedSortOption = sortOption
+        }
     }
 
     func loadNFTs() async {
@@ -83,6 +92,8 @@ final class MyNFTViewModel {
         }
 
         selectedSortOption = option
+        userDefaults.set(option.rawValue, forKey: sortOptionKey)
+
         nfts = sort(nfts)
         state = .loaded
     }
@@ -95,8 +106,10 @@ final class MyNFTViewModel {
         switch selectedSortOption {
         case .price:
             return nfts.sorted { $0.price < $1.price }
+
         case .rating:
             return nfts.sorted { $0.rating > $1.rating }
+
         case .name:
             return nfts.sorted {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending

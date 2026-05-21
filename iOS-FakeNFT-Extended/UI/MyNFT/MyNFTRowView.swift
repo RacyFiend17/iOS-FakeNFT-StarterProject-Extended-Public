@@ -14,14 +14,14 @@ struct MyNFTRowView: View {
                 Spacer(minLength: 0)
 
                 Text(nft.name)
-                    .font(.headline3)
+                    .font(.titleBold)
                     .foregroundStyle(.blackYP)
                     .lineLimit(1)
 
                 ratingView
 
                 Text(authorText)
-                    .font(.bodyRegular)
+                    .font(.caption3)
                     .foregroundStyle(.blackYP)
                     .lineLimit(1)
 
@@ -32,11 +32,11 @@ struct MyNFTRowView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Цена")
-                    .font(.bodyRegular)
+                    .font(.caption3)
                     .foregroundStyle(.blackYP)
 
                 Text(priceText)
-                    .font(.headline3)
+                    .font(.titleBold)
                     .foregroundStyle(.blackYP)
                     .lineLimit(1)
             }

@@ -14,13 +14,15 @@ struct ProfileView: View {
                 )
             } else {
                 ProgressView()
-                    .task {
-                        let viewModel = ProfileViewModel(
-                            profileService: servicesAssembly.profileService
-                        )
-                        self.viewModel = viewModel
-                        await viewModel.loadProfile()
-                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(.whiteYP)
+            }
+        }
+        .task {
+            if viewModel == nil {
+                viewModel = ProfileViewModel(
+                    profileService: servicesAssembly.profileService
+                )
             }
         }
     }
