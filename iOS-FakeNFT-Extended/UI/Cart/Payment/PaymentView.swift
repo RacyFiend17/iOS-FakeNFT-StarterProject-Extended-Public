@@ -51,13 +51,17 @@ struct PaymentView: View {
             }
         }
         .alert(
-            viewModel.errorMessage ?? "",
+            alertTitle,
             isPresented: $isErrorAlertPresented
         ) {
             Button(Constants.cancelButtonTitle, role: .cancel) { }
             Button(Constants.retryButtonTitle) {
                 Task {
-                    await viewModel.loadCurrencies()
+                    if viewModel.didStartPayment {
+                        await viewModel.payOrder()
+                    } else {
+                        await viewModel.loadCurrencies()
+                    }
                 }
             }
         }
@@ -110,6 +114,14 @@ private extension PaymentView {
             )
         }
     }
+    
+    var alertTitle: String {
+        if viewModel.didStartPayment {
+            return Constants.paymentErrorTitle
+        }
+        
+        return viewModel.errorMessage ?? ""
+    }
 }
 
 // MARK: - Constants
@@ -119,6 +131,7 @@ private extension PaymentView {
         static let cancelButtonTitle = "Отмена"
         static let retryButtonTitle = "Повторить"
         static let navigationTitle = "Выберите способ оплаты"
+        static let paymentErrorTitle = "Не удалось произвести\nоплату"
     }
 }
 

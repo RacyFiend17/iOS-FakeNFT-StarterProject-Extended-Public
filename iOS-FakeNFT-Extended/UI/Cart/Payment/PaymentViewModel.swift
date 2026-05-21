@@ -31,6 +31,7 @@ final class PaymentViewModel {
     private(set) var errorMessage: String?
     private(set) var paymentResult: PaymentResult?
     private(set) var isPaying = false
+    private(set) var didStartPayment = false
     
     // MARK: - Computed properties
     
@@ -82,6 +83,7 @@ final class PaymentViewModel {
             return
         }
         
+        didStartPayment = true
         isPaying = true
         
         defer {
