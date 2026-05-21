@@ -13,15 +13,18 @@ struct PaymentView: View {
     
     private let shouldLoadOnAppear: Bool
     private let onAgreementTap: () -> Void
+    private let onPaymentSuccess: () -> Void
     
     init(
         viewModel: PaymentViewModel,
         shouldLoadOnAppear: Bool = true,
-        onAgreementTap: @escaping () -> Void = {}
+        onAgreementTap: @escaping () -> Void = {},
+        onPaymentSuccess: @escaping () -> Void = {}
     ) {
         _viewModel = State(initialValue: viewModel)
         self.shouldLoadOnAppear = shouldLoadOnAppear
         self.onAgreementTap = onAgreementTap
+        self.onPaymentSuccess = onPaymentSuccess
     }
     
     // MARK: - Body
@@ -41,6 +44,11 @@ struct PaymentView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: viewModel.errorMessage) { _, newValue in
             isErrorAlertPresented = newValue != nil
+        }
+        .onChange(of: viewModel.isPaymentSuccessful) { _, isSuccessful in
+            if isSuccessful {
+                onPaymentSuccess()
+            }
         }
         .alert(
             viewModel.errorMessage ?? "",

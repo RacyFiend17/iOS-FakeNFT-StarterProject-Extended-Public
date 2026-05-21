@@ -11,6 +11,7 @@ import SwiftUI
 struct CartFlowView: View {
     @State private var isPaymentPresented = false
     @State private var isAgreementPresented = false
+    @State private var isPaymentSuccessPresented = false
     
     var body: some View {
         NavigationStack {
@@ -23,17 +24,24 @@ struct CartFlowView: View {
                 PaymentAssembly(
                     onAgreementTap: {
                         isAgreementPresented = true
+                    },
+                    onPaymentSuccess: {
+                        isPaymentSuccessPresented = true
                     }
                 )
-                .toolbar(.hidden, for: .tabBar)
                 .navigationDestination(isPresented: $isAgreementPresented) {
                     if let agreementURL = URL(string: Constants.agreementURLString) {
                         WebView(url: agreementURL)
-                            .toolbar(.hidden, for: .tabBar)
                     }
+                }
+                .navigationDestination(isPresented: $isPaymentSuccessPresented) {
+                    PaymentSuccessView(
+                        onBackToCartTap: {}
+                    )
                 }
             }
         }
+        .toolbar(isPaymentPresented ? .hidden : .visible, for: .tabBar)
     }
 }
 

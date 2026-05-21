@@ -38,6 +38,10 @@ final class PaymentViewModel {
         selectedCurrency != nil
     }
     
+    var isPaymentSuccessful: Bool {
+        paymentResult != nil
+    }
+    
     // MARK: - Init
     
     init(
