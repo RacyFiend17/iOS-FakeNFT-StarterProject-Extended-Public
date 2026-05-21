@@ -14,14 +14,18 @@ struct CartView: View {
     @State private var isDeleteConfirmationPresented = false
     
     private let shouldLoadOnAppear: Bool
+    private let refreshTrigger: Bool
     private let onPaymentTap: () -> Void
     
-    init(viewModel: CartViewModel,
-         shouldLoadOnAppear: Bool = true,
-         onPaymentTap: @escaping () -> Void = {}
+    init(
+        viewModel: CartViewModel,
+        shouldLoadOnAppear: Bool = true,
+        refreshTrigger: Bool = false,
+        onPaymentTap: @escaping () -> Void = {}
     ) {
         _viewModel = State(initialValue: viewModel)
         self.shouldLoadOnAppear = shouldLoadOnAppear
+        self.refreshTrigger = refreshTrigger
         self.onPaymentTap = onPaymentTap
     }
     
@@ -45,6 +49,11 @@ struct CartView: View {
         .toolbar(isDeleteConfirmationPresented ? .hidden : .visible, for: .tabBar)
         .onChange(of: viewModel.errorMessage) { _, newValue in
             isErrorAlertPresented = newValue != nil
+        }
+        .onChange(of: refreshTrigger) { _, _ in
+            Task {
+                await viewModel.refreshCart()
+            }
         }
         .alert(
             viewModel.errorMessage ?? "",

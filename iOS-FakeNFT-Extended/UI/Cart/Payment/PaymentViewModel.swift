@@ -97,6 +97,7 @@ final class PaymentViewModel {
             )
             
             _ = try await orderService.completeOrder(nftIds: order.nfts)
+            _ = try await orderService.updateOrder(nftIds: [])
             
             paymentResult = result
         } catch {

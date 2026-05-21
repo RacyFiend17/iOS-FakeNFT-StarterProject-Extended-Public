@@ -12,10 +12,12 @@ struct CartFlowView: View {
     @State private var isPaymentPresented = false
     @State private var isAgreementPresented = false
     @State private var isPaymentSuccessPresented = false
+    @State private var cartRefreshTrigger = false
     
     var body: some View {
         NavigationStack {
             CartAssembly(
+                refreshTrigger: cartRefreshTrigger,
                 onPaymentTap: {
                     isPaymentPresented = true
                 }
@@ -39,6 +41,7 @@ struct CartFlowView: View {
                         onBackToCartTap: {
                             isPaymentSuccessPresented = false
                             isPaymentPresented = false
+                            cartRefreshTrigger.toggle()
                         }
                     )
                 }

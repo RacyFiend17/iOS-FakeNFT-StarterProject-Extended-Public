@@ -12,8 +12,13 @@ struct CartAssembly: View {
     @Environment(ServicesAssembly.self) private var servicesAssembly
     
     private let onPaymentTap: () -> Void
+    private let refreshTrigger: Bool
     
-    init(onPaymentTap: @escaping () -> Void = {}) {
+    init(
+        refreshTrigger: Bool = false,
+        onPaymentTap: @escaping () -> Void = {}
+    ) {
+        self.refreshTrigger = refreshTrigger
         self.onPaymentTap = onPaymentTap
     }
     
@@ -23,6 +28,7 @@ struct CartAssembly: View {
                 orderService: servicesAssembly.orderService,
                 nftService: servicesAssembly.nftService
             ),
+            refreshTrigger: refreshTrigger,
             onPaymentTap: onPaymentTap
         )
     }
