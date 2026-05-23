@@ -36,6 +36,7 @@ private struct ProfileContentView: View {
 
     @State private var isEditingProfile = false
     @State private var isMyNFTPresented = false
+    @State private var isFavouritesNFTPresented = false
 
     var body: some View {
         NavigationStack {
@@ -60,6 +61,18 @@ private struct ProfileContentView: View {
                             nftService: nftService
                         )
                     )
+                }
+                .navigationDestination(isPresented: $isFavouritesNFTPresented) {
+                    FavouritesNFTView(
+                        viewModel: FavouritesNFTViewModel(
+                            profileService: profileService,
+                            nftService: nftService
+                        ),
+                        onLikesChanged: { updatedProfile in
+                            viewModel.applyUpdatedProfile(updatedProfile)
+                        }
+                    )
+                    .toolbar(.hidden, for: .tabBar)
                 }
         }
         .task {
@@ -150,7 +163,9 @@ private struct ProfileContentView: View {
                     ProfileNavigationRowView(
                         title: "Избранные NFT",
                         count: profile.likes.count
-                    ) {}
+                    ) {
+                        isFavouritesNFTPresented = true
+                    }
                 }
                 .padding(.top, 40)
                 .padding(.horizontal, 16)
