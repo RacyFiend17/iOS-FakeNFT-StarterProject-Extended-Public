@@ -17,6 +17,9 @@ struct CollectionDetailsView: View {
     @State
     private var viewModel: CollectionDetailsViewModel
     
+    @State
+    private var showWebView: Bool = false
+    
     let collection: Collection
     
     init(collection: Collection) {
@@ -139,10 +142,10 @@ private extension CollectionDetailsView {
                 Text ("Автор коллекции: ")
                     .font(.caption2)
                     .foregroundStyle(Color(.blackYP))
-                Button {
-                    UIApplication.shared.open(collection.website)
+                NavigationLink {
+                    WebViewScreen(urlString: Constants.agreementURLString)
                 } label: {
-                    Text("\(collection.author)")
+                    Text(collection.author)
                         .font(.caption3)
                         .foregroundStyle(.blue)
                 }
@@ -177,5 +180,12 @@ private extension CollectionDetailsView {
                     tint: .black
                 )
             )
+    }
+}
+
+
+extension CollectionDetailsView {
+    enum Constants {
+        static let agreementURLString = "https://yandex.ru/legal/practicum_termsofuse"
     }
 }

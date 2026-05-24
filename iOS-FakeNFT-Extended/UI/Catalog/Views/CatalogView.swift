@@ -67,13 +67,11 @@ struct CatalogView: View {
 //    
     @ViewBuilder
     private var content: some View {
-        
         if let viewModel {
             
             switch viewModel.state {
                 
             case .loading:
-                let numberOfSkeletons = Array(repeating: 1, count: 8)
                 ScrollView {
                     LazyVStack(spacing: 12) {
                         ForEach(0..<8, id: \.self) { _ in

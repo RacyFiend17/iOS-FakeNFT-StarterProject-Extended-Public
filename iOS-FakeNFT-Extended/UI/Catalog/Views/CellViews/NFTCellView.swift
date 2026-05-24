@@ -28,13 +28,18 @@ struct NftCellView: View {
                         .resizable()
                         .scaledToFill()
                 } placeholder: {
-                    customProgressView
+                    ProgressView()
+                        .progressViewStyle(
+                            CircularProgressViewStyle(
+                                tint: .black
+                            )
+                        )
                 }
                 .aspectRatio(1, contentMode: .fill)
                 .frame(maxWidth: .infinity)
                 .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-
+                
                 Button {
                     HapticService.shared.impact(.soft)
                     withAnimation(.spring(duration: 0.4)) {
@@ -91,14 +96,5 @@ struct NftCellView: View {
                 }
             }
         }
-    }
-    
-    var customProgressView: some View {
-        ProgressView()
-            .progressViewStyle(
-                CircularProgressViewStyle(
-                    tint: .black
-                )
-            )
     }
 }

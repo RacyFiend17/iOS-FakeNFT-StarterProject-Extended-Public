@@ -16,7 +16,6 @@
 		3F29FD312FB7B9D30000F7EB /* ExampleRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD302FB7B9CB0000F7EB /* ExampleRequest.swift */; };
 		3F29FD332FB7B9EE0000F7EB /* NftByldRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD322FB7B9E70000F7EB /* NftByldRequest.swift */; };
 		3F29FD442FBAE8D10000F7EB /* CollectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD432FBAE8CC0000F7EB /* CollectionService.swift */; };
-		3F29FD8C2FC2F83A0000F7EB /* LikedNftStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD8B2FC2F8330000F7EB /* LikedNftStorage.swift */; };
 		3F29FD8E2FC2F8570000F7EB /* CartNftStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD8D2FC2F84B0000F7EB /* CartNftStorage.swift */; };
 		3F29FD902FC2FF490000F7EB /* LikesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD8F2FC2FF1C0000F7EB /* LikesStorage.swift */; };
 		3F29FD932FC2FFCE0000F7EB /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD922FC2FFC40000F7EB /* HapticService.swift */; };
@@ -79,7 +78,6 @@
 		3F29FD302FB7B9CB0000F7EB /* ExampleRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleRequest.swift; sourceTree = "<group>"; };
 		3F29FD322FB7B9E70000F7EB /* NftByldRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftByldRequest.swift; sourceTree = "<group>"; };
 		3F29FD432FBAE8CC0000F7EB /* CollectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionService.swift; sourceTree = "<group>"; };
-		3F29FD8B2FC2F8330000F7EB /* LikedNftStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedNftStorage.swift; sourceTree = "<group>"; };
 		3F29FD8D2FC2F84B0000F7EB /* CartNftStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartNftStorage.swift; sourceTree = "<group>"; };
 		3F29FD8F2FC2FF1C0000F7EB /* LikesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesStorage.swift; sourceTree = "<group>"; };
 		3F29FD922FC2FFC40000F7EB /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
@@ -120,6 +118,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3F29FCEC2FAF6AD30000F7EB /* Catalog */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Catalog; sourceTree = "<group>"; };
 		3F5483BD2FC30F6C00760103 /* Skeletons */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Skeletons; sourceTree = "<group>"; };
+		3F5483D32FC348C300760103 /* Common */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Common; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,7 +275,6 @@
 				3F5483CA2FC31FE700760103 /* NftStorage.swift */,
 				3F29FD8F2FC2FF1C0000F7EB /* LikesStorage.swift */,
 				3F29FD8D2FC2F84B0000F7EB /* CartNftStorage.swift */,
-				3F29FD8B2FC2F8330000F7EB /* LikedNftStorage.swift */,
 			);
 			path = MemoryStorage;
 			sourceTree = "<group>";
@@ -310,6 +308,7 @@
 		ABC5E1B32C31FC03002B4068 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				3F5483D32FC348C300760103 /* Common */,
 				3F5483BA2FC30F4700760103 /* Shared */,
 				3F29FCEC2FAF6AD30000F7EB /* Catalog */,
 				ABC5E16D2C31F5AF002B4068 /* ContentView.swift */,
@@ -372,6 +371,7 @@
 			fileSystemSynchronizedGroups = (
 				3F29FCEC2FAF6AD30000F7EB /* Catalog */,
 				3F5483BD2FC30F6C00760103 /* Skeletons */,
+				3F5483D32FC348C300760103 /* Common */,
 			);
 			name = "iOS-FakeNFT-Extended";
 			packageProductDependencies = (
@@ -502,7 +502,6 @@
 				ABC5E1CF2C32041D002B4068 /* NftDetailViewController.swift in Sources */,
 				3F29FD312FB7B9D30000F7EB /* ExampleRequest.swift in Sources */,
 				3F29FD332FB7B9EE0000F7EB /* NftByldRequest.swift in Sources */,
-				3F29FD8C2FC2F83A0000F7EB /* LikedNftStorage.swift in Sources */,
 				3F29FD282FB7B9270000F7EB /* NftService.swift in Sources */,
 				ABC5E1E82C320610002B4068 /* NftDetailBridgeView.swift in Sources */,
 				4D5898DB2FA673D7005665DB /* AppIcon.swift in Sources */,
