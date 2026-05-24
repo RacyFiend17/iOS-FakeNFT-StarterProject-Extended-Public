@@ -15,6 +15,9 @@ struct NftCellView: View {
     @Environment(CartNftStorage.self)
     private var cartNftStorage
     
+    // Обработчик добавления нфт в корзину
+    var nftAddedToCart: ((String) -> Void) = {_ in}
+    
     let nft: Nft
     
     var body: some View {
@@ -82,6 +85,7 @@ struct NftCellView: View {
                         withAnimation(.spring(duration: 0.4)) {
                             cartNftStorage.toggle(id: nft.id)
                         }
+                        nftAddedToCart(nft.id)
                     } label: {
                         (
                             cartNftStorage.contains(id: nft.id)
