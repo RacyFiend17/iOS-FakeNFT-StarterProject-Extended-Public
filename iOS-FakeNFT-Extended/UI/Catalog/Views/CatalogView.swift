@@ -14,6 +14,9 @@ struct CatalogView: View {
     var body: some View {
         NavigationStack {
             content
+                .refreshable {
+                        await viewModel?.load()
+                }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
@@ -53,15 +56,15 @@ struct CatalogView: View {
         }
     }
     
-    var customProgressView: some View {
-        ProgressView()
-            .progressViewStyle(
-                CircularProgressViewStyle(
-                    tint: .black
-                )
-            )
-    }
-    
+//    var customProgressView: some View {
+//        ProgressView()
+//            .progressViewStyle(
+//                CircularProgressViewStyle(
+//                    tint: .black
+//                )
+//            )
+//    }
+//    
     @ViewBuilder
     private var content: some View {
         
@@ -70,7 +73,16 @@ struct CatalogView: View {
             switch viewModel.state {
                 
             case .loading:
-                customProgressView
+                let numberOfSkeletons = Array(repeating: 1, count: 8)
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(0..<8, id: \.self) { _ in
+                            CollectionSkeletonCell()
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 20)
+                }
                 
             case .empty:
                 Text("Коллекции отсутствуют")
