@@ -9,7 +9,7 @@ enum StatisticsMockData {
             avatar: "",
             description: "Дизайнер, люблю цифровое искусство и коллекционирую NFT. В моей коллекции уже есть несколько работ, а больше информации — на моём сайте.",
             website: "https://practicum.yandex.ru",
-            nfts: ["1", "4", "5"],
+            nfts: ["1", "2", "3", "4", "5"],
             rating: 112
         ),
         StatisticsUser(
