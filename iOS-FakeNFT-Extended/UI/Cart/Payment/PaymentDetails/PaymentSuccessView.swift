@@ -55,8 +55,7 @@ private extension PaymentSuccessView {
                         .fill(.blackYP)
                 )
         }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 16)
+        .padding([.horizontal, .bottom], 16)
     }
 }
 
