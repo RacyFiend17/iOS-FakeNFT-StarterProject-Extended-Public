@@ -47,12 +47,12 @@ struct CollectionDetailsView: View {
             switch viewModel.state {
             case .loading:
                 ScrollView {
-                        VStack(alignment: .leading, spacing: 0) {
-                            NftSkeletonView.skeletonCover
-                            NftSkeletonView.skeletonInfo
-                            skeletonGrid
-                        }
+                    VStack(alignment: .leading, spacing: 0) {
+                        NftSkeletonView.skeletonCover
+                        NftSkeletonView.skeletonInfo
+                        skeletonGrid
                     }
+                }
                 .ignoresSafeArea(edges: .top)
                 .toolbarBackground(.hidden, for: .navigationBar)
             case .loaded:
@@ -78,7 +78,7 @@ struct CollectionDetailsView: View {
                 Button {
                     dismiss()
                 } label: {
-                        AppIcon.chevronLeft.image
+                    AppIcon.chevronLeft.image
                         .tint(Color(.blackYP))
                 }
             }

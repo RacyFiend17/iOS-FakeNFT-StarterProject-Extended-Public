@@ -15,7 +15,7 @@ struct CatalogView: View {
         NavigationStack {
             content
                 .refreshable {
-                        await viewModel?.load()
+                    await viewModel?.load()
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -56,15 +56,6 @@ struct CatalogView: View {
         }
     }
     
-//    var customProgressView: some View {
-//        ProgressView()
-//            .progressViewStyle(
-//                CircularProgressViewStyle(
-//                    tint: .black
-//                )
-//            )
-//    }
-//    
     @ViewBuilder
     private var content: some View {
         if let viewModel {

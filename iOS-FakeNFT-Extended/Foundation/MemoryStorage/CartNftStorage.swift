@@ -12,7 +12,7 @@ final class CartNftStorage {
 
     private let key = "cart_nfts"
 
-    var ids: Set<String> {
+    private(set) var ids: Set<String> {
         didSet {
             UserDefaults.standard.set(Array(ids), forKey: key)
         }
