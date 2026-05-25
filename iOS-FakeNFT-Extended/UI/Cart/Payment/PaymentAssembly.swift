@@ -12,17 +12,24 @@ struct PaymentAssembly: View {
     @Environment(ServicesAssembly.self) private var servicesAssembly
     
     private let onAgreementTap: () -> Void
+    private let onPaymentSuccess: () -> Void
     
-    init(onAgreementTap: @escaping () -> Void = {}) {
+    init(
+        onAgreementTap: @escaping () -> Void = {},
+        onPaymentSuccess: @escaping () -> Void = {}
+    ) {
         self.onAgreementTap = onAgreementTap
+        self.onPaymentSuccess = onPaymentSuccess
     }
     
     var body: some View {
         PaymentView(
             viewModel: PaymentViewModel(
-                currencyService: servicesAssembly.currencyService
+                currencyService: servicesAssembly.currencyService,
+                orderService: servicesAssembly.orderService
             ),
-            onAgreementTap: onAgreementTap
+            onAgreementTap: onAgreementTap,
+            onPaymentSuccess: onPaymentSuccess
         )
     }
 }

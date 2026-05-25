@@ -1,19 +1,13 @@
 //
-//  OrderRequest.swift
+//  CompleteOrderRequest.swift
 //  iOS-FakeNFT-Extended
 //
-//  Created by Алла on 04.05.2026.
+//  Created by Алла on 21.05.2026.
 //
 
 import Foundation
 
-struct OrderRequest: NetworkRequest {
-    var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
-    }
-}
-
-struct UpdateOrderRequest: NetworkRequest {
+struct CompleteOrderRequest: NetworkRequest {
     let nftIds: [String]
     
     var endpoint: URL? {
@@ -21,7 +15,7 @@ struct UpdateOrderRequest: NetworkRequest {
     }
     
     var httpMethod: HttpMethod {
-        .put
+        .post
     }
     
     var httpBody: Data? {

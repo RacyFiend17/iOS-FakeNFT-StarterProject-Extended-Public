@@ -9,6 +9,9 @@ import Foundation
 
 protocol OrderService {
     func loadOrder() async throws -> Order
+    func updateOrder(nftIds: [String]) async throws -> Order
+    func payOrder(currencyId: String) async throws -> PaymentResult
+    func completeOrder(nftIds: [String]) async throws -> Order
 }
 
 actor OrderServiceImpl: OrderService {
@@ -20,6 +23,24 @@ actor OrderServiceImpl: OrderService {
     
     func loadOrder() async throws -> Order {
         let request = OrderRequest()
+        let order: Order = try await networkClient.send(request: request)
+        return order
+    }
+    
+    func updateOrder(nftIds: [String]) async throws -> Order {
+        let request = UpdateOrderRequest(nftIds: nftIds)
+        let order: Order = try await networkClient.send(request: request)
+        return order
+    }
+    
+    func payOrder(currencyId: String) async throws -> PaymentResult {
+        let request = PayOrderRequest(currencyId: currencyId)
+        let paymentResult: PaymentResult = try await networkClient.send(request: request)
+        return paymentResult
+    }
+    
+    func completeOrder(nftIds: [String]) async throws -> Order {
+        let request = CompleteOrderRequest(nftIds: nftIds)
         let order: Order = try await networkClient.send(request: request)
         return order
     }

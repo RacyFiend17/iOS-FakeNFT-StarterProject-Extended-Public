@@ -24,10 +24,14 @@ final class PaymentViewModel {
     // MARK: - Private properties
     
     private let currencyService: CurrencyService
+    private let orderService: OrderService
     
     private(set) var state: PaymentState = .initial
     private(set) var selectedCurrency: Currency?
     private(set) var errorMessage: String?
+    private(set) var paymentResult: PaymentResult?
+    private(set) var isPaying = false
+    private(set) var didStartPayment = false
     
     // MARK: - Computed properties
     
@@ -35,10 +39,18 @@ final class PaymentViewModel {
         selectedCurrency != nil
     }
     
+    var isPaymentSuccessful: Bool {
+        paymentResult != nil
+    }
+    
     // MARK: - Init
     
-    init(currencyService: CurrencyService) {
+    init(
+        currencyService: CurrencyService,
+        orderService: OrderService
+    ) {
         self.currencyService = currencyService
+        self.orderService = orderService
     }
     
     // MARK: - Public Methods
@@ -62,6 +74,35 @@ final class PaymentViewModel {
     
     func isSelected(_ currency: Currency) -> Bool {
         selectedCurrency?.id == currency.id
+    }
+    
+    func payOrder() async {
+        errorMessage = nil
+        
+        guard let selectedCurrency else {
+            return
+        }
+        
+        didStartPayment = true
+        isPaying = true
+        
+        defer {
+            isPaying = false
+        }
+        
+        do {
+            let order = try await orderService.loadOrder()
+            let result = try await orderService.payOrder(
+                currencyId: selectedCurrency.id
+            )
+            
+            _ = try await orderService.completeOrder(nftIds: order.nfts)
+            _ = try await orderService.updateOrder(nftIds: [])
+            
+            paymentResult = result
+        } catch {
+            handleLoadingError(error)
+        }
     }
     
     // MARK: - Error handling

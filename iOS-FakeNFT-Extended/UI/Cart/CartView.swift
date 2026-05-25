@@ -10,19 +10,22 @@ import SwiftUI
 struct CartView: View {
     @State private var viewModel: CartViewModel
     @State private var isErrorAlertPresented = false
+    @State private var isSortDialogPresented = false
+    @State private var isDeleteConfirmationPresented = false
     
-    private let onSortButtonTap: () -> Void
     private let shouldLoadOnAppear: Bool
+    private let refreshTrigger: Bool
     private let onPaymentTap: () -> Void
     
-    init(viewModel: CartViewModel,
-         shouldLoadOnAppear: Bool = true,
-         onSortButtonTap: @escaping () -> Void = {},
-         onPaymentTap: @escaping () -> Void = {}
+    init(
+        viewModel: CartViewModel,
+        shouldLoadOnAppear: Bool = true,
+        refreshTrigger: Bool = false,
+        onPaymentTap: @escaping () -> Void = {}
     ) {
         _viewModel = State(initialValue: viewModel)
         self.shouldLoadOnAppear = shouldLoadOnAppear
-        self.onSortButtonTap = onSortButtonTap
+        self.refreshTrigger = refreshTrigger
         self.onPaymentTap = onPaymentTap
     }
     
@@ -31,16 +34,26 @@ struct CartView: View {
     var body: some View {
         ZStack {
             content
+                .blur(radius: isDeleteConfirmationPresented ? 12 : 0)
+                .disabled(isDeleteConfirmationPresented)
             
-            loadingOverlay
+            LoadingOverlayView()
                 .opacity(viewModel.isRefreshing ? 1 : 0)
                 .accessibilityHidden(!viewModel.isRefreshing)
                 .allowsHitTesting(viewModel.isRefreshing)
+            
+            deleteConfirmationOverlay
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.whiteYP)
+        .toolbar(isDeleteConfirmationPresented ? .hidden : .visible, for: .tabBar)
         .onChange(of: viewModel.errorMessage) { _, newValue in
             isErrorAlertPresented = newValue != nil
+        }
+        .onChange(of: refreshTrigger) { _, _ in
+            Task {
+                await viewModel.refreshCart()
+            }
         }
         .alert(
             viewModel.errorMessage ?? "",
@@ -54,6 +67,14 @@ struct CartView: View {
                 }
             }
         }
+        .confirmationDialog(
+            Constants.sortDialogTitle,
+            isPresented: $isSortDialogPresented,
+            titleVisibility: .visible,
+            actions: {
+                sortDialogActions
+            }
+        )
         .task {
             guard shouldLoadOnAppear else { return }
             
@@ -101,8 +122,9 @@ private extension CartView {
             
             CartNftList(
                 nfts: nfts,
-                onDeleteTap: { _ in
-                    // TODO: реализовать логику удаления в 3 части эпика
+                onDeleteTap: { nft in
+                    viewModel.selectNftToDelete(nft)
+                    isDeleteConfirmationPresented = true
                 },
                 onRefresh: {
                     await viewModel.refreshCart()
@@ -119,7 +141,9 @@ private extension CartView {
     }
     
     var sortButton: some View {
-        Button(action: onSortButtonTap) {
+        Button {
+            isSortDialogPresented = true
+        } label: {
             AppIcon.sort.image
                 .foregroundStyle(.blackYP)
                 .frame(width: 42, height: 42)
@@ -127,12 +151,44 @@ private extension CartView {
         .buttonStyle(.plain)
     }
     
-    var loadingOverlay: some View {
-        ProgressView()
-            .tint(.blackYP)
-            .frame(width: 82, height: 82)
-            .background(.grayLightYP)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+    @ViewBuilder
+    var sortDialogActions: some View {
+        Button(Constants.sortByPriceTitle) {
+            viewModel.selectSortOption(.price)
+        }
+        
+        Button(Constants.sortByRatingTitle) {
+            viewModel.selectSortOption(.rating)
+        }
+        
+        Button(Constants.sortByNameTitle) {
+            viewModel.selectSortOption(.name)
+        }
+        
+        Button(Constants.closeButtonTitle, role: .cancel) { }
+    }
+    
+    @ViewBuilder
+    var deleteConfirmationOverlay: some View {
+        if isDeleteConfirmationPresented,
+           let nft = viewModel.selectedNftToDelete {
+            DeleteNftConfirmationView(
+                nft: nft,
+                onDeleteTap: {
+                    Task {
+                        await viewModel.deleteSelectedNft()
+                        
+                        if viewModel.selectedNftToDelete == nil {
+                            isDeleteConfirmationPresented = false
+                        }
+                    }
+                },
+                onCancelTap: {
+                    viewModel.cancelNftDeletion()
+                    isDeleteConfirmationPresented = false
+                }
+            )
+        }
     }
 }
 
@@ -143,6 +199,12 @@ private extension CartView {
         static let emptyCartTitle = "Корзина пуста"
         static let cancelButtonTitle = "Отмена"
         static let retryButtonTitle = "Повторить"
+        
+        static let sortDialogTitle = "Сортировка"
+        static let sortByPriceTitle = "По цене"
+        static let sortByRatingTitle = "По рейтингу"
+        static let sortByNameTitle = "По названию"
+        static let closeButtonTitle = "Закрыть"
     }
 }
 
@@ -173,6 +235,22 @@ private struct CartPreviewService: OrderService, NftService {
     
     func loadNft(id: String) async throws -> Nft {
         .mock1
+    }
+    
+    func updateOrder(nftIds: [String]) async throws -> Order {
+        Order(id: "preview-order", nfts: nftIds)
+    }
+    
+    func payOrder(currencyId: String) async throws -> PaymentResult {
+        PaymentResult(
+            success: true,
+            orderId: "preview-order",
+            id: currencyId
+        )
+    }
+    
+    func completeOrder(nftIds: [String]) async throws -> Order {
+        Order(id: "preview-order", nfts: nftIds)
     }
 }
 
