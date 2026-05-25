@@ -10,6 +10,7 @@
 		4D03B0BA2FBF9496003AF8C2 /* PaymentSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0B92FBF9496003AF8C2 /* PaymentSuccessView.swift */; };
 		4D03B0BC2FC4502E003AF8C2 /* CartSortStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0BB2FC4502E003AF8C2 /* CartSortStorage.swift */; };
 		4D03B0BE2FC453A9003AF8C2 /* CartSortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0BD2FC453A9003AF8C2 /* CartSortOption.swift */; };
+		4D03B0C02FC45795003AF8C2 /* CartSortStorageStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0BF2FC45795003AF8C2 /* CartSortStorageStub.swift */; };
 		4D5898DB2FA673D7005665DB /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5898DA2FA673D7005665DB /* AppIcon.swift */; };
 		4D5898DE2FA8E7E3005665DB /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5898DD2FA8E7E3005665DB /* Order.swift */; };
 		4D5898E02FA8E884005665DB /* OrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5898DF2FA8E884005665DB /* OrderRequest.swift */; };
@@ -103,6 +104,7 @@
 		4D03B0B92FBF9496003AF8C2 /* PaymentSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSuccessView.swift; sourceTree = "<group>"; };
 		4D03B0BB2FC4502E003AF8C2 /* CartSortStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartSortStorage.swift; sourceTree = "<group>"; };
 		4D03B0BD2FC453A9003AF8C2 /* CartSortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartSortOption.swift; sourceTree = "<group>"; };
+		4D03B0BF2FC45795003AF8C2 /* CartSortStorageStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartSortStorageStub.swift; sourceTree = "<group>"; };
 		4D5898DA2FA673D7005665DB /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		4D5898DC2FA68609005665DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4D5898DD2FA8E7E3005665DB /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 				4DACD7462FB75139002155B3 /* NftServiceStub.swift */,
 				4DACD7482FB7A510002155B3 /* SequentialOrderServiceStub.swift */,
 				4DACD74A2FB7AE4C002155B3 /* TestError.swift */,
+				4D03B0BF2FC45795003AF8C2 /* CartSortStorageStub.swift */,
 			);
 			path = CartMocks;
 			sourceTree = "<group>";
@@ -710,6 +713,7 @@
 				4DACD7452FB74878002155B3 /* OrderServiceStub.swift in Sources */,
 				4DACD74B2FB7AE4C002155B3 /* TestError.swift in Sources */,
 				4DACD7532FB8D971002155B3 /* SequentialCurrencyServiceStub.swift in Sources */,
+				4D03B0C02FC45795003AF8C2 /* CartSortStorageStub.swift in Sources */,
 				4DACD74F2FB8AE16002155B3 /* CurrencyServiceStub.swift in Sources */,
 				4DACD7472FB75139002155B3 /* NftServiceStub.swift in Sources */,
 				4DACD7492FB7A510002155B3 /* SequentialOrderServiceStub.swift in Sources */,

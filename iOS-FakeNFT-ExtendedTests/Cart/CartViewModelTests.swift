@@ -248,10 +248,10 @@ final class CartViewModelTests: XCTestCase {
     /// Проверяет, что выбранный способ сортировки сохраняется и восстанавливается.
     func testInitWhenSortOptionWasSavedRestoresSelectedSortOption() {
         // Given
-        let userDefaults = makeUserDefaults()
+        let sortStorage = CartSortStorageStub()
         let firstViewModel = makeViewModelWithState(
             .content([Nft.mock1]),
-            userDefaults: userDefaults
+            sortStorage: sortStorage
         )
         
         // When
@@ -259,7 +259,7 @@ final class CartViewModelTests: XCTestCase {
         
         let secondViewModel = makeViewModelWithState(
             .content([Nft.mock1]),
-            userDefaults: userDefaults
+            sortStorage: sortStorage
         )
         
         // Then
@@ -269,10 +269,10 @@ final class CartViewModelTests: XCTestCase {
     /// Проверяет, что загрузка корзины применяет сохранённый способ сортировки.
     func testLoadCartWhenSortOptionWasSavedAppliesSavedSortOption() async {
         // Given
-        let userDefaults = makeUserDefaults()
+        let sortStorage = CartSortStorageStub()
         let savingViewModel = makeViewModelWithState(
             .content([Nft.mock1]),
-            userDefaults: userDefaults
+            sortStorage: sortStorage
         )
         savingViewModel.selectSortOption(.rating)
         
@@ -292,7 +292,7 @@ final class CartViewModelTests: XCTestCase {
                 nft2.id: nft2,
                 nft3.id: nft3
             ],
-            userDefaults: userDefaults
+            sortStorage: sortStorage
         )
         
         // When
@@ -466,29 +466,28 @@ final class CartViewModelTests: XCTestCase {
         order: Order,
         nftsById: [String: Nft],
         state: CartState = .initial,
-        userDefaults: UserDefaults? = nil
+        sortStorage: CartSortStorage = CartSortStorageStub()
     ) -> CartViewModel {
         let orderService = OrderServiceStub(order: order)
         let nftService = NftServiceStub(nftsById: nftsById)
-        let userDefaults = userDefaults ?? makeUserDefaults()
         
         return CartViewModel(
             orderService: orderService,
             nftService: nftService,
-            userDefaults: userDefaults,
+            sortStorage: sortStorage,
             state: state
         )
     }
     
     private func makeViewModelWithState(
         _ state: CartState,
-        userDefaults: UserDefaults? = nil
+        sortStorage: CartSortStorage = CartSortStorageStub()
     ) -> CartViewModel {
         makeViewModel(
             order: Order(id: "unused-order", nfts: []),
             nftsById: [:],
             state: state,
-            userDefaults: userDefaults
+            sortStorage: sortStorage
         )
     }
     
@@ -496,27 +495,13 @@ final class CartViewModelTests: XCTestCase {
         orderService: OrderService,
         nftService: NftService,
         state: CartState = .initial,
-        userDefaults: UserDefaults? = nil
+        sortStorage: CartSortStorage = CartSortStorageStub()
     ) -> CartViewModel {
-        let userDefaults = userDefaults ?? makeUserDefaults()
-        
-        return CartViewModel(
+        CartViewModel(
             orderService: orderService,
             nftService: nftService,
-            userDefaults: userDefaults,
+            sortStorage: sortStorage,
             state: state
         )
-    }
-    
-    private func makeUserDefaults() -> UserDefaults {
-        let suiteName = "CartViewModelTests-\(UUID().uuidString)"
-        
-        guard let userDefaults = UserDefaults(suiteName: suiteName) else {
-            XCTFail("Failed to create test UserDefaults")
-            return .standard
-        }
-        
-        userDefaults.removePersistentDomain(forName: suiteName)
-        return userDefaults
     }
 }
