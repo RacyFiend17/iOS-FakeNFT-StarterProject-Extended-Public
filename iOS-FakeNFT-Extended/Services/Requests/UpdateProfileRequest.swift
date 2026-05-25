@@ -26,8 +26,12 @@ struct UpdateProfileRequest: NetworkRequest {
             ("website", profile.website)
         ]
 
-        profile.likes.forEach {
-            items.append(("likes", $0))
+        if profile.likes.isEmpty {
+            items.append(("likes", "null"))
+        } else {
+            profile.likes.forEach {
+                items.append(("likes", $0))
+            }
         }
 
         let body = items

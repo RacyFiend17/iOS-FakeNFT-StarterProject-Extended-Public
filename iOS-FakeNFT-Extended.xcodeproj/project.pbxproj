@@ -146,11 +146,28 @@
 			);
 			target = ABC5E1812C31F5B0002B4068 /* iOS-FakeNFT-ExtendedUITests */;
 		};
+		28A229892FC23AD100A12F60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FavouritesNFTView.swift,
+				FavouritesNFTViewModel.swift,
+			);
+			target = ABC5E1772C31F5B0002B4068 /* iOS-FakeNFT-ExtendedTests */;
+		};
+		28A2298A2FC23AD100A12F60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FavouritesNFTView.swift,
+				FavouritesNFTViewModel.swift,
+			);
+			target = ABC5E1812C31F5B0002B4068 /* iOS-FakeNFT-ExtendedUITests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		287A0E392FAE6F7200CD7D3C /* Profile */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (287A0E3E2FAE6F9000CD7D3C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 287A0E3F2FAE6F9000CD7D3C /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Profile; sourceTree = "<group>"; };
 		287A0F3E2FBCC6A900CD7D3C /* MyNFT */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MyNFT; sourceTree = "<group>"; };
+		28A229822FC23AA000A12F60 /* FavouritesNFT */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (28A229892FC23AD100A12F60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 28A2298A2FC23AD100A12F60 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = FavouritesNFT; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,6 +338,7 @@
 		ABC5E1B32C31FC03002B4068 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				28A229822FC23AA000A12F60 /* FavouritesNFT */,
 				287A0E392FAE6F7200CD7D3C /* Profile */,
 				ABC5E16D2C31F5AF002B4068 /* ContentView.swift */,
 				ABC5E1B42C31FC57002B4068 /* TabBarView.swift */,
@@ -384,6 +402,7 @@
 			fileSystemSynchronizedGroups = (
 				287A0E392FAE6F7200CD7D3C /* Profile */,
 				287A0F3E2FBCC6A900CD7D3C /* MyNFT */,
+				28A229822FC23AA000A12F60 /* FavouritesNFT */,
 			);
 			name = "iOS-FakeNFT-Extended";
 			packageProductDependencies = (
