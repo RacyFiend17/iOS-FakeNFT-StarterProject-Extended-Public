@@ -16,14 +16,6 @@ enum CartState {
     case content([Nft])
 }
 
-// MARK: - Cart Sort Options
-
-enum CartSortOption: String {
-    case price
-    case rating
-    case name
-}
-
 // MARK: - CartViewModel
 
 @MainActor
@@ -33,8 +25,8 @@ final class CartViewModel {
 
     private let orderService: OrderService
     private let nftService: NftService
-    private let userDefaults: UserDefaults
-
+    private let sortStorage: CartSortStorage
+    
     private(set) var state: CartState = .initial
     private(set) var errorMessage: String?
     private(set) var isRefreshing = false
@@ -62,14 +54,14 @@ final class CartViewModel {
     init(
         orderService: OrderService,
         nftService: NftService,
-        userDefaults: UserDefaults = .standard,
+        sortStorage: CartSortStorage = UserDefaultsCartSortStorage(),
         state: CartState = .initial
     ) {
         self.orderService = orderService
         self.nftService = nftService
-        self.userDefaults = userDefaults
+        self.sortStorage = sortStorage
         self.state = state
-        self.selectedSortOption = storedSortOption
+        self.selectedSortOption = sortStorage.selectedSortOption
     }
 
     // MARK: - Public Methods
@@ -84,7 +76,7 @@ final class CartViewModel {
     
     func selectSortOption(_ option: CartSortOption) {
         selectedSortOption = option
-        storedSortOption = option
+        sortStorage.selectedSortOption = option
         
         if case .content(let nfts) = state {
             state = .content(sortedNfts(nfts))
@@ -171,25 +163,6 @@ final class CartViewModel {
     
     // MARK: - Sorting
     
-    private var storedSortOption: CartSortOption {
-        get {
-            guard let rawValue = userDefaults.string(
-                forKey: Constants.selectedSortOptionKey
-            ) else {
-                return .name
-            }
-            
-            return CartSortOption(rawValue: rawValue) ?? .name
-        }
-        
-        set {
-            userDefaults.set(
-                newValue.rawValue,
-                forKey: Constants.selectedSortOptionKey
-            )
-        }
-    }
-    
     private func sortedNfts(_ nfts: [Nft]) -> [Nft] {
         switch selectedSortOption {
         case .price:
@@ -203,11 +176,5 @@ final class CartViewModel {
                 $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
             }
         }
-    }
-    
-    // MARK: - Constants
-    
-    private enum Constants {
-        static let selectedSortOptionKey = "cartSelectedSortOption"
     }
 }
