@@ -17,6 +17,9 @@ struct CollectionDetailsView: View {
     @State
     private var viewModel: CollectionDetailsViewModel
     
+    @State
+    private var showWebView: Bool = false
+    
     let collection: Collection
     
     init(collection: Collection) {
@@ -43,7 +46,15 @@ struct CollectionDetailsView: View {
         Group {
             switch viewModel.state {
             case .loading:
-                customProgressView
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        NftSkeletonView.skeletonCover
+                        NftSkeletonView.skeletonInfo
+                        skeletonGrid
+                    }
+                }
+                .ignoresSafeArea(edges: .top)
+                .toolbarBackground(.hidden, for: .navigationBar)
             case .loaded:
                 content
             case .error(let message):
@@ -61,13 +72,13 @@ struct CollectionDetailsView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .toolbar(.hidden, for: .bottomBar)
+        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
                     dismiss()
                 } label: {
-                        AppIcon.chevronLeft.image
+                    AppIcon.chevronLeft.image
                         .tint(Color(.blackYP))
                 }
             }
@@ -81,6 +92,15 @@ struct CollectionDetailsView: View {
 
 private extension CollectionDetailsView {
     
+    var skeletonGrid: some View {
+        LazyVGrid(columns: columns, spacing: 28) {
+            ForEach(0..<9, id: \.self) { _ in
+                NftSkeletonView()
+            }
+        }
+        .padding(.horizontal, 16)
+    }
+    
     var content: some View {
         
         ScrollView {
@@ -92,6 +112,9 @@ private extension CollectionDetailsView {
         }
         .ignoresSafeArea(edges: .top)
         .toolbarBackground(.hidden, for: .navigationBar)
+        .refreshable {
+            await viewModel.load()
+        }
     }
     
     var cover: some View {
@@ -119,10 +142,10 @@ private extension CollectionDetailsView {
                 Text ("Автор коллекции: ")
                     .font(.caption2)
                     .foregroundStyle(Color(.blackYP))
-                Button {
-                    UIApplication.shared.open(collection.website)
+                NavigationLink {
+                    WebViewScreen(urlString: Constants.agreementURLString)
                 } label: {
-                    Text("\(collection.author)")
+                    Text(collection.author)
                         .font(.caption3)
                         .foregroundStyle(.blue)
                 }
@@ -157,5 +180,12 @@ private extension CollectionDetailsView {
                     tint: .black
                 )
             )
+    }
+}
+
+
+extension CollectionDetailsView {
+    enum Constants {
+        static let agreementURLString = "https://yandex.ru/legal/practicum_termsofuse"
     }
 }
