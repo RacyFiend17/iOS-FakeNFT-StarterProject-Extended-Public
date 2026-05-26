@@ -26,7 +26,7 @@ struct NftCellView: View {
             
             ZStack(alignment: .topTrailing) {
                 
-                AsyncImage(url: nft.images.first) { image in
+                AsyncImage(url: nft.imagesUrls.first) { image in
                     image
                         .resizable()
                         .scaledToFill()
