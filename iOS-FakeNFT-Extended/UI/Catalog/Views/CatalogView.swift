@@ -1,0 +1,111 @@
+import SwiftUI
+
+struct CatalogView: View {
+    
+    @Environment(ServicesAssembly.self)
+    private var servicesAssembly
+    
+    @State
+    private var viewModel: CatalogViewModel?
+    
+    @State
+    private var showSortDialog = false
+    
+    var body: some View {
+        NavigationStack {
+            content
+                .refreshable {
+                    await viewModel?.load()
+                }
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showSortDialog = true
+                        } label: {
+                            AppIcon.sort.image
+                                .foregroundStyle(Color(.blackYP))
+                        }
+                    }
+                }
+                .confirmationDialog(
+                    "Сортировка",
+                    isPresented: $showSortDialog,
+                    titleVisibility: .visible
+                ) {
+                    ForEach(CatalogSortOption.allCases, id: \.self) { option in
+                        Button(option.title) {
+                            viewModel?.updateSort(option)
+                        }
+                    }
+                    
+                    Button("Закрыть", role: .cancel) {
+                        showSortDialog = false
+                    }
+                }
+        }
+        .task {
+            if viewModel == nil {
+                let vm = CatalogViewModel(
+                    service: servicesAssembly.catalogService
+                )
+                
+                viewModel = vm
+                
+                await vm.load()
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var content: some View {
+        if let viewModel {
+            
+            switch viewModel.state {
+                
+            case .loading:
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(0..<8, id: \.self) { _ in
+                            CollectionSkeletonCell()
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 20)
+                }
+                
+            case .empty:
+                Text("Коллекции отсутствуют")
+                
+            case .error(let message):
+                VStack(spacing: 12) {
+                    Text("Ошибка")
+                    Text(message)
+                    
+                    Button("Повторить") {
+                        Task {
+                            await viewModel.load()
+                        }
+                    }
+                }
+                
+            case .loaded(let collections):
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        
+                        ForEach(collections) { collection in
+                            
+                            NavigationLink {
+                                CollectionDetailsView(collection: collection)
+                            } label: {
+                                CollectionCellView(collection: collection)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 20)
+                }
+            }
+        }
+    }
+}

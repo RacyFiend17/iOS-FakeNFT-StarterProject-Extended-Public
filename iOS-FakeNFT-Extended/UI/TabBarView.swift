@@ -25,7 +25,7 @@ private extension TabBarView {
     }
     
     var catalog: some View {
-        TestCatalogView()
+        CatalogView()
             .tabItem {
                 AppIcon.catalog.image
                 Text(Constants.catalogTitle)
