@@ -23,7 +23,7 @@ extension Nft {
         name: "April",
         imagesUrls: [],
         rating: 3,
-        price: 1.5
+        price: 1.5,
         author: "Author 1",
         description: "Description 1"
     )
@@ -43,7 +43,7 @@ extension Nft {
         name: "Cherry",
         imagesUrls: [],
         rating: 1,
-        price: 0.75
+        price: 0.75,
         author: "Author 3",
         description: "Description 3"
     )
