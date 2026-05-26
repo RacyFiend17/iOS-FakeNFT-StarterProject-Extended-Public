@@ -10,11 +10,9 @@ import WebKit
 
 struct WebView: UIViewRepresentable {
     
-    let urlString: String
+    let url: URL
     
     func makeUIView(context: Context) -> WKWebView {
-        guard let url = URL(string: urlString) else { return WKWebView() }
-        
         let webView = WKWebView()
         
         webView.scrollView.contentInsetAdjustmentBehavior = .never

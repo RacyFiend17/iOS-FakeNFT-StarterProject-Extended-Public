@@ -143,7 +143,9 @@ private extension CollectionDetailsView {
                     .font(.caption2)
                     .foregroundStyle(Color(.blackYP))
                 NavigationLink {
-                    WebViewScreen(urlString: Constants.agreementURLString)
+                    if let url = URL(string: Constants.agreementURLString) {
+                        WebViewScreen(url: url)
+                    }
                 } label: {
                     Text(collection.author)
                         .font(.caption3)

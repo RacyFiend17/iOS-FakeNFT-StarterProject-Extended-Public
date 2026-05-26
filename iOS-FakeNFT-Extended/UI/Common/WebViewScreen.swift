@@ -12,11 +12,11 @@ struct WebViewScreen: View {
     @Environment(\.dismiss)
     private var dismiss
     
-    let urlString: String
+    let url: URL
     
     var body: some View {
         
-        WebView(urlString: urlString)
+        WebView(url: url)
             .ignoresSafeArea(edges: .bottom)
             .navigationBarBackButtonHidden(true)
             .toolbar(.hidden, for: .tabBar)
