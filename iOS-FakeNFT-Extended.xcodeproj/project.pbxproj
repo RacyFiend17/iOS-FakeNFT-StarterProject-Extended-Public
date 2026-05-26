@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-<<<<<<< HEAD
 		4D03B0BA2FBF9496003AF8C2 /* PaymentSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0B92FBF9496003AF8C2 /* PaymentSuccessView.swift */; };
 		4D03B0BC2FC4502E003AF8C2 /* CartSortStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0BB2FC4502E003AF8C2 /* CartSortStorage.swift */; };
 		4D03B0BE2FC453A9003AF8C2 /* CartSortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0BD2FC453A9003AF8C2 /* CartSortOption.swift */; };
 		4D03B0C02FC45795003AF8C2 /* CartSortStorageStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D03B0BF2FC45795003AF8C2 /* CartSortStorageStub.swift */; };
-=======
 		3F29FD032FB7A6C90000F7EB /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD022FB7A6C10000F7EB /* Collection.swift */; };
 		3F29FD262FB7B8F90000F7EB /* CatalogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD252FB7B8EC0000F7EB /* CatalogService.swift */; };
 		3F29FD282FB7B9270000F7EB /* NftService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD272FB7B9230000F7EB /* NftService.swift */; };
@@ -26,7 +24,6 @@
 		3F29FD902FC2FF490000F7EB /* LikesStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD8F2FC2FF1C0000F7EB /* LikesStorage.swift */; };
 		3F29FD932FC2FFCE0000F7EB /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F29FD922FC2FFC40000F7EB /* HapticService.swift */; };
 		3F5483CB2FC31FEA00760103 /* NftStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5483CA2FC31FE700760103 /* NftStorage.swift */; };
->>>>>>> epic_perchemidi_catalog
 		4D5898DB2FA673D7005665DB /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5898DA2FA673D7005665DB /* AppIcon.swift */; };
 		4D5898DE2FA8E7E3005665DB /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5898DD2FA8E7E3005665DB /* Order.swift */; };
 		4D5898E02FA8E884005665DB /* OrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5898DF2FA8E884005665DB /* OrderRequest.swift */; };
@@ -110,12 +107,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-<<<<<<< HEAD
 		4D03B0B92FBF9496003AF8C2 /* PaymentSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentSuccessView.swift; sourceTree = "<group>"; };
 		4D03B0BB2FC4502E003AF8C2 /* CartSortStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartSortStorage.swift; sourceTree = "<group>"; };
 		4D03B0BD2FC453A9003AF8C2 /* CartSortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartSortOption.swift; sourceTree = "<group>"; };
 		4D03B0BF2FC45795003AF8C2 /* CartSortStorageStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartSortStorageStub.swift; sourceTree = "<group>"; };
-=======
 		3F29FD022FB7A6C10000F7EB /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		3F29FD252FB7B8EC0000F7EB /* CatalogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogService.swift; sourceTree = "<group>"; };
 		3F29FD272FB7B9230000F7EB /* NftService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftService.swift; sourceTree = "<group>"; };
@@ -129,7 +124,6 @@
 		3F29FD8F2FC2FF1C0000F7EB /* LikesStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesStorage.swift; sourceTree = "<group>"; };
 		3F29FD922FC2FFC40000F7EB /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
 		3F5483CA2FC31FE700760103 /* NftStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftStorage.swift; sourceTree = "<group>"; };
->>>>>>> epic_perchemidi_catalog
 		4D5898DA2FA673D7005665DB /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		4D5898DC2FA68609005665DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4D5898DD2FA8E7E3005665DB /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
@@ -229,7 +223,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-<<<<<<< HEAD
 		4D5898E72FA91B2A005665DB /* Cart */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,7 +324,8 @@
 				4DACD7502FB8B1DC002155B3 /* PaymentViewModelTests.swift */,
 			);
 			path = Cart;
-=======
+			sourceTree = "<group>";
+		};
 		3F29FD242FB7B8A50000F7EB /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -369,7 +363,6 @@
 				3F5483BD2FC30F6C00760103 /* Skeletons */,
 			);
 			path = Shared;
->>>>>>> epic_perchemidi_catalog
 			sourceTree = "<group>";
 		};
 		ABC5E15F2C31F5AF002B4068 = {
@@ -447,11 +440,8 @@
 		ABC5E19A2C31F687002B4068 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				4D6BED112FB28A1400F72A70 /* ErrorHandling */,
-=======
 				3F29FD912FC2FFBF0000F7EB /* Haptic */,
->>>>>>> epic_perchemidi_catalog
 				ABC5E19B2C31F69C002B4068 /* MemoryStorage */,
 				ABC5E1A22C31F7E8002B4068 /* NetworkClient */,
 				ABC5E1A72C31FA90002B4068 /* DateFormatters+Presets.swift */,
@@ -463,14 +453,10 @@
 		ABC5E19B2C31F69C002B4068 /* MemoryStorage */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 				ABC5E19C2C31F6A6002B4068 /* NftStorage.swift */,
 				4D03B0BB2FC4502E003AF8C2 /* CartSortStorage.swift */,
-=======
-				3F5483CA2FC31FE700760103 /* NftStorage.swift */,
 				3F29FD8F2FC2FF1C0000F7EB /* LikesStorage.swift */,
 				3F29FD8D2FC2F84B0000F7EB /* CartNftStorage.swift */,
->>>>>>> epic_perchemidi_catalog
 			);
 			path = MemoryStorage;
 			sourceTree = "<group>";
@@ -504,7 +490,6 @@
 			path = NetworkClient;
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
 		ABC5E1A92C31FABA002B4068 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -536,13 +521,8 @@
 			children = (
 				4D6BED252FB3C78B00F72A70 /* Common */,
 				4D5898E72FA91B2A005665DB /* Cart */,
-=======
-		ABC5E1B32C31FC03002B4068 /* UI */ = {
-			isa = PBXGroup;
-			children = (
 				3F5483BA2FC30F4700760103 /* Shared */,
 				3F29FCEC2FAF6AD30000F7EB /* Catalog */,
->>>>>>> epic_perchemidi_catalog
 				ABC5E16D2C31F5AF002B4068 /* ContentView.swift */,
 				ABC5E1B42C31FC57002B4068 /* TabBarView.swift */,
 				ABC5E1E72C320610002B4068 /* NftDetailBridgeView.swift */,
@@ -742,22 +722,15 @@
 				3F29FD932FC2FFCE0000F7EB /* HapticService.swift in Sources */,
 				3F29FD8E2FC2F8570000F7EB /* CartNftStorage.swift in Sources */,
 				ABC5E1B52C31FC57002B4068 /* TabBarView.swift in Sources */,
-<<<<<<< HEAD
 				4D7DFC202FBDDF7200960689 /* DeleteNftConfirmationView.swift in Sources */,
-=======
-				3F5483CB2FC31FEA00760103 /* NftStorage.swift in Sources */,
->>>>>>> epic_perchemidi_catalog
 				ABC5E1E42C32055B002B4068 /* ErrorView.swift in Sources */,
 				4D5898EC2FA9304A005665DB /* CartNftCell.swift in Sources */,
 				4D5898EE2FA9A001005665DB /* NumberFormatters+Presets.swift in Sources */,
 				ABC5E1A62C31F815002B4068 /* NetworkRequest.swift in Sources */,
-<<<<<<< HEAD
 				4D03B0BC2FC4502E003AF8C2 /* CartSortStorage.swift in Sources */,
 				4D6BED1D2FB372D000F72A70 /* PaymentSummaryView.swift in Sources */,
-=======
 				3F29FD442FBAE8D10000F7EB /* CollectionService.swift in Sources */,
 				3F29FD2F2FB7B9B40000F7EB /* RequestConstants.swift in Sources */,
->>>>>>> epic_perchemidi_catalog
 				ABC5E1D52C320446002B4068 /* NftDetailInput.swift in Sources */,
 				4D58995F2FAA10D6005665DB /* CartNftList.swift in Sources */,
 				4D5898DE2FA8E7E3005665DB /* Order.swift in Sources */,
@@ -776,44 +749,33 @@
 				ABC5E1D32C320438002B4068 /* NftDetailAssembly.swift in Sources */,
 				4D6BED1B2FB3512E00F72A70 /* PaymentCurrencyList.swift in Sources */,
 				ABC5E1A12C31F6D7002B4068 /* Nft.swift in Sources */,
-<<<<<<< HEAD
 				4D5898E82FA91B2A005665DB /* CartViewModel.swift in Sources */,
 				ABC5E1AE2C31FB7F002B4068 /* NftByIdRequest.swift in Sources */,
 				ABC5E1DB2C3204CE002B4068 /* UIView+Constraints.swift in Sources */,
 				4D03B0BE2FC453A9003AF8C2 /* CartSortOption.swift in Sources */,
-=======
-				ABC5E1DB2C3204CE002B4068 /* UIView+Constraints.swift in Sources */,
 				3F29FD032FB7A6C90000F7EB /* Collection.swift in Sources */,
 				3F29FD2A2FB7B9520000F7EB /* ServicesAssembly.swift in Sources */,
->>>>>>> epic_perchemidi_catalog
 				ABC5E16C2C31F5AF002B4068 /* iOS_FakeNFT_ExtendedApp.swift in Sources */,
 				4D7DFC262FBE4C9F00960689 /* LoadingOverlayView.swift in Sources */,
 				4D6BED072FB2785200F72A70 /* CurrenciesRequest.swift in Sources */,
 				4D6BED132FB28A2000F72A70 /* ErrorMessageFactory.swift in Sources */,
 				ABC5E1CB2C3203FC002B4068 /* NftDetailCellModel.swift in Sources */,
-<<<<<<< HEAD
 				4D7DFC242FBE3BAF00960689 /* PayOrderRequest.swift in Sources */,
 				4D6BED092FB278DE00F72A70 /* CurrencyService.swift in Sources */,
 				ABC5E1AB2C31FACD002B4068 /* NftService.swift in Sources */,
 				4D5898E22FA8EB48005665DB /* OrderService.swift in Sources */,
 				4D6BED192FB28D0900F72A70 /* PaymentCurrencyCell.swift in Sources */,
 				ABC5E1B22C31FBD4002B4068 /* ExampleRequest.swift in Sources */,
-=======
->>>>>>> epic_perchemidi_catalog
 				ABC5E1CD2C32040C002B4068 /* NftImageCollectionViewCell.swift in Sources */,
 				4D6BED0F2FB27E2900F72A70 /* PaymentViewModel.swift in Sources */,
 				ABC5E1A82C31FA90002B4068 /* DateFormatters+Presets.swift in Sources */,
-<<<<<<< HEAD
 				4D6BED272FB3C7B300F72A70 /* WebView.swift in Sources */,
 				4D6BED052FB2767B00F72A70 /* Currency.swift in Sources */,
 				ABC5E1D12C32042C002B4068 /* NftDetailPresenter.swift in Sources */,
 				4D5899632FAA4057005665DB /* CartView.swift in Sources */,
 				4D6BED1F2FB37F7000F72A70 /* PaymentAssembly.swift in Sources */,
 				ABC5E1B02C31FB90002B4068 /* RequestConstants.swift in Sources */,
-=======
 				3F29FD902FC2FF490000F7EB /* LikesStorage.swift in Sources */,
-				ABC5E1D12C32042C002B4068 /* NftDetailPresenter.swift in Sources */,
->>>>>>> epic_perchemidi_catalog
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
