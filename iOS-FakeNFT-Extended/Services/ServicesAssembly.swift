@@ -44,5 +44,9 @@ final class ServicesAssembly {
         CollectionService(networkClient: networkClient)
     }
     
+    var usersService: UsersService {
+        UsersServiceImpl(networkClient: networkClient)
+    }
+    
     let likesStorage = LikesStorage()
 }

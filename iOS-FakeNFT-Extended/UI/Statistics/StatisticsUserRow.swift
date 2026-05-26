@@ -1,32 +1,26 @@
-//
-//  tatisticsUserRow.swift
-//  iOS-FakeNFT-Extended
-//
-//  Created by Илья Лобастов on 08.05.2026.
-//
 import SwiftUI
 
 struct StatisticsUserRow: View {
     let position: Int
     let user: StatisticsUser
-
+    
     var body: some View {
         HStack(spacing: 8) {
             Text("\(position)")
                 .font(.system(size: 15))
                 .foregroundStyle(.primary)
                 .frame(width: 28, alignment: .leading)
-
+            
             HStack(spacing: 8) {
                 avatarView
-
+                
                 Text(user.name)
                     .font(.system(size: 22, weight: .bold))
                     .foregroundStyle(.primary)
-
+                
                 Spacer()
-
-                Text("\(user.rating)")
+                
+                Text("\(user.nfts.count)")
                     .font(.system(size: 22, weight: .bold))
                     .foregroundStyle(.primary)
             }
@@ -58,7 +52,7 @@ private extension StatisticsUserRow {
             placeholderAvatar
         }
     }
-
+    
     var placeholderAvatar: some View {
         Image(.userFotoStubYP)
             .renderingMode(.original)
@@ -67,15 +61,4 @@ private extension StatisticsUserRow {
             .frame(width: 32, height: 32)
             .clipShape(Circle())
     }
-}
-
-// MARK: - Preview
-
-#Preview {
-    StatisticsUserRow(
-        position: 1,
-        user: StatisticsMockData.users[0]
-    )
-    .padding(.vertical)
-    .preferredColorScheme(.light)
 }

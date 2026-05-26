@@ -82,9 +82,9 @@ private extension UserCardView {
                 Text("Коллекция NFT  (\(user.nfts.count))")
                     .font(.system(size: 17, weight: .bold))
                     .foregroundStyle(Color.blackUniversalYP)
-
+                
                 Spacer()
-
+                
                 Image(systemName: "chevron.right")
                     .font(.system(size: 22, weight: .regular))
                     .foregroundStyle(Color.blackUniversalYP)
@@ -118,13 +118,5 @@ private extension UserCardView {
             .renderingMode(.original)
             .resizable()
             .scaledToFill()
-    }
-}
-
-// MARK: - Preview
-
-#Preview {
-    NavigationStack {
-        UserCardView(user: StatisticsMockData.users[0])
     }
 }

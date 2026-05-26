@@ -11,14 +11,19 @@ final class UsersCollectionViewModel: ObservableObject {
         self.nftIDs = user.nfts
     }
 
-    func loadNfts() {
+    func loadNfts(service: CollectionServiceProtocol) async {
         guard state != .loading, state != .loaded else { return }
-        reloadNfts()
+        await reloadNfts(service: service)
     }
 
-    func reloadNfts() {
+    func reloadNfts(service: CollectionServiceProtocol) async {
         state = .loading
-        nfts = StatisticsMockNftData.nfts(for: nftIDs)
-        state = .loaded
+
+        do {
+            nfts = try await service.loadNfts(ids: nftIDs)
+            state = .loaded
+        } catch {
+            state = .failed
+        }
     }
 }
