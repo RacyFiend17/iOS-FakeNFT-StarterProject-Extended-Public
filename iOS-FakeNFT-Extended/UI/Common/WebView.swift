@@ -2,7 +2,7 @@
 //  WebView.swift
 //  iOS-FakeNFT-Extended
 //
-//  Created by Алла on 12.05.2026.
+//  Created by Дмитрий Перчемиди on 24.05.2026.
 //
 
 import SwiftUI
