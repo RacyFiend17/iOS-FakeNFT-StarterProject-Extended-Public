@@ -41,8 +41,7 @@ private extension TabBarView {
     }
     
     var statistic: some View {
-        Text(Constants.statisticsTitle)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        StatisticsView()
             .tabItem {
                 AppIcon.statistics.image
                 Text(Constants.statisticsTitle)
