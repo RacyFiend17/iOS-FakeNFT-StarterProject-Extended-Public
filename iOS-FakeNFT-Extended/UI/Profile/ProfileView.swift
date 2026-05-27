@@ -217,13 +217,39 @@ private struct ProfileWebsiteView: View {
     let website: String
 
     var body: some View {
-        if !website.isEmpty {
-            Text(website)
-                .font(.caption3)
-                .foregroundStyle(.blueUniversalYP)
-                .lineLimit(1)
-                .truncationMode(.tail)
+        if let websiteURL {
+            NavigationLink {
+                WebViewScreen(url: websiteURL)
+            } label: {
+                websiteText
+            }
+            .buttonStyle(.plain)
+        } else if !website.isEmpty {
+            websiteText
         }
+    }
+
+    private var websiteText: some View {
+        Text(website)
+            .font(.caption3)
+            .foregroundStyle(.blueUniversalYP)
+            .lineLimit(1)
+            .truncationMode(.tail)
+    }
+
+    private var websiteURL: URL? {
+        let trimmedWebsite = website.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedWebsite.isEmpty else {
+            return nil
+        }
+
+        if let url = URL(string: trimmedWebsite),
+           url.scheme != nil {
+            return url
+        }
+
+        return URL(string: "https://\(trimmedWebsite)")
     }
 }
 
