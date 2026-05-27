@@ -83,6 +83,13 @@ private struct ProfileContentView: View {
                 await viewModel.loadProfile()
             }
         }
+        .onAppear {
+            if viewModel.profile != nil {
+                Task {
+                    await viewModel.refreshProfile()
+                }
+            }
+        }
     }
 
     @ViewBuilder

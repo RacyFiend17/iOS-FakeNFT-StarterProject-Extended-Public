@@ -33,6 +33,17 @@ final class ProfileViewModel {
     func retry() async {
         await loadProfile()
     }
+    
+    func refreshProfile() async {
+        do {
+            profile = try await profileService.loadProfile()
+            state = .loaded
+        } catch {
+            if profile == nil {
+                state = .failed("Не удалось загрузить профиль")
+            }
+        }
+    }
 
     func applyUpdatedProfile(_ profile: Profile) {
         self.profile = profile
