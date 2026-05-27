@@ -8,14 +8,21 @@ final class UsersCollectionViewModel: ObservableObject {
 
     private let nftIDs: [String]
     private let favoritesSyncService: FavoritesSyncService
+    private let cartSyncService: CartSyncService
 
     init(
         user: StatisticsUser,
-        favoritesSyncService: FavoritesSyncService? = nil
+        favoritesSyncService: FavoritesSyncService? = nil,
+        cartSyncService: CartSyncService? = nil
     ) {
         self.nftIDs = user.nfts
         self.favoritesSyncService = favoritesSyncService ?? ProfileFavoritesSyncService(
             profileService: ProfileServiceImpl(
+                networkClient: DefaultNetworkClient()
+            )
+        )
+        self.cartSyncService = cartSyncService ?? OrderCartSyncService(
+            orderService: OrderServiceImpl(
                 networkClient: DefaultNetworkClient()
             )
         )
@@ -47,6 +54,19 @@ final class UsersCollectionViewModel: ObservableObject {
             )
         } catch {
             errorMessage = "Не удалось обновить избранное"
+        }
+    }
+    
+    func updateOrderCart(nftId: String, isInCart: Bool) async {
+        errorMessage = nil
+
+        do {
+            try await cartSyncService.updateOrderCart(
+                nftId: nftId,
+                isInCart: isInCart
+            )
+        } catch {
+            errorMessage = "Не удалось обновить корзину"
         }
     }
 }

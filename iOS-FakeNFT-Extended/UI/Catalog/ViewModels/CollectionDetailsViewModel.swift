@@ -20,7 +20,7 @@ final class CollectionDetailsViewModel {
     private let collection: Collection
     private let service: CollectionServiceProtocol
     private let favoritesSyncService: FavoritesSyncService
-    private let orderService: OrderService
+    private let cartSyncService: CartSyncService
     
     init(
         collection: Collection,
@@ -36,8 +36,11 @@ final class CollectionDetailsViewModel {
         self.favoritesSyncService = ProfileFavoritesSyncService(
             profileService: profileService
         )
-        self.orderService = orderService ?? OrderServiceImpl(
+        let orderService = orderService ?? OrderServiceImpl(
             networkClient: DefaultNetworkClient()
+        )
+        self.cartSyncService = OrderCartSyncService(
+            orderService: orderService
         )
     }
     
@@ -70,18 +73,10 @@ final class CollectionDetailsViewModel {
         errorMessage = nil
         
         do {
-            let order = try await orderService.loadOrder()
-            var nftIds = order.nfts
-            
-            if isInCart {
-                if !nftIds.contains(nftId) {
-                    nftIds.append(nftId)
-                }
-            } else {
-                nftIds.removeAll { $0 == nftId }
-            }
-            
-            _ = try await orderService.updateOrder(nftIds: nftIds)
+            try await cartSyncService.updateOrderCart(
+                nftId: nftId,
+                isInCart: isInCart
+            )
         } catch {
             errorMessage = "Не удалось обновить корзину"
         }

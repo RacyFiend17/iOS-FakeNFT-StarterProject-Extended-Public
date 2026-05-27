@@ -69,6 +69,14 @@ private extension UsersCollectionView {
             LazyVGrid(columns: columns, spacing: 28) {
                 ForEach(viewModel.nfts) { nft in
                     NftCellView(
+                        nftCartToggled: { nftId, isInCart in
+                            Task {
+                                await viewModel.updateOrderCart(
+                                    nftId: nftId,
+                                    isInCart: isInCart
+                                )
+                            }
+                        },
                         nftLikeToggled: { nftId, isLiked in
                             Task {
                                 await viewModel.updateProfileLike(
