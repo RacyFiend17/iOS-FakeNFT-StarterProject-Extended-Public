@@ -5,8 +5,7 @@ protocol ProfileService {
     func updateProfile(_ profile: Profile) async throws -> Profile
 }
 
-@MainActor
-final class ProfileServiceImpl: ProfileService {
+actor ProfileServiceImpl: ProfileService {
     private let networkClient: NetworkClient
 
     init(networkClient: NetworkClient) {

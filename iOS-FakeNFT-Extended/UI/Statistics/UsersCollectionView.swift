@@ -22,6 +22,17 @@ struct UsersCollectionView: View {
             .task {
                 await viewModel.loadNfts(service: servicesAssembly.collectionService)
             }
+            .alert(
+                "Ошибка",
+                isPresented: Binding(
+                    get: { viewModel.errorMessage != nil },
+                    set: { _ in viewModel.errorMessage = nil }
+                )
+            ) {
+                Button("ОК", role: .cancel) { }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
     }
 }
 
@@ -56,7 +67,17 @@ private extension UsersCollectionView {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 28) {
                 ForEach(viewModel.nfts) { nft in
-                    NftCellView(nft: nft)
+                    NftCellView(
+                        nftLikeToggled: { nftId, isLiked in
+                            Task {
+                                await viewModel.updateProfileLike(
+                                    nftId: nftId,
+                                    isLiked: isLiked
+                                )
+                            }
+                        },
+                        nft: nft
+                    )
                 }
             }
             .padding(.horizontal, 16)

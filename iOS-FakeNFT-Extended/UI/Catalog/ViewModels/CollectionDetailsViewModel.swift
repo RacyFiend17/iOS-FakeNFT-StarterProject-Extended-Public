@@ -19,7 +19,7 @@ final class CollectionDetailsViewModel {
     
     private let collection: Collection
     private let service: CollectionServiceProtocol
-    private let profileService: ProfileService
+    private let favoritesSyncService: FavoritesSyncService
     private let orderService: OrderService
     
     init(
@@ -30,8 +30,11 @@ final class CollectionDetailsViewModel {
     ) {
         self.collection = collection
         self.service = service
-        self.profileService = profileService ?? ProfileServiceImpl(
+        let profileService = profileService ?? ProfileServiceImpl(
             networkClient: DefaultNetworkClient()
+        )
+        self.favoritesSyncService = ProfileFavoritesSyncService(
+            profileService: profileService
         )
         self.orderService = orderService ?? OrderServiceImpl(
             networkClient: DefaultNetworkClient()
@@ -54,28 +57,10 @@ final class CollectionDetailsViewModel {
         errorMessage = nil
         
         do {
-            let profile = try await profileService.loadProfile()
-            var likes = profile.likes
-            
-            if isLiked {
-                if !likes.contains(nftId) {
-                    likes.append(nftId)
-                }
-            } else {
-                likes.removeAll { $0 == nftId }
-            }
-            
-            let updatedProfile = Profile(
-                id: profile.id,
-                name: profile.name,
-                avatar: profile.avatar,
-                description: profile.description,
-                website: profile.website,
-                nfts: profile.nfts,
-                likes: likes
+            try await favoritesSyncService.updateProfileLike(
+                nftId: nftId,
+                isLiked: isLiked
             )
-            
-            _ = try await profileService.updateProfile(updatedProfile)
         } catch {
             errorMessage = "Не удалось обновить избранное"
         }
