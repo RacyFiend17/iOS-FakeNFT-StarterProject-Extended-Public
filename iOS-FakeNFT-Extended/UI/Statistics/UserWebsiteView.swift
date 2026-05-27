@@ -8,6 +8,7 @@ struct UserWebsiteView: View {
         UserWebView(url: url)
             .ignoresSafeArea(edges: .bottom)
             .navigationBarTitleDisplayMode(.inline)
+            .tint(.blackYP)
     }
 }
 

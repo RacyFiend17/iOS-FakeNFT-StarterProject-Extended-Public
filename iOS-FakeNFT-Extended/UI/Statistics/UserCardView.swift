@@ -26,7 +26,7 @@ struct UserCardView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Color.whiteUniversalYP)
         .navigationBarTitleDisplayMode(.inline)
-        
+        .tint(.blackYP)
     }
 }
 

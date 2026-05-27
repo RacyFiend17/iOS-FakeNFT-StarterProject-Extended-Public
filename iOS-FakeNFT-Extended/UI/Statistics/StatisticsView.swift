@@ -16,6 +16,7 @@ struct StatisticsView: View {
                             isSortDialogPresented = true
                         } label: {
                             Image(.sortYP)
+                                .foregroundStyle(.blackYP)
                         }
                         .disabled(viewModel.users.isEmpty)
                     }
@@ -36,6 +37,7 @@ struct StatisticsView: View {
                     Button("Закрыть", role: .cancel) {}
                 }
         }
+        .tint(.blackYP)
         .task {
             await viewModel.loadUsers(service: servicesAssembly.usersService)
         }
@@ -94,6 +96,7 @@ private extension StatisticsView {
     
     var loadingView: some View {
         ProgressView()
+            .tint(.blackYP)
     }
     
     var emptyView: some View {

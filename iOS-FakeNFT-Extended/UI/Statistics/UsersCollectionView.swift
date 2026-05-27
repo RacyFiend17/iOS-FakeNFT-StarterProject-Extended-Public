@@ -60,6 +60,7 @@ private extension UsersCollectionView {
     
     var loadingView: some View {
         ProgressView()
+            .tint(.blackYP)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
