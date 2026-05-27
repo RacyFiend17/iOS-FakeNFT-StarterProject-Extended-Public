@@ -14,6 +14,7 @@ struct ProfileView: View {
                 )
             } else {
                 ProgressView()
+                    .tint(.blackYP)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(.whiteYP)
             }
@@ -52,6 +53,7 @@ private struct ProfileContentView: View {
                                 viewModel.applyUpdatedProfile(updatedProfile)
                             }
                         )
+                        .toolbar(.hidden, for: .tabBar)
                     }
                 }
                 .navigationDestination(isPresented: $isMyNFTPresented) {
@@ -61,6 +63,7 @@ private struct ProfileContentView: View {
                             nftService: nftService
                         )
                     )
+                    .toolbar(.hidden, for: .tabBar)
                 }
                 .navigationDestination(isPresented: $isFavouritesNFTPresented) {
                     FavouritesNFTView(
@@ -87,6 +90,7 @@ private struct ProfileContentView: View {
         switch viewModel.state {
         case .idle, .loading:
             ProgressView()
+                .tint(.blackYP)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(.whiteYP)
 
@@ -117,32 +121,13 @@ private struct ProfileContentView: View {
     private func loadedView(_ profile: Profile) -> some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                HStack(alignment: .top, spacing: 16) {
-                    ProfileAvatarView(
-                        avatarURLString: profile.avatar,
-                        size: 70
-                    )
-
-                    VStack(alignment: .leading, spacing: 20) {
-                        Text(profile.name)
-                            .font(.headline3)
-                            .foregroundStyle(.blackYP)
-                            .padding(.top, 18)
-
-                        Text(profile.description)
-                            .font(.caption2)
-                            .foregroundStyle(.blackYP)
-                            .fixedSize(horizontal: false, vertical: true)
-
-                        ProfileWebsiteView(website: profile.website)
-                    }
-
+                HStack {
                     Spacer()
 
                     Button {
                         isEditingProfile = true
                     } label: {
-                        Image("editYP")
+                        AppIcon.edit.image
                             .resizable()
                             .frame(width: 42, height: 42)
                             .contentShape(Rectangle())
@@ -150,7 +135,35 @@ private struct ProfileContentView: View {
                     .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 16)
-                .padding(.top, 24)
+                .padding(.top, 2)
+
+                HStack(spacing: 16) {
+                    ProfileAvatarView(
+                        avatarURLString: profile.avatar,
+                        size: 70
+                    )
+
+                    Text(profile.name)
+                        .font(.headline3)
+                        .foregroundStyle(.blackYP)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+
+                    Spacer()
+                }
+                .padding(.horizontal, 16)
+                .padding(.top, 20)
+
+                Text(profile.description)
+                    .font(.caption2)
+                    .foregroundStyle(.blackYP)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 20)
+
+                ProfileWebsiteView(website: profile.website)
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
 
                 VStack(spacing: 0) {
                     ProfileNavigationRowView(
@@ -208,6 +221,8 @@ private struct ProfileWebsiteView: View {
             Text(website)
                 .font(.caption3)
                 .foregroundStyle(.blueUniversalYP)
+                .lineLimit(1)
+                .truncationMode(.tail)
         }
     }
 }

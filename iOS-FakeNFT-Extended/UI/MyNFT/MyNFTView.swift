@@ -14,6 +14,7 @@ struct MyNFTView: View {
         content
             .background(.whiteYP)
             .navigationBarBackButtonHidden(true)
+            .toolbar(.hidden, for: .tabBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -80,6 +81,7 @@ struct MyNFTView: View {
         switch viewModel.state {
         case .idle, .loading:
             ProgressView()
+                .tint(.blackYP)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
         case .loaded:
