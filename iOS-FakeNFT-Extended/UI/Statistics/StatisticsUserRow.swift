@@ -8,7 +8,7 @@ struct StatisticsUserRow: View {
         HStack(spacing: 8) {
             Text("\(position)")
                 .font(.system(size: 15))
-                .foregroundStyle(.primary)
+                .foregroundStyle(Color(.blackYP))
                 .frame(width: 28, alignment: .leading)
             
             HStack(spacing: 8) {
@@ -16,17 +16,17 @@ struct StatisticsUserRow: View {
                 
                 Text(user.name)
                     .font(.system(size: 22, weight: .bold))
-                    .foregroundStyle(.primary)
-                
+                    .foregroundStyle(Color(.blackYP))
+
                 Spacer()
                 
                 Text("\(user.nfts.count)")
                     .font(.system(size: 22, weight: .bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color(.blackYP))
             }
             .padding(.horizontal, 16)
             .frame(height: 88)
-            .background(Color(.systemGray6))
+            .background(Color(.grayLightYP))
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
         .padding(.horizontal, 16)

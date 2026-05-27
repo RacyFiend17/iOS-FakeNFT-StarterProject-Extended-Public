@@ -9,7 +9,7 @@ struct StatisticsView: View {
         NavigationStack {
             content
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.whiteUniversalYP)
+                .background(Color(.whiteYP))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
@@ -37,6 +37,7 @@ struct StatisticsView: View {
                     Button("Закрыть", role: .cancel) {}
                 }
         }
+        .background(.whiteYP)
         .tint(.blackYP)
         .task {
             await viewModel.loadUsers(service: servicesAssembly.usersService)
@@ -86,12 +87,12 @@ private extension StatisticsView {
                         trailing: 0
                     )
                 )
-                .listRowBackground(Color.whiteUniversalYP)
+                .listRowBackground(Color(.whiteYP))
             }
         }
         .listStyle(.plain)
         .scrollContentBackground(.hidden)
-        .background(Color.whiteUniversalYP)
+        .background(Color(.whiteYP))
     }
     
     var loadingView: some View {
@@ -102,15 +103,15 @@ private extension StatisticsView {
     var emptyView: some View {
         Text("Пользователи не найдены")
             .font(.system(size: 17, weight: .bold))
-            .foregroundStyle(Color.blackUniversalYP)
+            .foregroundStyle(Color(.blackYP))
     }
     
     var errorView: some View {
         VStack(spacing: 16) {
             Text("Не удалось загрузить рейтинг")
                 .font(.system(size: 17, weight: .bold))
-                .foregroundStyle(Color.blackUniversalYP)
-            
+                .foregroundStyle(Color(.blackYP))
+
             Button {
                 Task {
                     await viewModel.reloadUsers(service: servicesAssembly.usersService)
@@ -118,13 +119,14 @@ private extension StatisticsView {
             } label: {
                 Text("Повторить")
                     .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(Color.whiteUniversalYP)
+                    .foregroundStyle(Color(.whiteYP))
                     .frame(height: 44)
                     .frame(maxWidth: .infinity)
-                    .background(Color.blackUniversalYP)
+                    .background(Color(.blackYP))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
             .padding(.horizontal, 16)
         }
+        .background(Color(.whiteYP))
     }
 }

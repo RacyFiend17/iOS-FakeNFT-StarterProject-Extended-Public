@@ -10,7 +10,7 @@ struct UserCardView: View {
             
             Text(user.description)
                 .font(.system(size: 13, weight: .regular))
-                .foregroundStyle(Color.blackUniversalYP)
+                .foregroundStyle(Color(.blackYP))
                 .lineSpacing(2)
                 .padding(.top, 20)
             
@@ -24,7 +24,7 @@ struct UserCardView: View {
         }
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.whiteUniversalYP)
+        .background(Color(.whiteYP))
         .navigationBarTitleDisplayMode(.inline)
         .tint(.blackYP)
     }
@@ -40,8 +40,8 @@ private extension UserCardView {
             
             Text(user.name)
                 .font(.system(size: 22, weight: .bold))
-                .foregroundStyle(Color.blackUniversalYP)
-            
+                .foregroundStyle(Color(.blackYP))
+
             Spacer()
         }
     }
@@ -64,13 +64,13 @@ private extension UserCardView {
     var websiteButtonContent: some View {
         Text("Перейти на сайт пользователя")
             .font(.system(size: 13, weight: .regular))
-            .foregroundStyle(Color.blackUniversalYP)
+            .foregroundStyle(Color(.blackYP))
             .frame(maxWidth: .infinity)
             .frame(height: 40)
-            .background(Color.whiteUniversalYP)
+            .background(Color(.whiteYP))
             .overlay {
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.blackUniversalYP, lineWidth: 1)
+                    .stroke(Color(.blackYP), lineWidth: 1)
             }
     }
     
@@ -81,13 +81,13 @@ private extension UserCardView {
             HStack(spacing: 0) {
                 Text("Коллекция NFT  (\(user.nfts.count))")
                     .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(Color.blackUniversalYP)
-                
+                    .foregroundStyle(Color(.blackYP))
+
                 Spacer()
                 
                 Image(systemName: "chevron.right")
                     .font(.system(size: 22, weight: .regular))
-                    .foregroundStyle(Color.blackUniversalYP)
+                    .foregroundStyle(Color(.blackYP))
             }
             .frame(height: 44)
         }

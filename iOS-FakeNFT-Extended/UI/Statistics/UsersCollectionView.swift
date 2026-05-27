@@ -16,9 +16,10 @@ struct UsersCollectionView: View {
     var body: some View {
         content
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.whiteUniversalYP)
+            .background(Color(.whiteYP))
             .navigationTitle("Коллекция NFT")
             .navigationBarTitleDisplayMode(.inline)
+            .tint(Color(.blackYP))
             .task {
                 await viewModel.loadNfts(service: servicesAssembly.collectionService)
             }
@@ -93,21 +94,23 @@ private extension UsersCollectionView {
             .padding(.top, 20)
             .padding(.bottom, 24)
         }
+        .background(Color(.whiteYP))
     }
     
     var emptyView: some View {
         Text("Коллекция NFT пустая")
             .font(.system(size: 17, weight: .bold))
-            .foregroundStyle(Color.blackUniversalYP)
+            .foregroundStyle(Color(.blackYP))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color(.whiteYP))
     }
     
     var errorView: some View {
         VStack(spacing: 16) {
             Text("Не удалось загрузить коллекцию")
                 .font(.system(size: 17, weight: .bold))
-                .foregroundStyle(Color.blackUniversalYP)
-            
+                .foregroundStyle(Color(.blackYP))
+
             Button {
                 Task {
                     await viewModel.reloadNfts(service: servicesAssembly.collectionService)
@@ -118,10 +121,11 @@ private extension UsersCollectionView {
                     .foregroundStyle(Color.whiteUniversalYP)
                     .frame(height: 44)
                     .frame(maxWidth: .infinity)
-                    .background(Color.blackUniversalYP)
+                    .background(Color(.blackYP))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
             }
         }
         .padding(.horizontal, 16)
+        .background(Color(.whiteYP))
     }
 }

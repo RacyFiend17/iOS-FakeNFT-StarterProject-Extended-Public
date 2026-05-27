@@ -38,11 +38,7 @@ struct NftCellView: View {
                         .scaledToFill()
                 } placeholder: {
                     ProgressView()
-                        .progressViewStyle(
-                            CircularProgressViewStyle(
-                                tint: .black
-                            )
-                        )
+                        .tint(Color(.blackYP))
                 }
                 .aspectRatio(1, contentMode: .fill)
                 .frame(maxWidth: .infinity)
@@ -59,7 +55,7 @@ struct NftCellView: View {
                     AppIcon.like.image
                         .renderingMode(.template)
                         .foregroundStyle(
-                            likesStorage.isLiked(id: nft.id) ? .red : .white
+                            likesStorage.isLiked(id: nft.id) ? Color(.redUniversalYP) : Color(.whiteUniversalYP)
                         )
                 }
             }
@@ -70,7 +66,7 @@ struct NftCellView: View {
                         Image(systemName: index < nft.rating
                               ? "star.fill"
                               : "star")
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(Color(.yellowUniversalYP))
                         .font(.caption)
                     }
                 }
@@ -79,10 +75,12 @@ struct NftCellView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(nft.name)
                             .font(.bodyBold)
+                            .foregroundStyle(Color(.blackYP))
                             .lineLimit(1)
                         
                         Text("\(Int(nft.price)) ETH")
                             .font(.caption1)
+                            .foregroundStyle(Color(.blackYP))
                     }
                     
                     Spacer()
