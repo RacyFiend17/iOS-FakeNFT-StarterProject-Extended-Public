@@ -18,6 +18,9 @@ struct NftCellView: View {
     // Обработчик добавления нфт в корзину
     var nftAddedToCart: ((String) -> Void) = {_ in}
     
+    // Обработчик обновления корзины
+    var nftCartToggled: ((String, Bool) -> Void) = { _, _ in }
+    
     // Обработчик обновления избранного
     var nftLikeToggled: ((String, Bool) -> Void) = { _, _ in }
     
@@ -90,6 +93,7 @@ struct NftCellView: View {
                             cartNftStorage.toggle(id: nft.id)
                         }
                         nftAddedToCart(nft.id)
+                        nftCartToggled(nft.id, cartNftStorage.contains(id: nft.id))
                     } label: {
                         (
                             cartNftStorage.contains(id: nft.id)

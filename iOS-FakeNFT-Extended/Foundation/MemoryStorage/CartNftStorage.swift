@@ -34,4 +34,12 @@ final class CartNftStorage {
             ids.insert(id)
         }
     }
+    
+    func remove(id: String) {
+        ids.remove(id)
+    }
+    
+    func replace(with ids: [String]) {
+        self.ids = Set(ids)
+    }
 }

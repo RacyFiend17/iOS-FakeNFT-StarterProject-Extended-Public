@@ -24,14 +24,17 @@ struct UpdateOrderRequest: NetworkRequest {
         .put
     }
     
+    var headers: [String: String] {
+        [
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+        ]
+    }
+    
     var httpBody: Data? {
         nftIds
             .map { "nfts=\($0)" }
             .joined(separator: "&")
             .data(using: .utf8)
-    }
-    
-    var contentType: String? {
-        "application/x-www-form-urlencoded"
     }
 }

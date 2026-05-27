@@ -20,15 +20,20 @@ final class CollectionDetailsViewModel {
     private let collection: Collection
     private let service: CollectionServiceProtocol
     private let profileService: ProfileService
+    private let orderService: OrderService
     
     init(
         collection: Collection,
         service: CollectionServiceProtocol,
-        profileService: ProfileService? = nil
+        profileService: ProfileService? = nil,
+        orderService: OrderService? = nil
     ) {
         self.collection = collection
         self.service = service
         self.profileService = profileService ?? ProfileServiceImpl(
+            networkClient: DefaultNetworkClient()
+        )
+        self.orderService = orderService ?? OrderServiceImpl(
             networkClient: DefaultNetworkClient()
         )
     }
@@ -73,6 +78,27 @@ final class CollectionDetailsViewModel {
             _ = try await profileService.updateProfile(updatedProfile)
         } catch {
             errorMessage = "Не удалось обновить избранное"
+        }
+    }
+    
+    func updateOrderCart(nftId: String, isInCart: Bool) async {
+        errorMessage = nil
+        
+        do {
+            let order = try await orderService.loadOrder()
+            var nftIds = order.nfts
+            
+            if isInCart {
+                if !nftIds.contains(nftId) {
+                    nftIds.append(nftId)
+                }
+            } else {
+                nftIds.removeAll { $0 == nftId }
+            }
+            
+            _ = try await orderService.updateOrder(nftIds: nftIds)
+        } catch {
+            errorMessage = "Не удалось обновить корзину"
         }
     }
 }

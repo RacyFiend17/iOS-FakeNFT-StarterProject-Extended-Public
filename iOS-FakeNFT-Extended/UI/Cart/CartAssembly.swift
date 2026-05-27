@@ -10,6 +10,7 @@ import SwiftUI
 /// Создает экран корзины и передает в него собранную view model.
 struct CartAssembly: View {
     @Environment(ServicesAssembly.self) private var servicesAssembly
+    @Environment(CartNftStorage.self) private var cartNftStorage
     
     private let onPaymentTap: () -> Void
     private let refreshTrigger: Bool
@@ -26,7 +27,8 @@ struct CartAssembly: View {
         CartView(
             viewModel: CartViewModel(
                 orderService: servicesAssembly.orderService,
-                nftService: servicesAssembly.nftService
+                nftService: servicesAssembly.nftService,
+                cartNftStorage: cartNftStorage
             ),
             refreshTrigger: refreshTrigger,
             onPaymentTap: onPaymentTap

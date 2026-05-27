@@ -26,6 +26,7 @@ final class CartViewModel {
     private let orderService: OrderService
     private let nftService: NftService
     private let sortStorage: CartSortStorage
+    private let cartNftStorage: CartNftStorage?
     
     private(set) var state: CartState = .initial
     private(set) var errorMessage: String?
@@ -55,11 +56,13 @@ final class CartViewModel {
         orderService: OrderService,
         nftService: NftService,
         sortStorage: CartSortStorage = UserDefaultsCartSortStorage(),
+        cartNftStorage: CartNftStorage? = nil,
         state: CartState = .initial
     ) {
         self.orderService = orderService
         self.nftService = nftService
         self.sortStorage = sortStorage
+        self.cartNftStorage = cartNftStorage
         self.state = state
         self.selectedSortOption = sortStorage.selectedSortOption
     }
@@ -107,6 +110,7 @@ final class CartViewModel {
         
         do {
             _ = try await orderService.updateOrder(nftIds: updatedNftIds)
+            cartNftStorage?.remove(id: nftToDelete.id)
             selectedNftToDelete = nil
             state = updatedNfts.isEmpty ? .empty : .content(sortedNfts(updatedNfts))
         } catch {
@@ -141,6 +145,7 @@ final class CartViewModel {
     
     private func loadCartNfts() async throws -> [Nft] {
         let order = try await orderService.loadOrder()
+        cartNftStorage?.replace(with: order.nfts)
         var nfts: [Nft] = []
         
         for id in order.nfts {
