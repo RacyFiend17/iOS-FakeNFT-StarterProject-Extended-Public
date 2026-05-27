@@ -11,7 +11,7 @@ struct CartView: View {
     @State private var viewModel: CartViewModel
     @State private var isErrorAlertPresented = false
     @State private var isSortDialogPresented = false
-    @State private var isDeleteConfirmationPresented = false
+    @Binding private var isDeleteConfirmationPresented: Bool
     
     private let shouldLoadOnAppear: Bool
     private let refreshTrigger: Bool
@@ -21,9 +21,11 @@ struct CartView: View {
         viewModel: CartViewModel,
         shouldLoadOnAppear: Bool = true,
         refreshTrigger: Bool = false,
+        isDeleteConfirmationPresented: Binding<Bool> = .constant(false),
         onPaymentTap: @escaping () -> Void = {}
     ) {
         _viewModel = State(initialValue: viewModel)
+        _isDeleteConfirmationPresented = isDeleteConfirmationPresented
         self.shouldLoadOnAppear = shouldLoadOnAppear
         self.refreshTrigger = refreshTrigger
         self.onPaymentTap = onPaymentTap

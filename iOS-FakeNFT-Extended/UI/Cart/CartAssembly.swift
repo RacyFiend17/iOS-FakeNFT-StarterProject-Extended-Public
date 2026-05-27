@@ -14,12 +14,15 @@ struct CartAssembly: View {
     
     private let onPaymentTap: () -> Void
     private let refreshTrigger: Bool
+    @Binding private var isDeleteConfirmationPresented: Bool
     
     init(
         refreshTrigger: Bool = false,
+        isDeleteConfirmationPresented: Binding<Bool> = .constant(false),
         onPaymentTap: @escaping () -> Void = {}
     ) {
         self.refreshTrigger = refreshTrigger
+        _isDeleteConfirmationPresented = isDeleteConfirmationPresented
         self.onPaymentTap = onPaymentTap
     }
     
@@ -31,6 +34,7 @@ struct CartAssembly: View {
                 cartNftStorage: cartNftStorage
             ),
             refreshTrigger: refreshTrigger,
+            isDeleteConfirmationPresented: $isDeleteConfirmationPresented,
             onPaymentTap: onPaymentTap
         )
     }
