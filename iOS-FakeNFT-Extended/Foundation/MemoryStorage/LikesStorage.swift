@@ -30,6 +30,16 @@ final class LikesStorage {
         }
         save()
     }
+    
+    func remove(id: String) {
+        likedIds.remove(id)
+        save()
+    }
+    
+    func replace(with ids: [String]) {
+        likedIds = Set(ids)
+        save()
+    }
 
     private func save() {
         UserDefaults.standard.set(

@@ -18,6 +18,9 @@ struct NftCellView: View {
     // Обработчик добавления нфт в корзину
     var nftAddedToCart: ((String) -> Void) = {_ in}
     
+    // Обработчик обновления избранного
+    var nftLikeToggled: ((String, Bool) -> Void) = { _, _ in }
+    
     let nft: Nft
     
     var body: some View {
@@ -48,6 +51,7 @@ struct NftCellView: View {
                     withAnimation(.spring(duration: 0.4)) {
                         likesStorage.toggle(id: nft.id)
                     }
+                    nftLikeToggled(nft.id, likesStorage.isLiked(id: nft.id))
                 } label: {
                     AppIcon.like.image
                         .renderingMode(.template)

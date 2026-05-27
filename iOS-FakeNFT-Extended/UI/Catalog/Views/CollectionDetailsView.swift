@@ -87,6 +87,17 @@ struct CollectionDetailsView: View {
         .task {
             await viewModel.load()
         }
+        .alert(
+            Constants.likeErrorTitle,
+            isPresented: Binding(
+                get: { viewModel.errorMessage != nil },
+                set: { _ in viewModel.errorMessage = nil }
+            )
+        ) {
+            Button(Constants.okButtonTitle, role: .cancel) { }
+        } message: {
+            Text(viewModel.errorMessage ?? "")
+        }
     }
 }
 
@@ -169,7 +180,17 @@ private extension CollectionDetailsView {
         ) {
             ForEach(viewModel.nfts) { nft in
                 
-                NftCellView(nft: nft)
+                NftCellView(
+                    nftLikeToggled: { nftId, isLiked in
+                        Task {
+                            await viewModel.updateProfileLike(
+                                nftId: nftId,
+                                isLiked: isLiked
+                            )
+                        }
+                    },
+                    nft: nft
+                )
             }
         }
         .padding(.horizontal, 16)
@@ -189,5 +210,7 @@ private extension CollectionDetailsView {
 extension CollectionDetailsView {
     enum Constants {
         static let agreementURLString = "https://yandex.ru/legal/practicum_termsofuse"
+        static let likeErrorTitle = "Ошибка"
+        static let okButtonTitle = "ОК"
     }
 }

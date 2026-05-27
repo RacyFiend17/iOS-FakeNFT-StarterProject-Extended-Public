@@ -15,16 +15,22 @@ final class CollectionDetailsViewModel {
     var state: CollectionDetailsState = .loading
     
     var nfts: [Nft] = []
+    var errorMessage: String?
     
     private let collection: Collection
     private let service: CollectionServiceProtocol
+    private let profileService: ProfileService
     
     init(
         collection: Collection,
-        service: CollectionServiceProtocol
+        service: CollectionServiceProtocol,
+        profileService: ProfileService? = nil
     ) {
         self.collection = collection
         self.service = service
+        self.profileService = profileService ?? ProfileServiceImpl(
+            networkClient: DefaultNetworkClient()
+        )
     }
     
     func load() async {
@@ -36,6 +42,37 @@ final class CollectionDetailsViewModel {
             state = .loaded
         } catch {
             state = .error(error.localizedDescription)
+        }
+    }
+    
+    func updateProfileLike(nftId: String, isLiked: Bool) async {
+        errorMessage = nil
+        
+        do {
+            let profile = try await profileService.loadProfile()
+            var likes = profile.likes
+            
+            if isLiked {
+                if !likes.contains(nftId) {
+                    likes.append(nftId)
+                }
+            } else {
+                likes.removeAll { $0 == nftId }
+            }
+            
+            let updatedProfile = Profile(
+                id: profile.id,
+                name: profile.name,
+                avatar: profile.avatar,
+                description: profile.description,
+                website: profile.website,
+                nfts: profile.nfts,
+                likes: likes
+            )
+            
+            _ = try await profileService.updateProfile(updatedProfile)
+        } catch {
+            errorMessage = "Не удалось обновить избранное"
         }
     }
 }

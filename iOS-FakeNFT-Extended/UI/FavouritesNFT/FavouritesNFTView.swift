@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FavouritesNFTView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(LikesStorage.self) private var likesStorage
 
     @State private var viewModel: FavouritesNFTViewModel
 
@@ -48,6 +49,7 @@ struct FavouritesNFTView: View {
             .task {
                 if viewModel.state == .idle {
                     await viewModel.loadFavourites()
+                    likesStorage.replace(with: viewModel.nfts.map(\.id))
                 }
             }
     }
@@ -85,6 +87,7 @@ struct FavouritesNFTView: View {
                     ) {
                         Task {
                             if let updatedProfile = await viewModel.removeFromFavourites(nft) {
+                                likesStorage.remove(id: nft.id)
                                 onLikesChanged(updatedProfile)
                             }
                         }
