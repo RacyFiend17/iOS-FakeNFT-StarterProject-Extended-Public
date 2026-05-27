@@ -1,4 +1,4 @@
-import SwiftUI
+import UIKit
 
 extension UIColor {
     // Creates color from a hex string
@@ -24,6 +24,7 @@ extension UIColor {
             alpha: CGFloat(alpha) / 255
         )
     }
+
 
     // Ниже приведены примеры цветов, настоящие цвета надо взять из фигмы
 

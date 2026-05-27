@@ -1,50 +1,79 @@
 import Foundation
 
-struct Nft: Decodable, Sendable, Identifiable, Equatable {
+struct Nft: Decodable, Identifiable, Equatable {
     let id: String
     let name: String
-    let imagesUrls: [URL]
+    let images: [URL]
     let rating: Int
     let price: Double
     let author: String
-    let description: String
 
     enum CodingKeys: String, CodingKey {
-        case id, name, rating, price, author, description
-        case imagesUrls = "images"
+        case id
+        case name
+        case images
+        case rating
+        case price
+        case author
+    }
+
+    init(
+        id: String,
+        name: String,
+        images: [URL],
+        rating: Int,
+        price: Double,
+        author: String
+    ) {
+        self.id = id
+        self.name = name
+        self.images = images
+        self.rating = rating
+        self.price = price
+        self.author = author
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decodeIfPresent(String.self, forKey: .name) ?? ""
+        images = try container.decodeIfPresent([URL].self, forKey: .images) ?? []
+        rating = try container.decodeIfPresent(Int.self, forKey: .rating) ?? 0
+        price = try container.decodeIfPresent(Double.self, forKey: .price) ?? 0
+        author = try container.decodeIfPresent(String.self, forKey: .author) ?? ""
     }
 }
 
-// MARK: - Mocks
-
 extension Nft {
+    var imagesUrls: [URL] {
+        images
+    }
+
     static let mock1 = Nft(
         id: "1",
-        name: "April",
-        imagesUrls: [],
-        rating: 3,
-        price: 1.5,
-        author: "Author 1",
-        description: "Description 1"
+        name: "Mock NFT 1",
+        images: [],
+        rating: 4,
+        price: 1.0,
+        author: "Mock Author"
     )
-    
+
     static let mock2 = Nft(
         id: "2",
-        name: "Luna",
-        imagesUrls: [],
+        name: "Mock NFT 2",
+        images: [],
         rating: 5,
-        price: 2.25,
-        author: "Author 2",
-        description: "Description 2"
+        price: 2.0,
+        author: "Mock Author"
     )
-    
+
     static let mock3 = Nft(
         id: "3",
-        name: "Cherry",
-        imagesUrls: [],
-        rating: 1,
-        price: 0.75,
-        author: "Author 3",
-        description: "Description 3"
+        name: "Mock NFT 3",
+        images: [],
+        rating: 3,
+        price: 3.0,
+        author: "Mock Author"
     )
 }

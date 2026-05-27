@@ -9,7 +9,7 @@ final class ServicesAssembly {
 
     init(
         networkClient: NetworkClient,
-        nftStorage: NftStorage,
+        nftStorage: NftStorage
     ) {
         self.networkClient = networkClient
         self.nftStorage = nftStorage
@@ -22,31 +22,27 @@ final class ServicesAssembly {
         )
     }
 
-    var orderService: OrderService {
-        OrderServiceImpl(
-            networkClient: networkClient
-        )
+    var profileService: ProfileService {
+        ProfileServiceImpl(networkClient: networkClient)
     }
 
     var catalogService: CatalogService {
-        CatalogServiceImpl(
-            networkClient: networkClient
-        )
+        CatalogServiceImpl(networkClient: networkClient)
+    }
+
+    var orderService: OrderService {
+        OrderServiceImpl(networkClient: networkClient)
     }
 
     var currencyService: CurrencyService {
-        CurrencyServiceImpl(
-            networkClient: networkClient
-        )
+        CurrencyServiceImpl(networkClient: networkClient)
     }
 
-    var collectionService: CollectionService {
-        CollectionService(networkClient: networkClient)
-    }
-    
     var usersService: UsersService {
         UsersServiceImpl(networkClient: networkClient)
     }
-    
-    let likesStorage = LikesStorage()
+
+    var collectionService: CollectionServiceProtocol {
+        CollectionService(networkClient: networkClient)
+    }
 }
