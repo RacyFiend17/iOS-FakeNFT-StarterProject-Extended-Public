@@ -52,16 +52,16 @@ extension Nft {
 
     static let mock1 = Nft(
         id: "1",
-        name: "Mock NFT 1",
+        name: "Mock NFT A",
         images: [],
         rating: 4,
-        price: 1.0,
+        price: 1.5,
         author: "Mock Author"
     )
 
     static let mock2 = Nft(
         id: "2",
-        name: "Mock NFT 2",
+        name: "Mock NFT C",
         images: [],
         rating: 5,
         price: 2.0,
@@ -70,10 +70,10 @@ extension Nft {
 
     static let mock3 = Nft(
         id: "3",
-        name: "Mock NFT 3",
+        name: "Mock NFT B",
         images: [],
         rating: 3,
-        price: 3.0,
+        price: 1.0,
         author: "Mock Author"
     )
 }
